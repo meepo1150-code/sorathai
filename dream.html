@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>ทำนายฝัน AI วิเคราะห์ความฝันฟรี — Sorathai</title>
+<meta name="description" content="ทำนายฝันฟรีด้วย AI เล่าความฝันแล้วรู้ความหมาย ดวงชะตา เลขเด็ด ไม่ต้องสมัคร">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,400&family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+:root{--bg:#f8f7f5;--surf:#fff;--text:#1a1a1a;--t2:#6b6b6b;--t3:#a0a0a0;--bdr:rgba(0,0,0,0.07);--bmd:rgba(0,0,0,0.12);--gold:#c8952c;--r:16px;--rs:10px;--serif:'Playfair Display',Georgia,serif;--sans:'Sarabun',sans-serif}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--bg)}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
+.page{max-width:480px;margin:0 auto;padding-bottom:100px}
+.hdr{position:sticky;top:0;z-index:100;background:rgba(248,247,245,.93);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:0.5px solid var(--bdr);padding:14px 20px;display:flex;align-items:center;gap:10px;max-width:480px;margin:0 auto}
+.logo{font-family:var(--serif);font-style:italic;font-size:17px;color:var(--text);text-decoration:none}
+.hdr-tag{margin-left:auto;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--t3)}
+.ad{background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--t3);letter-spacing:2px;text-transform:uppercase;border-top:0.5px solid var(--bdr);border-bottom:0.5px solid var(--bdr)}
+.ad-b{min-height:56px}
+.ad-i{min-height:80px;border-radius:var(--rs);border:0.5px dashed var(--bdr);margin:24px}
+
+/* ── HERO ── */
+.hero{padding:48px 32px 36px;text-align:center;border-bottom:0.5px solid var(--bdr)}
+.hero-ico{font-size:56px;display:block;margin-bottom:20px;animation:float 4s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.hero-ey{font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
+.hero-ttl{font-family:var(--serif);font-style:italic;font-size:30px;color:var(--text);line-height:1.25;margin-bottom:10px}
+.hero-sub{font-size:13px;color:var(--t3);line-height:1.7;max-width:280px;margin:0 auto}
+
+/* ── FORM ── */
+.form-sec{padding:32px 24px 0}
+.form-lbl{font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--t3);margin-bottom:12px}
+.textarea-wrap{position:relative;margin-bottom:6px}
+textarea{
+  width:100%;min-height:140px;
+  background:var(--surf);
+  border:0.5px solid var(--bmd);
+  border-radius:var(--r);
+  color:var(--text);
+  font-family:var(--serif);font-style:italic;font-size:15px;
+  line-height:1.75;
+  padding:16px 18px;
+  resize:none;outline:none;
+  transition:border-color .15s,box-shadow .15s;
+  -webkit-appearance:none;
+}
+textarea::placeholder{color:var(--t3);font-style:italic;font-size:14px}
+textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(200,149,44,.1)}
+.char-count{font-size:10px;color:var(--t3);text-align:right;margin-bottom:16px}
+.char-count.warn{color:#c0392b}
+
+/* ── SUGGESTION CHIPS ── */
+.chips-lbl{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--t3);margin-bottom:10px}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:24px}
+.chip{
+  font-size:11px;font-weight:600;
+  padding:6px 12px;
+  border:0.5px solid var(--bmd);
+  border-radius:99px;
+  color:var(--t2);background:var(--surf);
+  cursor:pointer;transition:border-color .12s,color .12s,background .12s;
+  -webkit-tap-highlight-color:transparent;
+}
+.chip:active,.chip.sel{color:var(--gold);border-color:rgba(200,149,44,.5);background:rgba(200,149,44,.06)}
+
+/* ── TIME PICKER ── */
+.time-sec{margin-bottom:24px}
+.time-row{display:flex;gap:8px}
+.time-btn{
+  flex:1;padding:11px 6px;
+  background:var(--surf);border:0.5px solid var(--bmd);border-radius:var(--rs);
+  font-family:var(--sans);font-size:12px;font-weight:600;color:var(--t2);
+  cursor:pointer;text-align:center;transition:all .12s;
+  -webkit-tap-highlight-color:transparent;
+}
+.time-btn.sel{color:var(--gold);border-color:rgba(200,149,44,.5);background:rgba(200,149,44,.06)}
+
+/* ── SUBMIT ── */
+.btn-submit{
+  width:100%;background:var(--text);color:var(--bg);
+  border:none;border-radius:99px;
+  font-family:var(--sans);font-size:16px;font-weight:700;
+  padding:17px;cursor:pointer;letter-spacing:.3px;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  transition:opacity .15s,transform .1s;
+  -webkit-tap-highlight-color:transparent;
+}
+.btn-submit:active{opacity:.85;transform:scale(.98)}
+.btn-submit:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.submit-note{font-size:11px;color:var(--t3);text-align:center;margin-top:10px}
+
+/* ── HISTORY ── */
+.hist-sec{padding:32px 24px 0}
+.hist-lbl{font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--t3);margin-bottom:14px}
+.hist-list{display:flex;flex-direction:column;gap:8px}
+.hist-item{
+  background:var(--surf);border:0.5px solid var(--bdr);border-radius:var(--r);
+  padding:14px 16px;cursor:pointer;
+  display:flex;align-items:center;gap:12px;
+  transition:border-color .12s;-webkit-tap-highlight-color:transparent;
+}
+.hist-item:active{border-color:var(--bmd)}
+.hist-ico{font-size:20px;flex-shrink:0}
+.hist-dream{font-family:var(--serif);font-style:italic;font-size:13px;color:var(--text);line-height:1.5;flex:1;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.hist-date{font-size:10px;color:var(--t3);margin-top:2px}
+.hist-arr{font-size:16px;color:var(--t3);flex-shrink:0}
+.hist-empty{font-size:13px;color:var(--t3);font-style:italic;font-family:var(--serif);text-align:center;padding:20px 0}
+
+/* ── BNAV ── */
+.bnav{position:fixed;bottom:0;left:50%;right:auto;transform:translateX(-50%);width:100%;max-width:480px;background:rgba(248,247,245,.95);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:0.5px solid var(--bdr);display:flex;z-index:200;padding-bottom:env(safe-area-inset-bottom)}
+.nitem{flex:1;display:flex;flex-direction:column;align-items:center;padding:9px 4px 8px;cursor:pointer;border:none;background:none;color:var(--t3);font-family:var(--sans);font-size:10px;font-weight:600;gap:3px;text-decoration:none;letter-spacing:.5px;transition:color .15s;-webkit-tap-highlight-color:transparent}
+.nitem.active,.nitem:active{color:var(--text)}.nico{font-size:19px}
+.ovl{position:fixed;inset:0;background:rgba(0,0,0,.25);z-index:300;opacity:0;pointer-events:none;transition:opacity .2s}.ovl.open{opacity:1;pointer-events:all}
+.drw{position:fixed;bottom:0;left:50%;transform:translateX(-50%) translateY(100%);width:100%;max-width:480px;background:var(--surf);border-top:0.5px solid var(--bdr);border-radius:20px 20px 0 0;z-index:301;padding:0 0 env(safe-area-inset-bottom);transition:transform .3s cubic-bezier(.4,0,.2,1)}
+.drw.open{transform:translateX(-50%) translateY(0)}
+.drw-hdl{width:36px;height:4px;background:var(--bmd);border-radius:2px;margin:14px auto 4px}
+.drw-ttl{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--t3);text-align:center;padding:4px 0 14px}
+.drw-g{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:4px 16px 24px}
+.ditem{display:flex;flex-direction:column;align-items:center;gap:5px;padding:12px 4px;background:var(--bg);border:0.5px solid var(--bdr);border-radius:var(--rs);text-decoration:none;color:var(--t2);font-size:10px;font-weight:600;text-align:center;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.ditem .dico{font-size:20px}
+</style>
+<meta property="og:type" content="website">
+<meta property="og:title" content="ทำนายฝัน AI วิเคราะห์ความฝันฟรี — Sorathai">
+<meta property="og:description" content="ทำนายฝันฟรีด้วย AI เล่าความฝันแล้วรู้ความหมาย ดวงชะตา เลขเด็ด ไม่ต้องสมัคร">
+<meta property="og:url" content="https://sorathai.com/dream.html">
+<meta property="og:image" content="https://sorathai.com/og-image.png">
+<meta property="og:locale" content="th_TH">
+<meta property="og:site_name" content="Sorathai">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ทำนายฝัน AI วิเคราะห์ความฝันฟรี — Sorathai">
+<meta name="twitter:description" content="ทำนายฝันฟรีด้วย AI เล่าความฝันแล้วรู้ความหมาย ดวงชะตา เลขเด็ด ไม่ต้องสมัคร">
+<meta name="twitter:image" content="https://sorathai.com/og-image.png">
+</head>
+<body>
+<div class="ad ad-b" style="max-width:480px;margin:0 auto"><!-- AdSense 320×50 --></div>
+<header class="hdr">
+  <a class="logo" href="index.html">Sorathai</a>
+  <span class="hdr-tag">ทำนายฝัน</span>
+</header>
+
+<div class="page">
+
+  <!-- Hero -->
+  <div class="hero">
+    <span class="hero-ico">💭</span>
+    <p class="hero-ey">AI วิเคราะห์ความฝัน</p>
+    <h1 class="hero-ttl">คืนนี้คุณ<br>ฝันเห็นอะไร?</h1>
+    <p class="hero-sub">เล่าความฝันให้ฟัง AI จะวิเคราะห์ความหมาย ดวงชะตา และเลขเด็ดให้คุณ</p>
+  </div>
+
+  <!-- Form -->
+  <div class="form-sec">
+    <p class="form-lbl">เล่าความฝันของคุณ</p>
+    <div class="textarea-wrap">
+      <textarea id="dream-input" maxlength="500" placeholder="เช่น ฝันเห็นงูใหญ่สีทองอยู่ในบ้าน แล้วมันพยักหน้าให้..."></textarea>
+    </div>
+    <p class="char-count" id="char-count">0 / 500</p>
+
+    <p class="chips-lbl">หมวดความฝัน (เลือกได้)</p>
+    <div class="chips" id="chips">
+      <span class="chip" data-v="คน">👤 คน</span>
+      <span class="chip" data-v="สัตว์">🐾 สัตว์</span>
+      <span class="chip" data-v="น้ำ">💧 น้ำ</span>
+      <span class="chip" data-v="ไฟ">🔥 ไฟ</span>
+      <span class="chip" data-v="บิน">🕊 บิน</span>
+      <span class="chip" data-v="เงิน">💰 เงิน</span>
+      <span class="chip" data-v="ความรัก">❤️ ความรัก</span>
+      <span class="chip" data-v="ผี">👻 ผี</span>
+      <span class="chip" data-v="วัด">🛕 วัด</span>
+      <span class="chip" data-v="ธรรมชาติ">🌿 ธรรมชาติ</span>
+    </div>
+
+    <div class="time-sec">
+      <p class="form-lbl">ช่วงเวลาที่ฝัน</p>
+      <div class="time-row" id="time-row">
+        <button class="time-btn" data-v="ดึก">ดึก</button>
+        <button class="time-btn" data-v="เช้ามืด">เช้ามืด</button>
+        <button class="time-btn sel" data-v="ก่อนตื่น">ก่อนตื่น</button>
+        <button class="time-btn" data-v="กลางวัน">กลางวัน</button>
+      </div>
+    </div>
+
+    <button class="btn-submit" id="btn-submit" disabled onclick="goAnalyze()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      วิเคราะห์ความฝัน
+    </button>
+    <p class="submit-note">AI จะอ่านความฝันและวิเคราะห์ความหมายโดยอัตโนมัติ</p>
+  </div>
+
+  <div class="ad-i"><!-- AdSense fluid --></div>
+
+  <!-- History -->
+  <div class="hist-sec">
+    <p class="hist-lbl">ความฝันที่ผ่านมา</p>
+    <div class="hist-list" id="hist-list"></div>
+  </div>
+
+</div>
+
+<!-- BNAV -->
+<nav class="bnav">
+  <a class="nitem" href="index.html"><span class="nico">🌟</span>ดูดวง</a>
+  <a class="nitem active" href="dream.html"><span class="nico">💭</span>ทำนายฝัน</a>
+  <a class="nitem" href="numerology.html"><span class="nico">🔢</span>เลขศาสตร์</a>
+  <button class="nitem" onclick="openDrw()"><span class="nico">☰</span>เพิ่มเติม</button>
+</nav>
+<div class="ovl" id="ovl" onclick="closeDrw()"></div>
+<div class="drw" id="drw">
+  <div class="drw-hdl"></div>
+  <div class="drw-ttl">ศาสตร์ดูดวงทั้งหมด</div>
+  <div class="drw-g" id="drw-g"></div>
+</div>
+
+<script>
+const SCI=[{i:'🔮',n:'โหราศาสตร์ไทย',url:'thai-astrology.html'},{i:'♌',n:'ราศีตะวันตก',url:'western-astrology.html'},{i:'🐉',n:'ราศีจีน',url:'chinese-astrology.html'},{i:'🔢',n:'Numerology',url:'numerology.html'},{i:'🌀',n:"มายา Tzolk'in",url:'mayan.html'},{i:'📈',n:'Biorhythm',url:'biorhythm.html'},{i:'✨',n:'Nakshatra',url:'nakshatra.html'},{i:'🌿',n:'Celtic Tree',url:'celtic.html'}];
+function $(i){return document.getElementById(i)}
+
+// Drawer
+(function(){const g=$('drw-g');g.innerHTML='';SCI.forEach(s=>{const a=document.createElement('a');a.className='ditem';a.href=s.url;a.innerHTML='<span class="dico">'+s.i+'</span>'+s.n;g.appendChild(a)})})();
+function openDrw(){$('ovl').classList.add('open');$('drw').classList.add('open');document.body.style.overflow='hidden'}
+function closeDrw(){$('ovl').classList.remove('open');$('drw').classList.remove('open');document.body.style.overflow=''}
+
+// Textarea
+const inp=$('dream-input'),cc=$('char-count'),btn=$('btn-submit');
+inp.addEventListener('input',()=>{
+  const n=inp.value.length;
+  cc.textContent=n+' / 500';
+  cc.className='char-count'+(n>450?' warn':'');
+  btn.disabled=n<8;
+});
+
+// Chips
+document.querySelectorAll('.chip').forEach(c=>{
+  c.addEventListener('click',()=>{
+    c.classList.toggle('sel');
+    const txt=c.dataset.v;
+    const cur=inp.value;
+    if(c.classList.contains('sel')){
+      if(!cur.includes(txt)) inp.value=(cur?cur+' ':'')+txt;
+    }
+    inp.dispatchEvent(new Event('input'));
+  });
+});
+
+// Time
+document.querySelectorAll('.time-btn').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('.time-btn').forEach(x=>x.classList.remove('sel'));
+    b.classList.add('sel');
+  });
+});
+
+// History
+function loadHistory(){
+  const list=$('hist-list');
+  try{
+    const raw=localStorage.getItem('sorathai_dreams');
+    const arr=raw?JSON.parse(raw):[];
+    if(!arr.length){list.innerHTML='<p class="hist-empty">ยังไม่มีประวัติความฝัน</p>';return}
+    list.innerHTML='';
+    arr.slice(0,5).forEach(item=>{
+      const d=document.createElement('div');
+      d.className='hist-item';
+      d.innerHTML='<span class="hist-ico">💭</span><div class="hist-body"><div class="hist-dream">'+item.dream+'</div><div class="hist-date">'+item.date+'</div></div><span class="hist-arr">›</span>';
+      d.addEventListener('click',()=>{
+        const p=new URLSearchParams({dream:item.dream,time:item.time||'ก่อนตื่น'});
+        location.href='dream-result.html?'+p.toString();
+      });
+      list.appendChild(d);
+    });
+  }catch(e){list.innerHTML='<p class="hist-empty">ยังไม่มีประวัติความฝัน</p>'}
+}
+loadHistory();
+
+// Submit
+function goAnalyze(){
+  const dream=inp.value.trim();if(dream.length<8)return;
+  const time=document.querySelector('.time-btn.sel')?.dataset.v||'ก่อนตื่น';
+  // save to history
+  try{
+    const raw=localStorage.getItem('sorathai_dreams');
+    const arr=raw?JSON.parse(raw):[];
+    const now=new Date();
+    const dateStr=now.toLocaleDateString('th-TH',{day:'numeric',month:'short',year:'2-digit'});
+    arr.unshift({dream,time,date:dateStr,ts:Date.now()});
+    localStorage.setItem('sorathai_dreams',JSON.stringify(arr.slice(0,20)));
+  }catch(e){}
+  const p=new URLSearchParams({dream,time});
+  const dob=new URLSearchParams(location.search).get('dob');
+  if(dob)p.set('dob',dob);
+  location.href='dream-result.html?'+p.toString();
+}
+</script>
+</body>
+</html>
