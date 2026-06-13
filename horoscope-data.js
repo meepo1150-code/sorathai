@@ -208,9 +208,11 @@ window.HR.WESTERN = [
 
 // helper: get western zodiac index from day/month
 window.HR.getWesternIdx = function(d,m){
-  const b=[[1,20],[2,19],[3,20],[4,20],[5,21],[6,21],[7,23],[8,23],[9,23],[10,23],[11,22],[12,22]];
-  let i=m-1;if(d<b[m-1][1])i=(m-2+12)%12;return i;
+  // เรียงตาม WESTERN array: Aries=0, Taurus=1, ... Pisces=11
+  const S=[{sm:3,sd:21},{sm:4,sd:20},{sm:5,sd:21},{sm:6,sd:21},{sm:7,sd:23},{sm:8,sd:23},{sm:9,sd:23},{sm:10,sd:23},{sm:11,sd:22},{sm:12,sd:22},{sm:1,sd:20},{sm:2,sd:19}];
+  for(let i=0;i<12;i++){const c=S[i],n=S[(i+1)%12],cv=c.sm*100+c.sd,nv=n.sm*100+n.sd,dv=m*100+d;if(cv<nv){if(dv>=cv&&dv<nv)return i;}else{if(dv>=cv||dv<nv)return i;}}return 11;
 };
+
 
 // ══════════════════════════════════════════
 // 🐉 Chinese Zodiac — data ครบ 12 นักษัตร
