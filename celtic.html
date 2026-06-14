@@ -20,7 +20,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-font
 .hdr-tag{margin-left:auto;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--t3)}
 .ad{background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--t3);letter-spacing:2px;text-transform:uppercase;border-top:0.5px solid var(--bdr);border-bottom:0.5px solid var(--bdr)}
 .ad-b{min-height:56px}.ad-i{min-height:80px;border-radius:var(--rs);border:0.5px dashed var(--bdr);margin:24px}.ad-r{min-height:250px;border-radius:var(--rs);border:0.5px dashed var(--bdr);margin:24px 24px 0}
-.s-entry{min-height:100svh;display:flex;flex-direction:column}
+.s-entry{min-height:100svh;display:var(--entry-display,flex);flex-direction:column}
 .et{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 32px 32px;text-align:center}
 .ey{font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:24px}
 .ep{font-size:64px;line-height:1;margin-bottom:20px;display:block;animation:breathe 4s ease-in-out infinite}
@@ -119,7 +119,12 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-font
 <meta name="twitter:title" content="ดูดวง Celtic Tree ต้นไม้ดรุยด์ ฟรี — Sorathai">
 <meta name="twitter:description" content="ดูดวง Celtic Ogham 13 ต้นไม้ดรุยด์ รู้พลังธรรมชาติประจำตัวจากวันเกิด ฟรี ไม่ต้องสมัคร">
 <meta name="twitter:image" content="https://sorathai.com/og-image.png">
-</head>
+<script>
+// ซ่อน entry section ทันทีถ้ามี ?dob= ใน URL (ป้องกัน flash of entry form)
+if(new URLSearchParams(location.search).get('dob')){
+  document.documentElement.style.setProperty('--entry-display','none');
+}
+</script></head>
 <body>
 <div class="ad ad-b" style="max-width:480px;margin:0 auto"><!-- AdSense 320x50 --></div>
 <header class="hdr"><a class="back" href="index.html" id="back-link">‹</a><a class="logo" href="index.html">Sorathai</a><span class="hdr-tag">Celtic Tree</span></header>
@@ -186,9 +191,9 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-font
 <div class="ovl" id="ovl" onclick="closeDrw()"></div>
 <div class="drw" id="drw"><div class="drw-hdl"></div><div class="drw-ttl">ศาสตร์ดูดวงทั้งหมด</div><div class="drw-g" id="drw-g"></div></div>
 <div class="sov" id="sov"><div class="spin"></div><p>กำลังสร้างการ์ด...</p></div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="horoscope-data.js"></script>
-<script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
+<script src="horoscope-data.js" defer></script>
+<script>document.addEventListener("DOMContentLoaded",function(){
 
 const TH_MONTHS=['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
 const SCI=[{k:'thai',i:'🔮',n:'โหราศาสตร์ไทย',org:'ไทยโบราณ',url:'thai-astrology.html',acc:'#c8952c'},{k:'west',i:'♌',n:'ราศีตะวันตก',org:'กรีก-โรม',url:'western-astrology.html',acc:'#4a6fa5'},{k:'chin',i:'🐉',n:'ราศีจีน',org:'จีนโบราณ',url:'chinese-astrology.html',acc:'#c0392b'},{k:'num',i:'🔢',n:'Numerology',org:'กรีก-บาบิโลน',url:'numerology.html',acc:'#2d6a4f'},{k:'mayan',i:'🌀',n:"มายา Tzolk'in",org:'เมโซอเมริกา',url:'mayan.html',acc:'#7b4f9e'},{k:'bio',i:'📈',n:'Biorhythm',org:'วิทยาศาสตร์',url:'biorhythm.html',acc:'#2980b9'},{k:'naksh',i:'✨',n:'Nakshatra',org:'อินเดีย',url:'nakshatra.html',acc:'#d35400'},{k:'celtic',i:'🌿',n:'Celtic Tree',org:'เคลต์',url:'celtic.html',acc:'#4a7c59'}];
@@ -239,6 +244,6 @@ function render(d,m,y,dob,p){
   const q=new URLSearchParams(location.search).get('dob');
   if(q&&q.length===8){const d=parseInt(q.slice(0,2)),m=parseInt(q.slice(2,4)),y=parseInt(q.slice(4,8));if(!validate(d,m,y)){$('ef-d').value=d;$('ef-m').value=m;$('ef-y').value=y;upH();render(d,m,y,q,'?dob='+q)}}
 })();
-</script>
+});</script>
 </body>
 </html>
