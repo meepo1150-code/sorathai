@@ -12,7 +12,34 @@ test("derives a valid reading context and ignores invalid focus", () => {
 
 test("derives the compact inherited Base layer", () => {
   const base = Reading.inheritedBase(SorathaiProfile.create("1990-01-01"), "career");
-  assert.deepEqual(base, { dob: "1990-01-01", archetype: "นักสร้างสรรค์", westernSign: "มังกร", element: "ดิน", lifePath: 3, focusLabel: "การงาน" });
+  assert.deepEqual(base, { dob: "1990-01-01", archetype: "นักสร้างสรรค์", westernSign: "ราศีมังกร", element: "ดิน", lifePath: 3, focusLabel: "การงาน" });
+});
+
+test("prefers the horoscope runtime western calculation when available", () => {
+  let received;
+  global.HR = {
+    getWesternIdx(day, month) { received = [day, month]; return 1; },
+    WESTERN: [{ n: "ไม่ควรใช้", el: "ไฟ" }, { n: "ราศีจาก HR", el: "ธาตุจาก HR" }]
+  };
+  assert.deepEqual(Reading.westernFor("1990-04-08"), { sign: "ราศีจาก HR", element: "ธาตุจาก HR" });
+  assert.deepEqual(received, [8, 4]);
+  delete global.HR;
+});
+
+test("fallback keeps both January and December Capricorn boundaries correct", () => {
+  assert.deepEqual(Reading.westernFor("1990-01-01"), { sign: "ราศีมังกร", element: "ดิน" });
+  assert.deepEqual(Reading.westernFor("1990-01-19"), { sign: "ราศีมังกร", element: "ดิน" });
+  assert.deepEqual(Reading.westernFor("1990-01-20"), { sign: "ราศีกุมภ์", element: "ลม" });
+  assert.deepEqual(Reading.westernFor("1990-12-21"), { sign: "ราศีธนู", element: "ไฟ" });
+  assert.deepEqual(Reading.westernFor("1990-12-22"), { sign: "ราศีมังกร", element: "ดิน" });
+});
+
+test("inherited Base layer matches the existing horoscope result", () => {
+  global.HR = { getWesternIdx: () => 0, WESTERN: [{ n: "ราศีเมษ", el: "ไฟ" }] };
+  const base = Reading.inheritedBase(SorathaiProfile.create("1990-03-21"), null);
+  assert.equal(base.westernSign, HR.WESTERN[HR.getWesternIdx(21, 3)].n);
+  assert.equal(base.element, HR.WESTERN[HR.getWesternIdx(21, 3)].el);
+  delete global.HR;
 });
 
 test("science URLs preserve DOB, focus, query, and fragment", () => {

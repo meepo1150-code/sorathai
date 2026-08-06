@@ -16,21 +16,26 @@
     nakshatra: { id: "nakshatra", name: "Nakshatra", layer: "NAKSHATRA LAYER", origin: "คติโหราศาสตร์อินเดีย", icon: "✦", accent: "#9b603b" },
     celtic: { id: "celtic", name: "Celtic Tree", layer: "CELTIC LAYER", origin: "คติต้นไม้เคลต์", icon: "❧", accent: "#52705a" }
   });
-  const WESTERN = [
-    ["กุมภ์", "ลม", 120], ["มีน", "น้ำ", 219], ["เมษ", "ไฟ", 321], ["พฤษภ", "ดิน", 420],
-    ["เมถุน", "ลม", 521], ["กรกฎ", "น้ำ", 621], ["สิงห์", "ไฟ", 723], ["กันย์", "ดิน", 823],
-    ["ตุล", "ลม", 923], ["พิจิก", "น้ำ", 1023], ["ธนู", "ไฟ", 1122], ["มังกร", "ดิน", 1222]
-  ];
-
   function safeConfig(id) {
     return SCIENCES[id] || { id: "reading", name: "Deep Reading", layer: "REFLECTION LAYER", origin: "มุมมองเชิงสัญลักษณ์", icon: "✦", accent: "#776b58" };
   }
   function westernFor(iso) {
     if (typeof iso !== "string") return null;
-    const key = Number(iso.slice(5, 7) + iso.slice(8, 10));
-    let result = ["มังกร", "ดิน"];
-    WESTERN.forEach(function (item) { if (key >= item[2]) result = item; });
-    return { sign: result[0], element: result[1] };
+    const month = Number(iso.slice(5, 7)), day = Number(iso.slice(8, 10));
+    const hr = root.HR;
+    if (hr && typeof hr.getWesternIdx === "function" && Array.isArray(hr.WESTERN)) {
+      const existing = hr.WESTERN[hr.getWesternIdx(day, month)];
+      if (existing && typeof existing.n === "string" && typeof existing.el === "string") {
+        return { sign: existing.n, element: existing.el };
+      }
+    }
+
+    // Dependency-free fallback for unit tests and partial embeds without horoscope-data.js.
+    const cutoffs = [20, 19, 21, 20, 21, 21, 23, 23, 23, 23, 22, 22];
+    const signs = ["ราศีมังกร", "ราศีกุมภ์", "ราศีมีน", "ราศีเมษ", "ราศีพฤษภ", "ราศีเมถุน", "ราศีกรกฎ", "ราศีสิงห์", "ราศีกันย์", "ราศีตุล", "ราศีพิจิก", "ราศีธนู", "ราศีมังกร"];
+    const elements = ["ดิน", "ลม", "น้ำ", "ไฟ", "ดิน", "ลม", "น้ำ", "ไฟ", "ดิน", "ลม", "น้ำ", "ไฟ", "ดิน"];
+    const index = day >= cutoffs[month - 1] ? month : month - 1;
+    return { sign: signs[index], element: elements[index] };
   }
   function deriveContext(profile, search, scienceId) {
     const params = new URLSearchParams(search || ""), rawFocus = params.get("focus");
