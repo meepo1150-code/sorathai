@@ -188,7 +188,7 @@ h2.b-ttl{font-family:var(--serif);font-style:italic;font-weight:400;font-size:30
     <p class="picker-hint" id="p-hint"></p>
     <p class="b-error" id="b-err"></p>
     <button class="btn-go" onclick="submitDOB()">ดูดวงเลย →</button>
-    <p class="b-note">ไม่เก็บข้อมูล · ฟรี 100%</p>
+    <p class="b-note">ประมวลผลและบันทึกวันเกิดบนอุปกรณ์นี้ · ฟรี 100%</p>
   </div>
 </section>
 
@@ -246,6 +246,7 @@ h2.b-ttl{font-family:var(--serif);font-style:italic;font-weight:400;font-size:30
 <div class="sov" id="sov"><div class="spin"></div><p>กำลังสร้างการ์ด...</p></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="sorathai-profile.js"></script>
 <script src="horoscope-data.js"></script>
 <script>
 const TH_MONTHS=['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
@@ -255,11 +256,11 @@ const ELI={ไฟ:'🔥',ดิน:'🌍',ลม:'💨',น้ำ:'💧'};
 const LPN={1:'ผู้นำ',2:'นักทูต',3:'นักสร้างสรรค์',4:'นักสร้าง',5:'นักผจญภัย',6:'นักดูแล',7:'นักปราชญ์',8:'นักธุรกิจ',9:'นักมนุษยธรรม',11:'ผู้ส่องสว่าง',22:'ผู้สร้างโลก'};
 const BARNUM={ไฟ:'คุณมีไฟในใจที่ไม่มีวันดับ แม้ภายนอกดูแข็งแกร่ง แต่ลึกๆ ต้องการคนที่เข้าใจคุณจริงๆ',ดิน:'คุณเป็นเสาหลักที่คนรอบข้างพึ่งพาได้ แต่น้อยคนจะรู้ว่าคุณก็ต้องการแรงสนับสนุนเช่นกัน',ลม:'จิตใจคุณวิ่งเร็วกว่าที่คนอื่นจะตามทัน คุณเห็นภาพใหญ่ได้ดี แต่รายละเอียดบางครั้งหลุดมือ',น้ำ:'คุณรับรู้ความรู้สึกของคนอื่นได้ดีผิดธรรมดา ซึ่งเป็นทั้งพรและภาระที่แบกอยู่ทุกวัน'};
 function $(i){return document.getElementById(i)} function tx(i,v){const e=$(i);if(e)e.textContent=v}
-function validate(d,m,y){if(!d||!m||!y)return'กรุณาเลือกวันเกิด';if(d<1||d>31)return'วันไม่ถูกต้อง';if(m<1||m>12)return'เดือนไม่ถูกต้อง';if(y<1900||y>2099)return'ปีไม่ถูกต้อง';const t=new Date(y,m-1,d);if(t.getDate()!==d)return'วันที่นี้ไม่มีในปฏิทิน';return null}
+function validate(d,m,y){return window.SorathaiProfile.fromParts(d,m,y)?null:'วันที่ไม่ถูกต้อง กรุณาตรวจสอบอีกครั้ง'}
 function getLP(d,m,y){const s=n=>String(n).split('').reduce((a,c)=>a+parseInt(c),0);let lp=s(d)+s(m)+s(y);while(lp>9&&lp!==11&&lp!==22)lp=s(lp);return lp}
 (function(){const sd=$('sel-d'),sm=$('sel-m'),sy=$('sel-y');for(let d=1;d<=31;d++){const o=document.createElement('option');o.value=d;o.textContent=d;sd.appendChild(o)}TH_MONTHS.forEach((m,i)=>{const o=document.createElement('option');o.value=i+1;o.textContent=m;sm.appendChild(o)});const ny=new Date().getFullYear()+543;for(let y=ny;y>=ny-100;y--){const o=document.createElement('option');o.value=y-543;o.textContent=y;sy.appendChild(o)};const t=new Date();sd.value=t.getDate();sm.value=t.getMonth()+1;sy.value=t.getFullYear();upHint();[sd,sm,sy].forEach(s=>s.addEventListener('change',upHint))})();
 function upHint(){const d=parseInt($('sel-d').value),m=parseInt($('sel-m').value),y=parseInt($('sel-y').value);if(d&&m&&y)$('p-hint').textContent=d+' '+TH_MONTHS[m-1]+' '+(y+543)}
-function submitDOB(){const d=parseInt($('sel-d').value),m=parseInt($('sel-m').value),y=parseInt($('sel-y').value);const e=validate(d,m,y);if(e){$('b-err').textContent=e;return}$('b-err').textContent='';buildC(d,m,y);$('sec-c').classList.add('show');setTimeout(()=>$('sec-c').scrollIntoView({behavior:'smooth'}),80)}
+function submitDOB(){const d=parseInt($('sel-d').value),m=parseInt($('sel-m').value),y=parseInt($('sel-y').value);const e=validate(d,m,y);if(e){$('b-err').textContent=e;return}$('b-err').textContent='';window.SorathaiProfile.save(window.SorathaiProfile.fromParts(d,m,y));buildC(d,m,y);$('sec-c').classList.add('show');setTimeout(()=>$('sec-c').scrollIntoView({behavior:'smooth'}),80)}
 function applyTheme(t){$('idc-bar').style.background=t.bar;const orb=$('idc-orb');orb.style.background=t.orb;orb.style.border='1px solid '+t.orbBd;$('idc-ring').style.borderColor=t.ring;$('idc-ring2').style.borderColor=t.ring2;$('idc-sub').style.color=t.sub;$('ist-lp').style.color=t.sub;const chip=$('idc-chip');chip.style.color=t.chip;chip.style.background=t.chipBg;chip.style.borderColor=t.chipBd}
 function buildC(d,m,y){
   const zi=window.HR.getWesternIdx(d,m),z=window.HR.WESTERN[zi];
@@ -284,7 +285,7 @@ function buildDrw(p){const g=$('drw-grid');g.innerHTML='';SCI.forEach(s=>{const 
 function openDrw(){$('ovl').classList.add('open');$('drw').classList.add('open');document.body.style.overflow='hidden'}
 function closeDrw(){$('ovl').classList.remove('open');$('drw').classList.remove('open');document.body.style.overflow=''}
 async function shareCard(){if(!window._dob)return;if(typeof html2canvas==='undefined'){alert('กำลังโหลด');return}$('sov').classList.add('show');try{const c=await html2canvas($('id-card'),{scale:2,useCORS:true,backgroundColor:'#ffffff',logging:false});const a=document.createElement('a');a.download='sorathai-card.png';a.href=c.toDataURL('image/png');a.click()}catch(e){alert('ไม่สามารถสร้างรูปได้')}finally{$('sov').classList.remove('show')}}
-(function(){buildDrw('');const dob=new URLSearchParams(location.search).get('dob');if(dob&&dob.length===8){const d=parseInt(dob.slice(0,2)),m=parseInt(dob.slice(2,4)),y=parseInt(dob.slice(4,8));if(!validate(d,m,y)){$('sel-d').value=d;$('sel-m').value=m;$('sel-y').value=y;upHint();buildC(d,m,y);$('sec-c').classList.add('show')}}})();
+(function(){buildDrw('');const profile=window.SorathaiProfile.fromLocation(location.search);if(profile){const parts=profile.dob.split('-').map(Number),y=parts[0],m=parts[1],d=parts[2];$('sel-d').value=d;$('sel-m').value=m;$('sel-y').value=y;upHint();buildC(d,m,y);$('sec-c').classList.add('show')}})();
 </script>
 </body>
 </html>

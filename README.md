@@ -49,6 +49,7 @@ Sorathai คือเว็บไซต์ดูดวงแบบ mobile-first 
 - `dream.html`, `dream-result.html`, `dream-data.js` — ระบบทำนายฝัน
 - `horoscope-data.js` — ข้อมูลคำอ่านหลัก
 - `shared.css` — design system และ component ร่วม
+- `sorathai-profile.js` — โมเดลโปรไฟล์กลาง การตรวจวันเกิด URL และ persistence
 - `sitemap.xml`, `robots.txt` — SEO foundation
 
 ## Local preview
@@ -70,6 +71,19 @@ python scripts/validate_site.py
 ```
 
 ตัวตรวจจะตรวจไฟล์ HTML, internal links, sitemap targets และ metadata สำคัญเบื้องต้น
+
+ทดสอบโมเดลโปรไฟล์ด้วย Node.js โดยไม่ต้องติดตั้ง dependency:
+
+```bash
+node --test tests/*.test.js
+```
+
+## Profile storage
+
+วันเกิดถูกแปลงเป็น ISO `YYYY-MM-DD` และประมวลผลใน browser เท่านั้น โมเดลบันทึก object
+`{ version: 1, dob, powers }` ที่ key `sorathai.profile.v1` ใน `localStorage` เมื่อ storage
+ใช้งานไม่ได้ เว็บไซต์ยังทำงานต่อโดยไม่ persistence ได้ ลิงก์เดิม `?dob=DDMMYYYY` ยังคงรองรับ
+และ query ที่ไม่ใช่วันจริงจะไม่แสดงคำอ่าน
 
 ## Development workflow
 
