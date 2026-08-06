@@ -635,6 +635,7 @@
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="sorathai-profile.js"></script>
+    <script src="sorathai-explore.js"></script>
     <script src="horoscope-data.js"></script>
     <script>
       (function () {
@@ -661,48 +662,56 @@
             "โหราศาสตร์ไทย",
             "อ่านอิทธิพลจากวันเกิดและดาวประจำวัน",
             "thai-astrology.html",
+            "thai",
           ],
           [
             "♈",
             "Western Astrology",
             "สำรวจราศี ธาตุ และบุคลิกเชิงสัญลักษณ์",
             "western-astrology.html",
+            "western",
           ],
           [
             "🐉",
             "Chinese Astrology",
             "มองวัฏจักรปีเกิด นักษัตร และธาตุจีน",
             "chinese-astrology.html",
+            "chinese",
           ],
           [
             "🔢",
             "Numerology",
             "ขยายความเลขเส้นทางชีวิตและธีมการเติบโต",
             "numerology.html",
+            "numerology",
           ],
           [
             "🌀",
             "Mayan Tzolk’in",
             "ค้นหา Day Sign ในปฏิทินวัฏจักร 260 วัน",
             "mayan.html",
+            "mayan",
           ],
           [
             "◌",
             "Biorhythm",
             "ดูกราฟวัฏจักรตามแบบจำลองความเชื่อ",
             "biorhythm.html",
+            "biorhythm",
           ],
           [
             "✦",
             "Nakshatra",
             "สำรวจดาวฤกษ์เกิดในโหราศาสตร์อินเดีย",
             "nakshatra.html",
+            "nakshatra",
           ],
           [
             "🌿",
             "Celtic Tree",
             "ค้นหาต้นไม้ประจำช่วงวันเกิดตามคติเคลต์",
             "celtic.html",
+            "celtic",
           ],
         ];
         const summaries = {
@@ -765,10 +774,13 @@
               const a = document.createElement("a");
               a.className = "science-card";
               a.href = SorathaiProfile.readingUrl(s[3], profile);
+              a.dataset.scienceId = s[4];
+              a.dataset.scienceName = s[1];
               a.innerHTML = `<span class="science-icon">${s[0]}</span><div><h3>${s[1]}</h3><p>${s[2]}</p></div><span class="arrow">→</span>`;
               return a;
             }),
           );
+          SorathaiExplore.enhance($("science-grid"), function () { return SorathaiProfile.restore() || profile; });
           $("profile-result").classList.add("visible");
           if (scroll)
             $("profile-result").scrollIntoView({

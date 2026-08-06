@@ -81,13 +81,18 @@ node --test tests/*.test.js
 ## Profile storage
 
 วันเกิดถูกแปลงเป็น ISO `YYYY-MM-DD` และประมวลผลใน browser เท่านั้น โมเดลบันทึก object
-`{ version: 1, dob, powers }` ที่ key `sorathai.profile.v1` ใน `localStorage` เมื่อ storage
+`{ version: 2, dob, powers, exploredSciences, lastFocus }` ที่ key เดิม
+`sorathai.profile.v1` ใน `localStorage` โดยโปรไฟล์ version 1 จะถูกย้ายข้อมูลอัตโนมัติ เมื่อ storage
 ใช้งานไม่ได้ เว็บไซต์ยังทำงานต่อโดยไม่ persistence ได้ ลิงก์เดิม `?dob=DDMMYYYY` ยังคงรองรับ
 และ query ที่ไม่ใช่วันจริงจะไม่แสดงคำอ่าน
 
 หน้าแรกแสดงปีพุทธศักราชแก่ผู้ใช้ แต่แปลงและบันทึกวันเกิดเป็น Gregorian ISO ภายในเสมอ
 Base Destiny Card ใช้ค่าพลัง deterministic เดิมร่วมกับเลขเส้นทางชีวิตและ archetype; ค่าดังกล่าว
 เป็นสัญลักษณ์เพื่อการสะท้อนตนเอง ไม่ใช่ผลการวัดทางวิทยาศาสตร์ ผู้ใช้เปลี่ยนหรือล้างวันเกิดได้จากหน้าแรก
+
+การเลือกการ์ดศาสตร์บนหน้าแรกจะเปิด exploration sheet แบบสองขั้นสั้น ๆ ผู้ใช้เลือกมุมคำอ่าน
+`identity`, `love`, `career` หรือ `challenge` หรือข้ามไปยังคำอ่านทันทีได้ ลิงก์ยังคงเป็นลิงก์
+HTML ปกติและนำทางตรงได้เมื่อ JavaScript ไม่ทำงาน
 
 ## Development workflow
 

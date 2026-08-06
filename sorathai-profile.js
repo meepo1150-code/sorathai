@@ -5,7 +5,7 @@
 })(typeof globalThis !== "undefined" ? globalThis : this, function () {
   "use strict";
 
-  const VERSION = 1;
+  const VERSION = 2;
   const STORAGE_KEY = "sorathai.profile.v1";
 
   function isValidISO(value) {
@@ -73,12 +73,34 @@
         vitality: score(iso, "vitality"),
         harmony: score(iso, "harmony"),
         focus: score(iso, "focus")
-      }
+      },
+      exploredSciences: [],
+      lastFocus: null
     };
   }
 
+  const FOCUS_VALUES = Object.freeze(["identity", "love", "career", "challenge"]);
+  function isValidFocus(value) { return FOCUS_VALUES.indexOf(value) !== -1; }
+  function normaliseSciences(value) {
+    if (!Array.isArray(value)) return [];
+    return value.filter(function (id, index) {
+      return typeof id === "string" && /^[a-z0-9-]+$/.test(id) && value.indexOf(id) === index;
+    });
+  }
+  function migrate(profile) {
+    if (!profile || !isValidISO(profile.dob) || !profile.powers) return null;
+    const migrated = {
+      version: VERSION,
+      dob: profile.dob,
+      powers: profile.powers,
+      exploredSciences: normaliseSciences(profile.exploredSciences),
+      lastFocus: isValidFocus(profile.lastFocus) ? profile.lastFocus : null
+    };
+    return validProfile(migrated) ? migrated : null;
+  }
+
   function validProfile(profile) {
-    if (!profile || profile.version !== VERSION || !isValidISO(profile.dob) || !profile.powers) return false;
+    if (!profile || profile.version !== VERSION || !isValidISO(profile.dob) || !profile.powers || !Array.isArray(profile.exploredSciences) || (profile.lastFocus !== null && !isValidFocus(profile.lastFocus))) return false;
     return ["intuition", "vitality", "harmony", "focus"].every(function (key) {
       return Number.isInteger(profile.powers[key]) && profile.powers[key] >= 1 && profile.powers[key] <= 100;
     });
@@ -93,8 +115,9 @@
     try {
       const raw = (storage || localStorage).getItem(STORAGE_KEY);
       if (!raw) return null;
-      const profile = JSON.parse(raw);
-      return validProfile(profile) ? profile : null;
+      const profile = migrate(JSON.parse(raw));
+      if (profile && JSON.parse(raw).version !== VERSION) save(profile, storage);
+      return profile;
     } catch (_) { return null; }
   }
 
@@ -110,20 +133,32 @@
   function fromLocation(search, storage) {
     const params = new URLSearchParams(search || "");
     if (params.has("dob")) {
-      const profile = create(params.get("dob"));
+      const fresh = create(params.get("dob"));
+      const stored = restore(storage);
+      const profile = fresh && stored && stored.dob === fresh.dob ? stored : fresh;
       if (profile) save(profile, storage);
       return profile;
     }
     return restore(storage);
   }
 
-  function readingUrl(path, profile) {
+  function readingUrl(path, profile, focus) {
     if (!validProfile(profile)) return path;
     const split = path.split("#"), hashPart = split.length > 1 ? "#" + split.slice(1).join("#") : "";
     const querySplit = split[0].split("?"), params = new URLSearchParams(querySplit[1] || "");
     params.set("dob", toLegacy(profile.dob));
+    if (isValidFocus(focus)) params.set("focus", focus);
+    else params.delete("focus");
     return querySplit[0] + "?" + params.toString() + hashPart;
   }
 
-  return { VERSION, STORAGE_KEY, isValidISO, toISO, toLegacy, create, fromParts, save, restore, clear, fromLocation, readingUrl, lifePath, deriveBaseCard };
+  function markScienceExplored(profile, scienceId, focus) {
+    const next = migrate(profile);
+    if (!next || typeof scienceId !== "string" || !/^[a-z0-9-]+$/.test(scienceId)) return next;
+    if (next.exploredSciences.indexOf(scienceId) === -1) next.exploredSciences.push(scienceId);
+    if (isValidFocus(focus)) next.lastFocus = focus;
+    return next;
+  }
+
+  return { VERSION, STORAGE_KEY, FOCUS_VALUES, isValidFocus, isValidISO, toISO, toLegacy, create, migrate, validProfile, fromParts, save, restore, clear, fromLocation, readingUrl, markScienceExplored, lifePath, deriveBaseCard };
 });
