@@ -193,8 +193,10 @@ if(new URLSearchParams(location.search).get('dob')){
 <div class="sov" id="sov"><div class="spin"></div><p>กำลังสร้างการ์ด...</p></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
 <script src="sorathai-profile.js" defer></script>
+<script src="sorathai-explore.js" defer></script>
 <script src="horoscope-data.js" defer></script>
 <script>document.addEventListener("DOMContentLoaded",function(){
+window.SorathaiExplore.readingContext("numerology");
 
 const TH_MONTHS=['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
 const SCI=[{k:'thai',i:'🔮',n:'โหราศาสตร์ไทย',org:'ไทยโบราณ',url:'thai-astrology.html',acc:'#c8952c'},{k:'west',i:'♌',n:'ราศีตะวันตก',org:'กรีก-โรม',url:'western-astrology.html',acc:'#4a6fa5'},{k:'chin',i:'🐉',n:'ราศีจีน',org:'จีนโบราณ',url:'chinese-astrology.html',acc:'#c0392b'},{k:'num',i:'🔢',n:'Numerology',org:'กรีก-บาบิโลน',url:'numerology.html',acc:'#2d6a4f'},{k:'mayan',i:'🌀',n:"มายา Tzolk'in",org:'เมโซอเมริกา',url:'mayan.html',acc:'#7b4f9e'},{k:'bio',i:'📈',n:'Biorhythm',org:'วิทยาศาสตร์',url:'biorhythm.html',acc:'#2980b9'},{k:'naksh',i:'✨',n:'Nakshatra',org:'อินเดีย',url:'nakshatra.html',acc:'#d35400'},{k:'celtic',i:'🌿',n:'Celtic Tree',org:'เคลต์',url:'celtic.html',acc:'#4a7c59'}];
@@ -214,7 +216,7 @@ window.goResult=function(){
   const d=parseInt($('ef-d').value),m=parseInt($('ef-m').value),y=parseInt($('ef-y').value);
   const e=validate(d,m,y);if(e){$('ef-err').textContent=e;return}$('ef-err').textContent='';
   const profile=window.SorathaiProfile.fromParts(d,m,y);window.SorathaiProfile.save(profile);
-  const dob=window.SorathaiProfile.toLegacy(profile.dob),p='?dob='+dob;
+  const dob=window.SorathaiProfile.toLegacy(profile.dob),p=window.SorathaiProfile.readingUrl('',profile,new URLSearchParams(location.search).get('focus'));
   history.replaceState(null,'',p);render(d,m,y,dob,p);
 };
 function render(d,m,y,dob,p){
@@ -247,7 +249,7 @@ function render(d,m,y,dob,p){
   [sd,sm,sy].forEach(s=>s.addEventListener('change',upH));upH();
   buildDrawer('drw-g','');
   const profile=window.SorathaiProfile.fromLocation(location.search);
-  if(profile){const parts=profile.dob.split('-').map(Number),y=parts[0],m=parts[1],d=parts[2],dob=window.SorathaiProfile.toLegacy(profile.dob),p='?dob='+dob;$('ef-d').value=d;$('ef-m').value=m;$('ef-y').value=y;upH();render(d,m,y,dob,p)}
+  if(profile){const parts=profile.dob.split('-').map(Number),y=parts[0],m=parts[1],d=parts[2],dob=window.SorathaiProfile.toLegacy(profile.dob),p=window.SorathaiProfile.readingUrl('',profile,new URLSearchParams(location.search).get('focus'));$('ef-d').value=d;$('ef-m').value=m;$('ef-y').value=y;upH();render(d,m,y,dob,p)}
   else document.documentElement.style.removeProperty('--entry-display');
 })();
 });</script>
