@@ -23,5 +23,13 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
       - name: Validate HTML links, metadata, and sitemap
         run: python scripts/validate_site.py
+
+      - name: Test shared profile model
+        run: node --test tests/*.test.js

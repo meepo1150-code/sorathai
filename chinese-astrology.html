@@ -147,7 +147,7 @@ if(new URLSearchParams(location.search).get('dob')){
     <p class="ef-hint" id="ef-hint"></p>
     <p class="ef-err" id="ef-err"></p>
     <button class="btn-go" onclick="goResult()">ดูดวงเลย →</button>
-    <p class="ef-note">ไม่เก็บข้อมูล · ฟรี 100%</p>
+    <p class="ef-note">ประมวลผลและบันทึกวันเกิดบนอุปกรณ์นี้ · ฟรี 100%</p>
   </div>
 </div>
 <div class="s-result" id="s-result">
@@ -192,13 +192,14 @@ if(new URLSearchParams(location.search).get('dob')){
 <div class="drw" id="drw"><div class="drw-hdl"></div><div class="drw-ttl">ศาสตร์ดูดวงทั้งหมด</div><div class="drw-g" id="drw-g"></div></div>
 <div class="sov" id="sov"><div class="spin"></div><p>กำลังสร้างการ์ด...</p></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
+<script src="sorathai-profile.js" defer></script>
 <script src="horoscope-data.js" defer></script>
 <script>document.addEventListener("DOMContentLoaded",function(){
 
 const TH_MONTHS=['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
 const SCI=[{k:'thai',i:'🔮',n:'โหราศาสตร์ไทย',org:'ไทยโบราณ',url:'thai-astrology.html',acc:'#c8952c'},{k:'west',i:'♌',n:'ราศีตะวันตก',org:'กรีก-โรม',url:'western-astrology.html',acc:'#4a6fa5'},{k:'chin',i:'🐉',n:'ราศีจีน',org:'จีนโบราณ',url:'chinese-astrology.html',acc:'#c0392b'},{k:'num',i:'🔢',n:'Numerology',org:'กรีก-บาบิโลน',url:'numerology.html',acc:'#2d6a4f'},{k:'mayan',i:'🌀',n:"มายา Tzolk'in",org:'เมโซอเมริกา',url:'mayan.html',acc:'#7b4f9e'},{k:'bio',i:'📈',n:'Biorhythm',org:'วิทยาศาสตร์',url:'biorhythm.html',acc:'#2980b9'},{k:'naksh',i:'✨',n:'Nakshatra',org:'อินเดีย',url:'nakshatra.html',acc:'#d35400'},{k:'celtic',i:'🌿',n:'Celtic Tree',org:'เคลต์',url:'celtic.html',acc:'#4a7c59'}];
 function $(i){return document.getElementById(i)} function tx(i,v){const e=$(i);if(e)e.textContent=v}
-function validate(d,m,y){if(!d||!m||!y)return'กรุณาเลือกวันเกิด';if(d<1||d>31)return'วันไม่ถูกต้อง';if(m<1||m>12)return'เดือนไม่ถูกต้อง';if(y<1900||y>2099)return'ปีไม่ถูกต้อง';const t=new Date(y,m-1,d);if(t.getDate()!==d)return'วันที่นี้ไม่มีในปฏิทิน';return null}
+function validate(d,m,y){return window.SorathaiProfile.fromParts(d,m,y)?null:'วันที่ไม่ถูกต้อง กรุณาตรวจสอบอีกครั้ง'}
 function buildPickers(sd,sm,sy){for(let d=1;d<=31;d++){const o=document.createElement('option');o.value=d;o.textContent=d;sd.appendChild(o)}TH_MONTHS.forEach((m,i)=>{const o=document.createElement('option');o.value=i+1;o.textContent=m;sm.appendChild(o)});const ny=new Date().getFullYear()+543;for(let y=ny;y>=ny-100;y--){const o=document.createElement('option');o.value=y-543;o.textContent=y;sy.appendChild(o)};const t=new Date();sd.value=t.getDate();sm.value=t.getMonth()+1;sy.value=t.getFullYear()}
 function buildRelated(gid,cur,p){const g=$(gid);if(!g)return;g.innerHTML='';SCI.filter(s=>s.k!==cur).forEach(s=>{const a=document.createElement('a');a.className='rc';a.href=s.url+(p||'');a.innerHTML='<div class="rc-acc" style="background:'+s.acc+'"></div><div class="rc-b"><span class="rc-ico">'+s.i+'</span><div class="rc-org">'+s.org+'</div><div class="rc-name">'+s.n+'</div><div class="rc-cta">ดูดวงเต็ม ›</div></div>';g.appendChild(a)})}
 function buildDrawer(gid,p){const g=$(gid);if(!g)return;g.innerHTML='';SCI.forEach(s=>{const a=document.createElement('a');a.className='ditem';a.href=s.url+(p||'');a.innerHTML='<span class="dico">'+s.i+'</span>'+s.n;g.appendChild(a)});const dr=document.createElement('a');dr.className='ditem';dr.href='dream.html'+(p||'');dr.innerHTML='<span class="dico">💭</span>ทำนายฝัน';g.appendChild(dr)}
@@ -212,7 +213,8 @@ const G='#c0392b',GB='rgba(192,57,43,.45)';
 window.goResult=function(){
   const d=parseInt($('ef-d').value),m=parseInt($('ef-m').value),y=parseInt($('ef-y').value);
   const e=validate(d,m,y);if(e){$('ef-err').textContent=e;return}$('ef-err').textContent='';
-  const dob=String(d).padStart(2,'0')+String(m).padStart(2,'0')+y,p='?dob='+dob;
+  const profile=window.SorathaiProfile.fromParts(d,m,y);window.SorathaiProfile.save(profile);
+  const dob=window.SorathaiProfile.toLegacy(profile.dob),p='?dob='+dob;
   history.replaceState(null,'',p);render(d,m,y,dob,p);
 };
 function render(d,m,y,dob,p){
@@ -244,8 +246,9 @@ function render(d,m,y,dob,p){
   function upH(){const d=parseInt(sd.value),m=parseInt(sm.value),y=parseInt(sy.value);if(d&&m&&y)$('ef-hint').textContent=d+' '+TH_MONTHS[m-1]+' '+(y+543)}
   [sd,sm,sy].forEach(s=>s.addEventListener('change',upH));upH();
   buildDrawer('drw-g','');
-  const q=new URLSearchParams(location.search).get('dob');
-  if(q&&q.length===8){const d=parseInt(q.slice(0,2)),m=parseInt(q.slice(2,4)),y=parseInt(q.slice(4,8));if(!validate(d,m,y)){$('ef-d').value=d;$('ef-m').value=m;$('ef-y').value=y;upH();render(d,m,y,q,'?dob='+q)}}
+  const profile=window.SorathaiProfile.fromLocation(location.search);
+  if(profile){const parts=profile.dob.split('-').map(Number),y=parts[0],m=parts[1],d=parts[2],dob=window.SorathaiProfile.toLegacy(profile.dob),p='?dob='+dob;$('ef-d').value=d;$('ef-m').value=m;$('ef-y').value=y;upH();render(d,m,y,dob,p)}
+  else document.documentElement.style.removeProperty('--entry-display');
 })();
 });</script>
 </body>
