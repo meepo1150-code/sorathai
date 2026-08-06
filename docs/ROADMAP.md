@@ -54,6 +54,9 @@ Sorathai จะพัฒนาเป็น astrology character-building experien
 - CTA เลือกศาสตร์ต่อที่เด่นชัด
 - รองรับมือถือขนาดเล็กและ reduced motion
 
+สถานะ: เสร็จสิ้นใน Issue #4 — หน้าแรกใช้ flow `วันเกิด → Base Destiny Card → เลือกศาสตร์ต่อ`
+พร้อม date form ที่เข้าถึงได้, profile continuity, image export และแยกทำนายฝันออกจากศาสตร์ที่คำนวณจากวันเกิด
+
 เกณฑ์ผ่าน:
 
 - ผู้ใช้เข้าใจว่าต้องทำอะไรโดยไม่อ่านคำอธิบายยาว

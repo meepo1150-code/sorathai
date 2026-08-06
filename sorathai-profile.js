@@ -40,6 +40,28 @@
 
   function score(iso, name) { return 1 + (hash(iso + ":" + name) % 100); }
 
+  const LIFE_ARCHETYPES = { 1: "ผู้ริเริ่ม", 2: "ผู้ประสาน", 3: "นักสร้างสรรค์", 4: "ผู้วางรากฐาน", 5: "นักสำรวจ", 6: "ผู้ดูแล", 7: "นักค้นความหมาย", 8: "ผู้บริหารพลัง", 9: "ผู้แบ่งปัน", 11: "ผู้จุดประกาย", 22: "ผู้สร้างภาพใหญ่" };
+  const POWER_LABELS = { intuition: "สัญชาตญาณ", vitality: "แรงขับ", harmony: "ความกลมกลืน", focus: "สมาธิ" };
+
+  function lifePath(iso) {
+    const valid = toISO(iso);
+    if (!valid) return null;
+    let value = valid.replace(/-/g, "").split("").reduce(function (sum, digit) { return sum + Number(digit); }, 0);
+    while (value > 9 && value !== 11 && value !== 22) {
+      value = String(value).split("").reduce(function (sum, digit) { return sum + Number(digit); }, 0);
+    }
+    return value;
+  }
+
+  function deriveBaseCard(profile) {
+    if (!validProfile(profile)) return null;
+    const number = lifePath(profile.dob);
+    const powers = Object.keys(POWER_LABELS).map(function (key) {
+      return { key: key, label: POWER_LABELS[key], value: profile.powers[key] };
+    });
+    return { dob: profile.dob, lifePath: number, archetype: LIFE_ARCHETYPES[number], powers: powers };
+  }
+
   function create(dob) {
     const iso = toISO(dob);
     if (!iso) return null;
@@ -103,5 +125,5 @@
     return querySplit[0] + "?" + params.toString() + hashPart;
   }
 
-  return { VERSION, STORAGE_KEY, isValidISO, toISO, toLegacy, create, fromParts, save, restore, clear, fromLocation, readingUrl };
+  return { VERSION, STORAGE_KEY, isValidISO, toISO, toLegacy, create, fromParts, save, restore, clear, fromLocation, readingUrl, lifePath, deriveBaseCard };
 });

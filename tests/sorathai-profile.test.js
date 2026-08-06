@@ -71,3 +71,15 @@ test("generates reading URLs while preserving parameters and fragments", () => {
   assert.equal(Profile.readingUrl("mayan.html?ref=home#card", profile), "mayan.html?ref=home&dob=29022024#card");
   assert.equal(Profile.readingUrl("index.html", null), "index.html");
 });
+
+test("derives stable card details without changing the persisted schema", () => {
+  const profile = Profile.create("1990-01-01");
+  const card = Profile.deriveBaseCard(profile);
+  assert.equal(card.lifePath, 3);
+  assert.equal(card.archetype, "นักสร้างสรรค์");
+  assert.deepEqual(card.powers.map((power) => power.key), ["intuition", "vitality", "harmony", "focus"]);
+  assert.deepEqual(Profile.deriveBaseCard(Profile.create("1990-01-01")), card);
+  assert.deepEqual(Object.keys(profile), ["version", "dob", "powers"]);
+  assert.equal(Profile.deriveBaseCard(null), null);
+  assert.equal(Profile.lifePath("not-a-date"), null);
+});
