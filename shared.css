@@ -32,6 +32,7 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{background:var(--bg)}
 body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
+a:focus-visible,button:focus-visible,select:focus-visible{outline:3px solid rgba(200,149,44,.28);outline-offset:3px}
 .page{max-width:480px;margin:0 auto;padding-bottom:100px}
 
 /* ── Header ── */
@@ -219,6 +220,11 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-font
 .anim-breathe{animation:breathe 4s ease-in-out infinite}
 .anim-float{animation:float 4s ease-in-out infinite}
 .anim-fadeup{animation:fadeUp .35s ease both}
+
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto!important}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+}
 
 /* ── Dark mode skeleton (ทำทีหลัง) ── */
 @media(prefers-color-scheme:dark){
