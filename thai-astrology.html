@@ -128,7 +128,7 @@ if(new URLSearchParams(location.search).get('dob')){
 <body>
 <div class="ad ad-b" style="max-width:480px;margin:0 auto"><!-- AdSense 320x50 --></div>
 <header class="hdr"><a class="back" href="index.html" id="back-link">‹</a><a class="logo" href="index.html">Sorathai</a><span class="hdr-tag">โหราศาสตร์ไทย</span></header>
-<div class="page">
+<main class="page" role="main">
 <div class="s-entry" id="s-entry">
   <div class="et">
     <p class="ey" style="color:#c8952c">โหราศาสตร์ไทย</p>
@@ -138,14 +138,14 @@ if(new URLSearchParams(location.search).get('dob')){
   </div>
   <div class="ef">
     <p class="ef-lbl">ใส่วันเกิดของคุณ</p>
-    <div class="ef-hs"><span>วัน</span><span>เดือน</span><span class="yr">ปี</span></div>
+    <div class="ef-hs"><label for="ef-d">วัน</label><label for="ef-m">เดือน</label><label class="yr" for="ef-y">ปี</label></div>
     <div class="ef-row">
       <div class="dw"><select class="drum" id="ef-d"></select></div>
       <div class="dw"><select class="drum" id="ef-m"></select></div>
       <div class="dw yr"><select class="drum" id="ef-y"></select></div>
     </div>
     <p class="ef-hint" id="ef-hint"></p>
-    <p class="ef-err" id="ef-err"></p>
+    <p class="ef-err" id="ef-err" role="alert" aria-live="polite"></p>
     <button class="btn-go" onclick="goResult()">ดูดวงเลย →</button>
     <p class="ef-note">ประมวลผลและบันทึกวันเกิดบนอุปกรณ์นี้ · ฟรี 100%</p>
   </div>
@@ -170,7 +170,7 @@ if(new URLSearchParams(location.search).get('dob')){
     <div class="sc-stats"><div class="ss"><div class="ssl">เทพประจำวัน</div><div class="ssv" id="ss1">—</div></div><div class="ss"><div class="ssl">สีประจำวัน</div><div class="ssv" id="ss2">—</div></div><div class="ss"><div class="ssl">อัญมณีมงคล</div><div class="ssv" id="ss3">—</div></div><div class="ss"><div class="ssl">เลขกำลังวัน</div><div class="ssv" id="ss4">—</div></div></div>
     <div class="sc-nums"><div class="snl">เลขนำโชคประจำตัว</div><div class="snr" id="sc-nums"></div></div>
     <div class="sc-ft"><span class="sc-wm">Sorathai</span>
-      <button class="btn-shr" onclick="shareCardEl('share-card','sorathai-thai.png')">
+      <button class="btn-shr" onclick="SorathaiReading.exportCard('thai',SorathaiProfile.fromLocation(location.search),'share-card','export-status')" aria-label="บันทึก Deep Reading Card thai เป็นภาพ">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>แชร์การ์ด
       </button>
     </div>
@@ -179,10 +179,10 @@ if(new URLSearchParams(location.search).get('dob')){
   <div class="lk" id="lk-sec"></div>
   <div class="ad-r"><!-- AdSense 300x250 --></div>
   <div class="rel"><p class="rel-lbl">ดูดวงศาสตร์อื่นต่อ</p><div class="rel-g" id="rel-g"></div></div>
-  <p class="disc">เนื้อหาเพื่อความบันเทิงและความเชื่อส่วนบุคคล</p>
+  <p class="disc">คำอ่านนี้เป็นมุมมองตามความเชื่อ เพื่อความบันเทิงและการสะท้อนตนเอง ไม่ใช่ข้อเท็จจริงทางวิทยาศาสตร์หรือคำแนะนำด้านสุขภาพ การเงิน กฎหมาย และความปลอดภัย</p>
 </div>
-</div>
-<nav class="bnav">
+</main>
+<nav class="bnav" aria-label="เมนูหลัก">
   <a class="nitem" href="index.html" id="nav-home"><span class="nico">🌟</span>ดูดวง</a>
   <a class="nitem" href="dream.html" id="nav-dream"><span class="nico">💭</span>ทำนายฝัน</a>
   <a class="nitem" href="numerology.html" id="nav-num"><span class="nico">🔢</span>เลขศาสตร์</a>
@@ -190,16 +190,17 @@ if(new URLSearchParams(location.search).get('dob')){
 </nav>
 <div class="ovl" id="ovl" onclick="closeDrw()"></div>
 <div class="drw" id="drw"><div class="drw-hdl"></div><div class="drw-ttl">ศาสตร์ดูดวงทั้งหมด</div><div class="drw-g" id="drw-g"></div></div>
-<div class="sov" id="sov"><div class="spin"></div><p>กำลังสร้างการ์ด...</p></div>
+<div class="sov" id="sov" role="status" aria-live="polite"><div class="spin"></div><p id="export-status">พร้อมสร้างภาพการ์ด</p></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
 <script src="sorathai-profile.js" defer></script>
 <script src="sorathai-explore.js" defer></script>
+<script src="sorathai-reading.js" defer></script>
 <script src="horoscope-data.js" defer></script>
 <script>document.addEventListener("DOMContentLoaded",function(){
 window.SorathaiExplore.readingContext("thai");
 
 const TH_MONTHS=['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
-const SCI=[{k:'thai',i:'🔮',n:'โหราศาสตร์ไทย',org:'ไทยโบราณ',url:'thai-astrology.html',acc:'#c8952c'},{k:'west',i:'♌',n:'ราศีตะวันตก',org:'กรีก-โรม',url:'western-astrology.html',acc:'#4a6fa5'},{k:'chin',i:'🐉',n:'ราศีจีน',org:'จีนโบราณ',url:'chinese-astrology.html',acc:'#c0392b'},{k:'num',i:'🔢',n:'Numerology',org:'กรีก-บาบิโลน',url:'numerology.html',acc:'#2d6a4f'},{k:'mayan',i:'🌀',n:"มายา Tzolk'in",org:'เมโซอเมริกา',url:'mayan.html',acc:'#7b4f9e'},{k:'bio',i:'📈',n:'Biorhythm',org:'วิทยาศาสตร์',url:'biorhythm.html',acc:'#2980b9'},{k:'naksh',i:'✨',n:'Nakshatra',org:'อินเดีย',url:'nakshatra.html',acc:'#d35400'},{k:'celtic',i:'🌿',n:'Celtic Tree',org:'เคลต์',url:'celtic.html',acc:'#4a7c59'}];
+const SCI=[{k:'thai',i:'🔮',n:'โหราศาสตร์ไทย',org:'ไทยโบราณ',url:'thai-astrology.html',acc:'#c8952c'},{k:'west',i:'♌',n:'ราศีตะวันตก',org:'กรีก-โรม',url:'western-astrology.html',acc:'#4a6fa5'},{k:'chin',i:'🐉',n:'ราศีจีน',org:'จีนโบราณ',url:'chinese-astrology.html',acc:'#c0392b'},{k:'num',i:'🔢',n:'Numerology',org:'กรีก-บาบิโลน',url:'numerology.html',acc:'#2d6a4f'},{k:'mayan',i:'🌀',n:"มายา Tzolk'in",org:'เมโซอเมริกา',url:'mayan.html',acc:'#7b4f9e'},{k:'bio',i:'📈',n:'Biorhythm',org:'แบบจำลองความเชื่อ',url:'biorhythm.html',acc:'#2980b9'},{k:'naksh',i:'✨',n:'Nakshatra',org:'อินเดีย',url:'nakshatra.html',acc:'#d35400'},{k:'celtic',i:'🌿',n:'Celtic Tree',org:'เคลต์',url:'celtic.html',acc:'#4a7c59'}];
 function $(i){return document.getElementById(i)} function tx(i,v){const e=$(i);if(e)e.textContent=v}
 function validate(d,m,y){return window.SorathaiProfile.fromParts(d,m,y)?null:'วันที่ไม่ถูกต้อง กรุณาตรวจสอบอีกครั้ง'}
 function buildPickers(sd,sm,sy){for(let d=1;d<=31;d++){const o=document.createElement('option');o.value=d;o.textContent=d;sd.appendChild(o)}TH_MONTHS.forEach((m,i)=>{const o=document.createElement('option');o.value=i+1;o.textContent=m;sm.appendChild(o)});const ny=new Date().getFullYear()+543;for(let y=ny;y>=ny-100;y--){const o=document.createElement('option');o.value=y-543;o.textContent=y;sy.appendChild(o)};const t=new Date();sd.value=t.getDate();sm.value=t.getMonth()+1;sy.value=t.getFullYear()}
@@ -235,6 +236,7 @@ function render(d,m,y,dob,p){
   $('lk-sec').innerHTML='<p class="lk-lbl">มงคลประจำตัว</p><div class="lk-g"><div class="lk-b"><div class="lk-bl">วันมงคล</div><div class="lk-bv">'+day.lucky_day+'</div></div><div class="lk-b"><div class="lk-bl">สีเสริมดวง</div><div class="lk-bv">'+day.lucky_color+'</div></div></div>';
   $('back-link').href='index.html'+p;$('nav-home').href='index.html'+p;$('nav-dream').href='dream.html'+p;$('nav-num').href='numerology.html'+p;
   buildRelated('rel-g','thai',p);buildDrawer('drw-g',p);
+  window.SorathaiReading.enhance('thai',window.SorathaiProfile.fromLocation(location.search));
   $('s-entry').style.display='none';$('s-result').classList.add('show');window.scrollTo(0,0);
 }
 
