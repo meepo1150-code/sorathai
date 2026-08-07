@@ -103,3 +103,33 @@ HTML ปกติและนำทางตรงได้เมื่อ JavaS
 5. ตรวจ visual flow บนมือถือก่อน merge
 
 ดูแผนงานที่ [`docs/ROADMAP.md`](docs/ROADMAP.md)
+
+## Trust, privacy, and dependencies
+
+Public trust routes are [`about.html`](about.html), [`privacy.html`](privacy.html), and
+[`contact.html`](contact.html). The contact page states truthfully that this repository has not yet
+published a public contact channel.
+
+“เปลี่ยนวันเกิด” เปิดแบบฟอร์มโดยยังเก็บโปรไฟล์เดิม ส่วน “ล้างวันเกิด” ลบ key ของ Sorathai จาก
+`localStorage` การล้าง site data ใน browser ให้ผลเดียวกัน แต่ไม่ลบ URL ในประวัติ รูปที่ดาวน์โหลด
+หรือลิงก์ที่แชร์ พารามิเตอร์ `dob` ใน URL อาจเปิดเผยวันเกิดแก่ผู้ที่เห็นลิงก์ ข้อความฝันเก็บใน
+`sorathai_dreams` และการตีความรุ่นนี้ใช้ข้อมูลภายใน browser โดยไม่เรียกบริการ AI ภายนอก
+
+Google Fonts ใช้ `display=swap` และมี Georgia/system sans-serif fallback จึงยังอ่านได้เมื่อถูกบล็อก
+`html2canvas` โหลดจาก cdnjs เฉพาะหน้าที่มี export; core reading/navigation ไม่พึ่ง CDN และ export
+จะแจ้งสถานะอย่างสุภาพหาก library ไม่พร้อม
+
+## Lightweight performance budget
+
+- ห้ามเพิ่ม blocking third-party JavaScript ใน critical path; non-critical scripts ต้อง `defer`
+- ไม่โหลด `html2canvas` บนหน้าที่ไม่มี export และ core reading ต้องไม่พึ่ง CDN
+- ไม่มี autoplay และไม่เพิ่ม first-screen asset ขนาดใหญ่โดยไม่มี dimensions/พื้นที่สำรอง
+- ใช้ shared module/CSS แทน large duplicated inline code เมื่อทำได้โดยไม่เปลี่ยน product logic
+- third-party origins ใน flow ปัจจุบันจำกัดไว้ที่ Google Fonts และ cdnjs ตาม privacy page
+
+## Manual QA status
+
+Static validator และ Node tests ไม่แทน browser/assistive-technology testing ก่อน deploy ต้องตรวจ
+keyboard, focus return, export ทั้งเมื่อ CDN พร้อมและไม่พร้อม, font blocking, 320px, tablet, desktop,
+200% zoom และ reduced motion ใน browser จริง หาก environment ไม่มี Chromium ต้องบันทึกข้อจำกัดนั้น
+ใน pull request อย่างตรงไปตรงมา

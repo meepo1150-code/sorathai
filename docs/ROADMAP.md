@@ -14,10 +14,10 @@ Sorathai จะพัฒนาเป็น astrology character-building experien
 
 - [x] เพิ่ม README และ product vision
 - [x] เพิ่ม roadmap
-- [ ] เพิ่ม automated static validation
-- [ ] เพิ่ม GitHub Actions
-- [ ] ตรวจทุก URL ใน sitemap
-- [ ] บันทึก baseline ของหน้าและ flow ปัจจุบัน
+- [x] เพิ่ม automated static validation
+- [x] เพิ่ม GitHub Actions
+- [x] ตรวจทุก URL ใน sitemap
+- [x] บันทึก baseline ของหน้าและ flow ปัจจุบัน
 
 เกณฑ์ผ่าน:
 
@@ -110,6 +110,11 @@ Sorathai จะพัฒนาเป็น astrology character-building experien
 - self-host หรือเพิ่ม fallback สำหรับ dependency สำคัญ
 - performance budget และ image/font optimization
 - structured data เฉพาะที่ตรงตามเนื้อหาจริง
+
+สถานะ: เสร็จสิ้นใน Issue #12 — เพิ่ม About/Privacy/Contact และ trust navigation, ทำ disclaimer
+ให้สอดคล้อง, ปรับ landmark/focus/dialog/export fallback, ใช้ font fallback พร้อม `display=swap`,
+ทำ dream interpretation ภายใน browser, เพิ่ม sitemap/SEO validation และกำหนด performance budget ใน README
+การทดสอบ browser/manual ยังคงเป็น release check และต้องรายงานตามจริงเมื่อ environment ไม่มี Chromium
 
 ## Deferred
 

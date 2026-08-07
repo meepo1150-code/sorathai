@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>ผลทำนายฝัน — Sorathai</title>
-<meta name="description" content="ผลทำนายฝันจาก AI ความหมาย ดวงชะตา เลขนำโชค จากความฝันของคุณ">
+<meta name="description" content="ผลตีความความฝันเชิงสัญลักษณ์จากชุดข้อมูลในเบราว์เซอร์ เพื่อความบันเทิงและการสะท้อนตนเอง">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,400&family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -115,31 +115,31 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-font
 </style>
 <meta property="og:type" content="website">
 <meta property="og:title" content="ผลทำนายฝัน — Sorathai">
-<meta property="og:description" content="ผลทำนายฝันจาก AI ความหมาย ดวงชะตา เลขนำโชค จากความฝันของคุณ">
+<meta property="og:description" content="ผลตีความความฝันเชิงสัญลักษณ์จากชุดข้อมูลในเบราว์เซอร์ เพื่อความบันเทิงและการสะท้อนตนเอง">
 <meta property="og:url" content="https://sorathai.com/dream-result.html">
 <meta property="og:image" content="https://sorathai.com/og-image.png">
 <meta property="og:locale" content="th_TH">
 <meta property="og:site_name" content="Sorathai">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="ผลทำนายฝัน — Sorathai">
-<meta name="twitter:description" content="ผลทำนายฝันจาก AI ความหมาย ดวงชะตา เลขนำโชค จากความฝันของคุณ">
+<meta name="twitter:description" content="ผลตีความความฝันเชิงสัญลักษณ์จากชุดข้อมูลในเบราว์เซอร์ เพื่อความบันเทิงและการสะท้อนตนเอง">
 <meta name="twitter:image" content="https://sorathai.com/og-image.png">
 </head>
 <body>
 <div class="ad ad-b" style="max-width:480px;margin:0 auto"><!-- AdSense 320×50 --></div>
 <header class="hdr">
-  <a class="back" href="dream.html" id="back-link">‹</a>
+  <a class="back" aria-label="กลับหน้าหลัก" href="dream.html" id="back-link">‹</a>
   <a class="logo" href="index.html">Sorathai</a>
   <span class="hdr-tag">ทำนายฝัน</span>
 </header>
 
-<div class="page">
+<main class="page">
 
   <!-- LOADING -->
   <div id="loading">
     <span class="load-ico">🔮</span>
     <h2 class="load-ttl">กำลังอ่านความฝัน</h2>
-    <p class="load-sub">AI กำลังวิเคราะห์สัญลักษณ์ในความฝันของคุณ</p>
+    <p class="load-sub">กำลังค้นหาสัญลักษณ์ในชุดข้อมูลบนอุปกรณ์</p>
     <div class="load-bar-wrap"><div class="load-bar"></div></div>
     <div class="load-steps">
       <div class="load-step active" id="step1"><span class="step-dot"></span>ค้นหาสัญลักษณ์ในความฝัน</div>
@@ -153,7 +153,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-font
   <div id="error-view">
     <span class="err-ico">⚠️</span>
     <h2 class="err-ttl">วิเคราะห์ไม่สำเร็จ</h2>
-    <p class="err-sub" id="err-msg">ไม่สามารถเชื่อมต่อ AI ได้ในขณะนี้<br>ระบบจะใช้การวิเคราะห์จากฐานข้อมูลแทน</p>
+    <p class="err-sub" id="err-msg">ไม่สามารถอ่านข้อมูลได้ในขณะนี้<br>ลองใช้การตีความจากชุดข้อมูลภายในอีกครั้ง</p>
     <button class="btn-retry" onclick="retryLocal()">ดูผลจากฐานข้อมูล</button>
   </div>
 
@@ -240,29 +240,32 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-font
       <button class="btn-again" onclick="location.href='dream.html'">💭 ทำนายความฝันอื่น</button>
     </div>
 
-    <p style="font-size:11px;color:var(--t3);text-align:center;padding:20px 24px;line-height:1.6">เนื้อหาเพื่อความบันเทิงและความเชื่อส่วนบุคคล</p>
+    <p style="font-size:11px;color:var(--t3);text-align:center;padding:20px 24px;line-height:1.6">เนื้อหาเชิงสัญลักษณ์เพื่อความบันเทิงและการสะท้อนตนเอง ไม่ใช่คำทำนายที่รับประกันผลหรือคำแนะนำด้านสุขภาพ การเงิน กฎหมาย และความปลอดภัย</p>
 
   </div><!-- #result -->
 
-</div><!-- .page -->
+</main><!-- .page -->
 
 <!-- BNAV -->
-<nav class="bnav">
+
+<footer class="site-footer"><nav aria-label="ข้อมูลเกี่ยวกับเว็บไซต์"><a href="about.html">เกี่ยวกับเรา</a><a href="privacy.html">ความเป็นส่วนตัว</a><a href="contact.html">ติดต่อ</a></nav><p>Sorathai · เพื่อความบันเทิงและการสะท้อนตนเอง</p></footer>
+<nav class="bnav" aria-label="เมนูหลัก">
   <a class="nitem" href="index.html" id="nav-home"><span class="nico">🌟</span>ดูดวง</a>
   <a class="nitem active" href="dream.html"><span class="nico">💭</span>ทำนายฝัน</a>
   <a class="nitem" href="numerology.html"><span class="nico">🔢</span>เลขศาสตร์</a>
-  <button class="nitem" onclick="openDrw()"><span class="nico">☰</span>เพิ่มเติม</button>
+  <button class="nitem" type="button" aria-label="เปิดรายการศาสตร์เพิ่มเติม" onclick="openDrw()"><span class="nico">☰</span>เพิ่มเติม</button>
 </nav>
-<div class="ovl" id="ovl" onclick="closeDrw()"></div>
+<div class="ovl" id="ovl" aria-hidden="true" onclick="closeDrw()"></div>
 <div class="drw" id="drw">
   <div class="drw-hdl"></div>
   <div class="drw-ttl">ศาสตร์ดูดวงทั้งหมด</div>
   <div class="drw-g" id="drw-g"></div>
 </div>
-<div class="sov" id="sov"><div class="spin"></div><p>กำลังสร้างการ์ด...</p></div>
+<div class="sov" id="sov" role="status" aria-live="polite"><div class="spin"></div><p id="dream-export-status">พร้อมสร้างภาพการ์ด</p></div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="dream-data.js"></script>
+<script src="sorathai-site.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
+<script src="dream-data.js" defer></script>
 <script>
 const SCI=[{i:'🔮',n:'โหราศาสตร์ไทย',url:'thai-astrology.html'},{i:'♌',n:'ราศีตะวันตก',url:'western-astrology.html'},{i:'🐉',n:'ราศีจีน',url:'chinese-astrology.html'},{i:'🔢',n:'Numerology',url:'numerology.html'},{i:'🌀',n:"มายา Tzolk'in",url:'mayan.html'},{i:'📈',n:'Biorhythm',url:'biorhythm.html'},{i:'✨',n:'Nakshatra',url:'nakshatra.html'},{i:'🌿',n:'Celtic Tree',url:'celtic.html'}];
 function $(i){return document.getElementById(i)}
@@ -346,7 +349,7 @@ function renderResult(data){
   const nr=$('sc-nums');nr.innerHTML='';
   nums.slice(0,5).forEach(n=>{const sp=document.createElement('span');sp.className='sc-num';sp.textContent=n;nr.appendChild(sp)});
 
-  // quote — first line of AI or data
+  // quote — first line of local symbolic data
   const quoteText=data.meaning||( mainSym?mainSym.data.meaning[0]:'ความฝันของคุณมีความหมายพิเศษที่กำลังจะเปิดเผยตัวเอง');
   $('sc-quote').textContent='"'+quoteText.slice(0,80)+(quoteText.length>80?'...':'')+'"';
 
@@ -378,64 +381,21 @@ function retryLocal(){
   setTimeout(()=>renderResult({}),1000);
 }
 
-// ── CLAUDE API ──
-async function analyzeWithClaude(){
-  const syms=findSymbols(DREAM);
-  const symbolHint=syms.length?'สัญลักษณ์หลักที่พบ: '+syms.map(s=>s.key).join(', '):'';
-
-  const prompt=`คุณคือนักทำนายฝันชาวไทยผู้เชี่ยวชาญ วิเคราะห์ความฝันนี้ในภาษาไทย สไตล์ลึกลับ น่าเชื่อถือ และให้กำลังใจ
-
-ความฝัน: "${DREAM}"
-ช่วงเวลาที่ฝัน: ${TIME}
-${symbolHint}
-
-ตอบเป็น JSON เท่านั้น ไม่มีข้อความอื่น รูปแบบดังนี้:
-{
-  "meaning": "ความหมายของความฝัน 2-3 ประโยค สไตล์ตำราโบราณผสมจิตวิทยา",
-  "money": "ดวงการเงินและโชคลาภ 1-2 ประโยค",
-  "love": "ดวงความรักและความสัมพันธ์ 1-2 ประโยค",
-  "work": "ดวงการงานและโอกาส 1-2 ประโยค",
-  "warning": "ข้อควรระวัง 1 ประโยค",
-  "close": "สรุปและคำแนะนำ 1-2 ประโยค"
-}`;
-
-  const res=await fetch('https://api.anthropic.com/v1/messages',{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({
-      model:'claude-sonnet-4-6',
-      max_tokens:1000,
-      messages:[{role:'user',content:prompt}]
-    })
-  });
-
-  if(!res.ok)throw new Error('API error '+res.status);
-  const json=await res.json();
-  const text=json.content?.[0]?.text||'{}';
-  const clean=text.replace(/```json|```/g,'').trim();
-  return JSON.parse(clean);
-}
-
-// ── INIT ──
+// ── INIT: dependency-free local interpretation ──
 if(!DREAM){
   location.href='dream.html';
 }else{
-  analyzeWithClaude()
-    .then(data=>renderResult(data))
-    .catch(()=>{
-      // fallback to local data silently
-      renderResult({});
-    });
+  renderResult({});
 }
 
 // ── SHARE ──
 async function shareCard(){
-  if(typeof html2canvas==='undefined'){alert('กำลังโหลด');return}
-  $('sov').classList.add('show');
+  if(typeof html2canvas!=='function'){$('dream-export-status').textContent='ไม่สามารถสร้างภาพได้ในขณะนี้';return}
+  $('dream-export-status').textContent='กำลังสร้างภาพการ์ด';$('sov').classList.add('show');
   try{
     const c=await html2canvas($('share-card'),{scale:2,useCORS:true,backgroundColor:'#ffffff',logging:false});
-    const a=document.createElement('a');a.download='sorathai-dream.png';a.href=c.toDataURL('image/png');a.click();
-  }catch(e){alert('ไม่สามารถสร้างรูปได้')}
+    const a=document.createElement('a');a.download='sorathai-dream.png';a.href=c.toDataURL('image/png');a.click();$('dream-export-status').textContent='บันทึกภาพการ์ดแล้ว';
+  }catch(e){$('dream-export-status').textContent='สร้างภาพไม่สำเร็จ กรุณาลองอีกครั้ง'}
   finally{$('sov').classList.remove('show')}
 }
 </script>
