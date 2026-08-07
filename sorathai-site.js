@@ -1,5 +1,14 @@
 (function () {
   "use strict";
+
+  function drawerTriggerFrom(target) {
+    if (!target || typeof target.closest !== "function") return null;
+    return target.closest('[onclick*="openDrw"]');
+  }
+
+  if (typeof module === "object" && module.exports) {
+    module.exports = { drawerTriggerFrom: drawerTriggerFrom };
+  }
   if (typeof document === "undefined") return;
 
   function markDecorativeIcons() {
@@ -16,14 +25,24 @@
     drawer.setAttribute("aria-label", "ศาสตร์ดูดวงทั้งหมด");
     drawer.setAttribute("aria-hidden", drawer.classList.contains("open") ? "false" : "true");
     let returnTarget = null;
+    document.addEventListener("click", function (event) {
+      const trigger = drawerTriggerFrom(event.target);
+      if (!trigger) return;
+      returnTarget = trigger;
+      trigger.setAttribute("aria-haspopup", "dialog");
+      trigger.setAttribute("aria-controls", drawer.id);
+    }, true);
     const observer = new MutationObserver(function () {
       const open = drawer.classList.contains("open");
       drawer.setAttribute("aria-hidden", open ? "false" : "true");
       if (open) {
-        returnTarget = document.activeElement;
+        if (!returnTarget) returnTarget = document.querySelector('[onclick*="openDrw"]');
         const first = drawer.querySelector("a,button");
         if (first) first.focus();
-      } else if (returnTarget && returnTarget.isConnected) returnTarget.focus();
+      } else if (returnTarget) {
+        if (returnTarget.isConnected) returnTarget.focus();
+        returnTarget = null;
+      }
     });
     observer.observe(drawer, { attributes: true, attributeFilter: ["class"] });
     document.addEventListener("keydown", function (event) {
