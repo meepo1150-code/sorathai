@@ -72,6 +72,13 @@ test("generates reading URLs while preserving parameters and fragments", () => {
   assert.equal(Profile.readingUrl("index.html", null), "index.html");
 });
 
+test("generates a DOB-explicit Base Card Home URL", () => {
+  const profile = Profile.create("2024-02-29");
+  assert.equal(Profile.homeUrl(profile), "index.html?dob=29022024#profile-result");
+  assert.equal(Profile.homeUrl(profile, "identity"), "index.html?dob=29022024&focus=identity#profile-result");
+  assert.equal(Profile.homeUrl(null), "index.html#profile-result");
+});
+
 test("derives stable card details without changing the persisted schema", () => {
   const profile = Profile.create("1990-01-01");
   const card = Profile.deriveBaseCard(profile);

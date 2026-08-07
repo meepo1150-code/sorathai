@@ -127,7 +127,7 @@ if(new URLSearchParams(location.search).get('dob')){
 </script></head>
 <body>
 <div class="ad ad-b" style="max-width:480px;margin:0 auto"><!-- AdSense 320x50 --></div>
-<header class="hdr"><a class="back" aria-label="กลับหน้าหลัก" href="index.html" id="back-link">‹</a><a class="logo" href="index.html">Sorathai</a><span class="hdr-tag">Celtic Tree</span></header>
+<header class="hdr"><a class="back" aria-label="กลับหน้าหลัก" href="index.html" id="back-link">‹</a><a class="logo" href="index.html" id="logo-link">Sorathai</a><span class="hdr-tag">Celtic Tree</span></header>
 <main class="page" role="main">
 <div class="s-entry" id="s-entry">
   <div class="et">
@@ -209,7 +209,7 @@ function $(i){return document.getElementById(i)} function tx(i,v){const e=$(i);i
 function validate(d,m,y){return window.SorathaiProfile.fromParts(d,m,y)?null:'วันที่ไม่ถูกต้อง กรุณาตรวจสอบอีกครั้ง'}
 function buildPickers(sd,sm,sy){for(let d=1;d<=31;d++){const o=document.createElement('option');o.value=d;o.textContent=d;sd.appendChild(o)}TH_MONTHS.forEach((m,i)=>{const o=document.createElement('option');o.value=i+1;o.textContent=m;sm.appendChild(o)});const ny=new Date().getFullYear()+543;for(let y=ny;y>=ny-100;y--){const o=document.createElement('option');o.value=y-543;o.textContent=y;sy.appendChild(o)};const t=new Date();sd.value=t.getDate();sm.value=t.getMonth()+1;sy.value=t.getFullYear()}
 function buildRelated(gid,cur,p){const g=$(gid);if(!g)return;g.innerHTML='';SCI.filter(s=>s.k!==cur).forEach(s=>{const a=document.createElement('a');a.className='rc';a.href=s.url+(p||'');a.innerHTML='<div class="rc-acc" style="background:'+s.acc+'"></div><div class="rc-b"><span class="rc-ico">'+s.i+'</span><div class="rc-org">'+s.org+'</div><div class="rc-name">'+s.n+'</div><div class="rc-cta">ดูดวงเต็ม ›</div></div>';g.appendChild(a)})}
-function buildDrawer(gid,p){const g=$(gid);if(!g)return;g.innerHTML='';SCI.forEach(s=>{const a=document.createElement('a');a.className='ditem';a.href=s.url+(p||'');a.innerHTML='<span class="dico">'+s.i+'</span>'+s.n;g.appendChild(a)});const dr=document.createElement('a');dr.className='ditem';dr.href='dream.html'+(p||'');dr.innerHTML='<span class="dico">💭</span>ทำนายฝัน';g.appendChild(dr)}
+function buildDrawer(gid,p){const g=$(gid);if(!g)return;g.innerHTML='';SCI.forEach(s=>{const a=document.createElement('a');a.className='ditem';a.href=s.url+(p||'');a.innerHTML='<span class="dico">'+s.i+'</span>'+s.n;g.appendChild(a)});const dr=document.createElement('a');dr.className='ditem';dr.href='dream.html';dr.innerHTML='<span class="dico">💭</span>ทำนายฝัน';g.appendChild(dr)}
 function openDrw(){$('ovl').classList.add('open');$('drw').classList.add('open');document.body.style.overflow='hidden'}
 function closeDrw(){$('ovl').classList.remove('open');$('drw').classList.remove('open');document.body.style.overflow=''}
 
@@ -231,13 +231,14 @@ function render(d,m,y,dob,p){
   $('rh-ico').textContent='🌿';$('e-ico').textContent='🌿';
   tx('fc1',tree.n);tx('fc2',tree.e);tx('fc3','ดรุยด์');
   $('sc-orb').textContent='🌿';$('sc-orb').style.borderColor=GB;
-  tx('sc-ttl','ต้น'+tree.n);tx('sc-dob',ds);$('sc-q').textContent='"'+tree.t.slice(0,60)+'..."';
+  const trait=Array.isArray(tree.trait)&&tree.trait.length?tree.trait[0]:'';
+  tx('sc-ttl','ต้น'+tree.n);tx('sc-dob',ds);$('sc-q').textContent=trait?'"'+trait.slice(0,60)+'..."':'';
   tx('ss1',tree.n);tx('ss2',tree.e);tx('ss3','Celtic');tx('ss4','ดรุยด์');
-  const cats=[['ต้นไม้ประจำตัว','',tree.trait||[tree.t||''],rS],['การเงิน','d',daily.money,rD],['ความรัก','d',daily.love,rD],['การงาน','d',daily.overall,rD]];
+  const cats=[['ต้นไม้ประจำตัว','',tree.trait||[],rS],['การเงิน','d',daily.money,rD],['ความรัก','d',daily.love,rD],['การงาน','d',daily.overall,rD]];
   const rdgs=$('rdgs');rdgs.innerHTML='';
   cats.forEach(([tp,tag,arr,rng])=>{const dv=document.createElement('div');dv.className='rdg';dv.innerHTML='<div class="rdg-tp" style="color:'+G+'">'+tp+(tag?'<span class="dpill" style="color:'+G+';border:0.5px solid '+GB+'">ดวงวันนี้</span>':'')+'</div><div class="rdg-b">'+pk(arr,rng)+'</div>';rdgs.appendChild(dv)});
   $('lk-sec').innerHTML='<p class="lk-lbl">ต้นไม้ดรุยด์ของคุณ</p><div class="lk-g"><div class="lk-b"><div class="lk-bl">ต้นไม้</div><div class="lk-bv">'+tree.n+'</div></div><div class="lk-b"><div class="lk-bl">Celtic</div><div class="lk-bv">'+tree.e+'</div></div></div>';
-  $('back-link').href='index.html'+p;$('nav-home').href='index.html'+p;$('nav-dream').href='dream.html'+p;$('nav-num').href='numerology.html'+p;
+  const profile=window.SorathaiProfile.fromLocation(location.search),home=window.SorathaiProfile.homeUrl(profile,new URLSearchParams(location.search).get('focus'));$('back-link').href=home;$('logo-link').href=home;$('nav-home').href=home;$('nav-dream').href='dream.html';$('nav-num').href='numerology.html'+p;
   buildRelated('rel-g','celtic',p);buildDrawer('drw-g',p);
   window.SorathaiReading.enhance('celtic',window.SorathaiProfile.fromLocation(location.search));
   window.SorathaiCombined.addEntryPoint(window.SorathaiProfile.fromLocation(location.search));
