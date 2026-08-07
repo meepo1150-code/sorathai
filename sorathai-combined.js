@@ -36,40 +36,52 @@
     return ORDER.filter(function (id) { return seen.has(id); });
   }
   function ordinal(iso) { return Math.floor(Date.parse(iso + "T00:00:00Z") / 86400000); }
-  function lifePath(iso) {
-    let n = iso.replace(/-/g, "").split("").reduce(function (sum, digit) { return sum + Number(digit); }, 0);
-    while (n > 9 && n !== 11 && n !== 22) n = String(n).split("").reduce(function (sum, digit) { return sum + Number(digit); }, 0);
-    return n;
-  }
   function western(iso) {
     const month = Number(iso.slice(5, 7)), day = Number(iso.slice(8));
+    const hr = root.HR;
+    if (hr && typeof hr.getWesternIdx === "function" && Array.isArray(hr.WESTERN)) {
+      const existing = hr.WESTERN[hr.getWesternIdx(day, month)];
+      if (existing && typeof existing.n === "string" && typeof existing.el === "string") return { sign: existing.n, element: existing.el };
+    }
+    // Same boundary fallback as SorathaiReading for dependency-free tests.
     const cutoffs = [20, 19, 21, 20, 21, 21, 23, 23, 23, 23, 22, 22];
     const signs = ["ราศีมังกร", "ราศีกุมภ์", "ราศีมีน", "ราศีเมษ", "ราศีพฤษภ", "ราศีเมถุน", "ราศีกรกฎ", "ราศีสิงห์", "ราศีกันย์", "ราศีตุล", "ราศีพิจิก", "ราศีธนู", "ราศีมังกร"];
     const elements = ["ดิน", "ลม", "น้ำ", "ไฟ", "ดิน", "ลม", "น้ำ", "ไฟ", "ดิน", "ลม", "น้ำ", "ไฟ", "ดิน"];
     const i = day >= cutoffs[month - 1] ? month : month - 1; return { sign: signs[i], element: elements[i] };
   }
-  function evidenceFor(id, iso) {
+  function evidenceFor(id, profileOrIso) {
+    const profile = typeof profileOrIso === "string" ? { dob: profileOrIso } : profileOrIso;
+    const iso = profile.dob;
     const date = new Date(iso + "T00:00:00Z"), year = date.getUTCFullYear(), day = date.getUTCDate(), month = date.getUTCMonth() + 1;
+    const hr = root.HR;
     let themes, basis;
     if (id === "thai") { const i = date.getUTCDay(); themes = MAPS.thai[i]; basis = "วันเกิดตรงกับวัน" + ["อาทิตย์", "จันทร์", "อังคาร", "พุธ", "พฤหัสบดี", "ศุกร์", "เสาร์"][i]; }
     else if (id === "western") { const z = western(iso); themes = MAPS.western[z.element]; basis = z.sign + " · ธาตุ" + z.element; }
-    else if (id === "chinese") { const i = ((year - 4) % 12 + 12) % 12; themes = MAPS.chinese[i]; basis = "ลำดับนักษัตรจีน " + (i + 1) + "/12 จากปีเกิด"; }
-    else if (id === "numerology") { const n = lifePath(iso); themes = MAPS.numerology[n]; basis = "เลขเส้นทางชีวิต " + n; }
-    else if (id === "mayan") { const kin = ((ordinal(iso) + 160) % 260 + 260) % 260; themes = MAPS.mayan[kin % 5]; basis = "ตำแหน่ง Tzolk’in " + (kin + 1) + "/260"; }
+    else if (id === "chinese") { const i = hr && typeof hr.getChineseIdx === "function" ? hr.getChineseIdx(year) : ((year - 4) % 12 + 12) % 12; themes = MAPS.chinese[i]; basis = "ลำดับนักษัตรจีน " + (i + 1) + "/12 จากปีเกิด"; }
+    else if (id === "numerology") { const card = root.SorathaiProfile && root.SorathaiProfile.deriveBaseCard(profile); const n = card ? card.lifePath : root.SorathaiProfile.lifePath(iso); themes = MAPS.numerology[n]; basis = "เลขเส้นทางชีวิต " + n; }
+    else if (id === "mayan") { const existing = hr && typeof hr.getMayan === "function" ? hr.getMayan(day, month, year) : null; const signIndex = existing && Array.isArray(hr.MAYAN_SIGNS) ? hr.MAYAN_SIGNS.indexOf(existing.sign) : ((ordinal(iso) + 160) % 20 + 20) % 20; const tone = existing ? existing.tone : (((ordinal(iso) + 160) % 13 + 13) % 13) + 1; themes = MAPS.mayan[((signIndex % 5) + 5) % 5]; basis = "สัญลักษณ์ Tzolk’in ลำดับ " + (signIndex + 1) + "/20 · โทน " + tone; }
     else if (id === "biorhythm") { const phase = ((ordinal(iso) % 23) + 23) % 23; const channel = phase % 3; themes = MAPS.biorhythm[channel]; basis = "วัฏจักรสัญลักษณ์ 23 วัน · เฟส " + phase; }
-    else if (id === "nakshatra") { const i = ((ordinal(iso) - ordinal("2000-01-01")) % 27 + 27) % 27; themes = MAPS.nakshatra[i % 5]; basis = "ลำดับ Nakshatra " + (i + 1) + "/27"; }
-    else { const season = Math.floor((((month * 31) + day) % 364) / 91); themes = MAPS.celtic[season]; basis = "ช่วงต้นไม้ Celtic ตามวันและเดือนเกิด"; }
+    else if (id === "nakshatra") { const existing = hr && typeof hr.getNakshatra === "function" ? hr.getNakshatra(day, month, year) : null; const i = existing && Array.isArray(hr.NAKSHATRA) ? hr.NAKSHATRA.indexOf(existing) : ((ordinal(iso) - ordinal("2000-01-01")) % 27 + 27) % 27; themes = MAPS.nakshatra[((i % 5) + 5) % 5]; basis = "ลำดับ Nakshatra " + (i + 1) + "/27"; }
+    else { const existing = hr && typeof hr.getCeltic === "function" ? hr.getCeltic(day, month) : null; const i = existing && Array.isArray(hr.CELTIC) ? hr.CELTIC.indexOf(existing) : Math.floor((((month * 31) + day) % 364) / 91); themes = MAPS.celtic[((i % 4) + 4) % 4]; basis = "ช่วงต้นไม้ Celtic ตามวันและเดือนเกิด"; }
     return { scienceId: id, scienceName: SCIENCES[id].name, basis: basis, themes: themes.slice() };
   }
   function synthesize(profile) {
     if (!profile || typeof profile.dob !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(profile.dob)) return null;
-    const explored = normaliseSciences(profile.exploredSciences), evidence = explored.map(function (id) { return evidenceFor(id, profile.dob); });
+    const explored = normaliseSciences(profile.exploredSciences), evidence = explored.map(function (id) { return evidenceFor(id, profile); });
     const support = {}; Object.keys(THEMES).forEach(function (key) { support[key] = []; });
     evidence.forEach(function (item) { item.themes.forEach(function (theme) { support[theme].push(item.scienceId); }); });
-    const repeated = Object.keys(THEMES).filter(function (key) { return support[key].length >= 2; }).map(function (key) { return { id: key, label: THEMES[key], sciences: support[key].slice() }; });
+    const repeated = Object.keys(THEMES).filter(function (key) { return support[key].length >= 2; }).map(function (key) { return { id: key, label: THEMES[key], sciences: support[key].slice() }; }).sort(function (a, b) { return b.sciences.length - a.sciences.length || Object.keys(THEMES).indexOf(a.id) - Object.keys(THEMES).indexOf(b.id); });
     const distinct = evidence.map(function (item) { return { scienceId: item.scienceId, scienceName: item.scienceName, themes: item.themes.filter(function (theme) { return support[theme].length === 1; }), basis: item.basis }; }).filter(function (item) { return item.themes.length; });
-    const count = explored.length;
-    return { dob: profile.dob, explored: explored, missing: ORDER.filter(function (id) { return explored.indexOf(id) < 0; }), count: count, available: count >= 2, evidence: evidence, repeatedThemes: repeated, distinctPerspectives: distinct, statement: count ? "จาก " + count + " ศาสตร์ที่เปิดแล้ว โปรไฟล์นี้สังเคราะห์เฉพาะหลักฐานเชิงสัญลักษณ์ที่ปรากฏในชั้นเหล่านั้น" : "ยังไม่มีศาสตร์ที่เปิด จึงยังไม่มีหลักฐานสำหรับสังเคราะห์" };
+    const count = explored.length, statement = reflectionText(count, repeated, distinct);
+    return { dob: profile.dob, explored: explored, missing: ORDER.filter(function (id) { return explored.indexOf(id) < 0; }), count: count, available: count >= 2, evidence: evidence, repeatedThemes: repeated, distinctPerspectives: distinct, statement: statement };
+  }
+  function names(ids) { return ids.map(function (id) { return SCIENCES[id].name; }).join(" และ "); }
+  function reflectionText(count, repeated, distinct) {
+    if (!count) return "จาก 0 ศาสตร์ที่เปิดแล้ว ยังไม่มีหลักฐานเชิงสัญลักษณ์สำหรับสังเคราะห์";
+    const scope = "จาก " + count + " ศาสตร์ที่เปิดแล้ว ";
+    let text = repeated.length ? "ธีม" + repeated[0].label + "ปรากฏซ้ำใน " + names(repeated[0].sciences) : "ยังไม่มีธีมใดปรากฏซ้ำจากอย่างน้อย 2 ศาสตร์";
+    if (distinct.length) text += " ขณะที่ " + distinct[0].scienceName + " เพิ่มมุมเรื่อง" + distinct[0].themes.map(function (id) { return THEMES[id]; }).join("และ");
+    return scope + text;
   }
   function exportFilename(dob) { return /^\d{4}-\d{2}-\d{2}$/.test(dob || "") ? "sorathai-combined-" + dob + ".png" : "sorathai-combined.png"; }
   function profileUrl(path, profile, search, hash) {
@@ -84,5 +96,5 @@
     a.innerHTML = "<strong>Combined Destiny Profile</strong><span>รวมชั้นที่สำรวจแล้ว " + normaliseSciences(profile.exploredSciences).length + "/8 →</span>";
     card.insertAdjacentElement("afterend", a);
   }
-  return { ORDER, ALIASES, SCIENCES, THEMES, MAPS, normaliseSciences, evidenceFor, synthesize, exportFilename, profileUrl, addEntryPoint };
+  return { ORDER, ALIASES, SCIENCES, THEMES, MAPS, normaliseSciences, western, evidenceFor, reflectionText, synthesize, exportFilename, profileUrl, addEntryPoint };
 });

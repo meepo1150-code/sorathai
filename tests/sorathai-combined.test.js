@@ -30,6 +30,26 @@ test("extracts deterministic, readable evidence in canonical order", () => {
   assert.equal(first.evidence[2].basis, "เลขเส้นทางชีวิต 3");
 });
 
+test("prefers the existing HR western calculation when available", () => {
+  let received;
+  global.HR = { getWesternIdx(day, month) { received = [day, month]; return 1; }, WESTERN: [{ n: "ไม่ควรใช้", el: "ไฟ" }, { n: "ราศีจาก HR", el: "น้ำ" }] };
+  assert.deepEqual(Combined.western("1990-04-08"), { sign: "ราศีจาก HR", element: "น้ำ" });
+  assert.deepEqual(received, [8, 4]);
+  delete global.HR;
+});
+
+test("uses SorathaiProfile deriveBaseCard for life-path evidence", () => {
+  const original = SorathaiProfile.deriveBaseCard;
+  let received;
+  SorathaiProfile.deriveBaseCard = (value) => { received = value; return { lifePath: 8 }; };
+  try {
+    const value = profile(["numerology"]), evidence = Combined.evidenceFor("numerology", value);
+    assert.equal(received, value);
+    assert.equal(evidence.basis, "เลขเส้นทางชีวิต 8");
+    assert.deepEqual(evidence.themes, Combined.MAPS.numerology[8]);
+  } finally { SorathaiProfile.deriveBaseCard = original; }
+});
+
 test("repeated themes have at least two sources and one-source themes stay distinct", () => {
   const result = Combined.synthesize(profile(["thai", "western", "numerology"]));
   assert.ok(result.repeatedThemes.every((theme) => theme.sciences.length >= 2));
@@ -43,6 +63,21 @@ test("only explored sciences contribute and output changes with explored layers"
   const three = Combined.synthesize(profile(["thai", "western", "numerology"]));
   assert.deepEqual(two.evidence.map((item) => item.scienceId), ["thai", "western"]);
   assert.notDeepEqual(two, three);
+});
+
+test("reflective synthesis names repeated support and a distinct perspective", () => {
+  const result = Combined.synthesize(profile(["western", "chinese", "numerology"]));
+  assert.match(result.statement, /^จาก 3 ศาสตร์ที่เปิดแล้ว/);
+  assert.match(result.statement, /ธีมการแสดงออกปรากฏซ้ำใน Chinese Astrology และ Numerology/);
+  assert.match(result.statement, /ขณะที่ Western Astrology เพิ่มมุมเรื่องความมั่นคง/);
+});
+
+test("reflective synthesis has a scoped fallback and changes with layers", () => {
+  const two = Combined.synthesize(profile(["thai", "western"]));
+  const three = Combined.synthesize(profile(["western", "chinese", "numerology"]));
+  assert.match(two.statement, /ยังไม่มีธีมใดปรากฏซ้ำจากอย่างน้อย 2 ศาสตร์/);
+  assert.notEqual(two.statement, three.statement);
+  assert.equal(Combined.synthesize(profile(["numerology", "chinese", "western"])).statement, three.statement);
 });
 
 test("synthesis never changes deterministic profile powers", () => {
