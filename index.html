@@ -642,7 +642,7 @@
     <script src="horoscope-data.js" defer></script>
     <script src="sorathai-combined.js" defer></script>
     <script>
-      (function () {
+      document.addEventListener("DOMContentLoaded", function () {
         "use strict";
         const DEFAULT_DATE = Object.freeze({ day: 1, month: 1, year: 1990 });
         const $ = (id) => document.getElementById(id),
@@ -897,7 +897,7 @@
         });
         populate();
         load(location.hash === "#profile-result");
-      })();
+      });
     </script>
   </body>
 </html>

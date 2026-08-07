@@ -233,7 +233,8 @@ function render(d,m,y,dob,p){
   $('sc-orb').textContent='🔢';$('sc-orb').style.borderColor=GB;
   tx('sc-ttl','เลขชีวิต '+lp);tx('sc-dob',ds);$('sc-q').textContent='"'+pk(data.persona,rS)+'"';
   tx('ss1',String(lp));tx('ss2',data.name);tx('ss3',data.planet);tx('ss4','เลขศาสตร์');
-  const lnm=(data.lotto.match(/\d+/g)||[String(lp)]).slice(0,5);
+  const lottoText=Array.isArray(data.lotto)?data.lotto.join(' '):String(data.lotto||'');
+  const lnm=(lottoText.match(/\d+/g)||[String(lp)]).slice(0,5);
   const nr=$('sc-nums');nr.innerHTML='';lnm.forEach(n=>{const s=document.createElement('span');s.className='snum';s.style.cssText='border:0.5px solid '+GB+';color:'+G;s.textContent=n;nr.appendChild(s)});
   const daily=window.HR.DAILY;
   const cats=[['บุคลิกและจิตวิญญาณ','',data.persona,rS],['บทเรียนชีวิต','',data.challenge,rS],['การเงิน','d',daily.money,rD],['ความรัก','d',daily.love,rD],['การงาน','d',daily.overall,rD]];
