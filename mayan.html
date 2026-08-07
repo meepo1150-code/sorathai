@@ -238,7 +238,7 @@ function render(d,m,y,dob,p){
   const rdgs=$('rdgs');rdgs.innerHTML='';
   cats.forEach(([tp,tag,arr,rng])=>{const dv=document.createElement('div');dv.className='rdg';dv.innerHTML='<div class="rdg-tp" style="color:'+G+'">'+tp+(tag?'<span class="dpill" style="color:'+G+';border:0.5px solid '+GB+'">ดวงวันนี้</span>':'')+'</div><div class="rdg-b">'+pk(arr,rng)+'</div>';rdgs.appendChild(dv)});
   $('lk-sec').innerHTML="<p class='lk-lbl'>Tzolk'in ของคุณ</p><div class='lk-g'><div class='lk-b'><div class='lk-bl'>Day Sign</div><div class='lk-bv'>"+tz.eng+"</div></div><div class='lk-b'><div class='lk-bl'>Tone</div><div class='lk-bv'>"+tz.tone+"</div></div></div>";
-  const profile=window.SorathaiProfile.fromLocation(location.search),home=window.SorathaiProfile.homeUrl(profile,new URLSearchParams(location.search).get('focus'));$('back-link').href=home;$('logo-link').href=home;$('nav-home').href=home;$('nav-dream').href='dream.html';$('nav-num').href='numerology.html'+p;
+  const profile=window.SorathaiProfile.fromLocation(location.search),home=window.SorathaiProfile.homeUrl(profile);$('back-link').href=home;$('logo-link').href=home;$('nav-home').href=home;$('nav-dream').href='dream.html';$('nav-num').href='numerology.html'+p;
   buildRelated('rel-g','mayan',p);buildDrawer('drw-g',p);
   window.SorathaiReading.enhance('mayan',window.SorathaiProfile.fromLocation(location.search));
   window.SorathaiCombined.addEntryPoint(window.SorathaiProfile.fromLocation(location.search));
