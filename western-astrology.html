@@ -127,7 +127,7 @@ if(new URLSearchParams(location.search).get('dob')){
 </script></head>
 <body>
 <div class="ad ad-b" style="max-width:480px;margin:0 auto"><!-- AdSense 320x50 --></div>
-<header class="hdr"><a class="back" href="index.html" id="back-link">‹</a><a class="logo" href="index.html">Sorathai</a><span class="hdr-tag">ราศีตะวันตก</span></header>
+<header class="hdr"><a class="back" aria-label="กลับหน้าหลัก" href="index.html" id="back-link">‹</a><a class="logo" href="index.html">Sorathai</a><span class="hdr-tag">ราศีตะวันตก</span></header>
 <main class="page" role="main">
 <div class="s-entry" id="s-entry">
   <div class="et">
@@ -182,15 +182,18 @@ if(new URLSearchParams(location.search).get('dob')){
   <p class="disc">คำอ่านนี้เป็นมุมมองตามความเชื่อ เพื่อความบันเทิงและการสะท้อนตนเอง ไม่ใช่ข้อเท็จจริงทางวิทยาศาสตร์หรือคำแนะนำด้านสุขภาพ การเงิน กฎหมาย และความปลอดภัย</p>
 </div>
 </main>
+
+<footer class="site-footer"><nav aria-label="ข้อมูลเกี่ยวกับเว็บไซต์"><a href="about.html">เกี่ยวกับเรา</a><a href="privacy.html">ความเป็นส่วนตัว</a><a href="contact.html">ติดต่อ</a></nav><p>Sorathai · เพื่อความบันเทิงและการสะท้อนตนเอง</p></footer>
 <nav class="bnav" aria-label="เมนูหลัก">
   <a class="nitem" href="index.html" id="nav-home"><span class="nico">🌟</span>ดูดวง</a>
   <a class="nitem" href="dream.html" id="nav-dream"><span class="nico">💭</span>ทำนายฝัน</a>
   <a class="nitem" href="numerology.html" id="nav-num"><span class="nico">🔢</span>เลขศาสตร์</a>
-  <button class="nitem" onclick="openDrw()"><span class="nico">☰</span>เพิ่มเติม</button>
+  <button class="nitem" type="button" aria-label="เปิดรายการศาสตร์เพิ่มเติม" onclick="openDrw()"><span class="nico">☰</span>เพิ่มเติม</button>
 </nav>
-<div class="ovl" id="ovl" onclick="closeDrw()"></div>
+<div class="ovl" id="ovl" aria-hidden="true" onclick="closeDrw()"></div>
 <div class="drw" id="drw"><div class="drw-hdl"></div><div class="drw-ttl">ศาสตร์ดูดวงทั้งหมด</div><div class="drw-g" id="drw-g"></div></div>
 <div class="sov" id="sov" role="status" aria-live="polite"><div class="spin"></div><p id="export-status">พร้อมสร้างภาพการ์ด</p></div>
+<script src="sorathai-site.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
 <script src="sorathai-profile.js" defer></script>
 <script src="sorathai-explore.js" defer></script>
@@ -209,8 +212,6 @@ function buildRelated(gid,cur,p){const g=$(gid);if(!g)return;g.innerHTML='';SCI.
 function buildDrawer(gid,p){const g=$(gid);if(!g)return;g.innerHTML='';SCI.forEach(s=>{const a=document.createElement('a');a.className='ditem';a.href=s.url+(p||'');a.innerHTML='<span class="dico">'+s.i+'</span>'+s.n;g.appendChild(a)});const dr=document.createElement('a');dr.className='ditem';dr.href='dream.html'+(p||'');dr.innerHTML='<span class="dico">💭</span>ทำนายฝัน';g.appendChild(dr)}
 function openDrw(){$('ovl').classList.add('open');$('drw').classList.add('open');document.body.style.overflow='hidden'}
 function closeDrw(){$('ovl').classList.remove('open');$('drw').classList.remove('open');document.body.style.overflow=''}
-async function shareCardEl(elId,fname){if(typeof html2canvas==='undefined'){alert('กำลังโหลด');return}$('sov').classList.add('show');try{const c=await html2canvas($(elId),{scale:2,useCORS:true,backgroundColor:'#ffffff',logging:false});const a=document.createElement('a');a.download=fname||'sorathai.png';a.href=c.toDataURL('image/png');a.click()}catch(e){alert('ไม่สามารถสร้างรูปได้')}finally{$('sov').classList.remove('show')}}
-
 
 // data จาก horoscope-data.js
 const G='#4a6fa5',GB='rgba(74,111,165,.45)';
