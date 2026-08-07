@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Combined Destiny Profile — Sorathai</title>
+  <meta name="description" content="รวมมุมมองเชิงสัญลักษณ์จากศาสตร์ Sorathai ที่คุณสำรวจแล้วไว้ใน Combined Destiny Profile เดียว" />
+  <meta property="og:type" content="website" /><meta property="og:title" content="Combined Destiny Profile — Sorathai" />
+  <meta property="og:description" content="โปรไฟล์สะท้อนตนเองจากชั้นศาสตร์ที่คุณเลือกสำรวจ" /><meta property="og:url" content="https://sorathai.com/profile.html" />
+  <meta property="og:image" content="https://sorathai.com/og-image.png" /><meta property="og:locale" content="th_TH" />
+  <meta name="twitter:card" content="summary_large_image" /><meta name="twitter:title" content="Combined Destiny Profile — Sorathai" />
+  <meta name="twitter:description" content="โปรไฟล์สะท้อนตนเองจากชั้นศาสตร์ที่คุณเลือกสำรวจ" /><meta name="twitter:image" content="https://sorathai.com/og-image.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;1,500&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="shared.css" />
+</head>
+<body class="combined-page">
+  <header class="combined-header"><a id="base-link" href="index.html">← Base Destiny Card</a><a class="combined-logo" href="index.html">Sorathai</a><span>Combined Profile</span></header>
+  <main class="combined-main">
+    <header class="combined-intro"><p class="combined-kicker">Your explored constellation</p><h1>Combined Destiny Profile</h1><p>อ่านสิ่งที่ซ้ำกันและมุมที่แตกต่าง โดยใช้เฉพาะศาสตร์ที่คุณเปิดแล้ว</p></header>
+    <section id="invalid-state" class="combined-state" hidden aria-labelledby="invalid-title"><h2 id="invalid-title">เริ่มจาก Base Destiny Card</h2><p>ไม่พบวันเกิดที่ถูกต้องในลิงก์หรืออุปกรณ์นี้</p><a href="index.html">กลับไปกรอกวันเกิด</a></section>
+    <section id="empty-state" class="combined-state" hidden aria-labelledby="empty-title"><h2 id="empty-title">โปรไฟล์นี้ยังไม่ครบสำหรับการสังเคราะห์</h2><p id="empty-copy"></p><a id="empty-base" href="index.html">เลือกศาสตร์จาก Base Card</a></section>
+    <section id="combined-result" hidden aria-labelledby="profile-title">
+      <article class="combined-card" id="combined-card">
+        <header class="combined-card-head"><span class="combined-logo">Sorathai</span><span id="profile-date"></span></header>
+        <div class="combined-card-body">
+          <p class="combined-kicker">Combined Destiny · <span id="progress-text"></span></p><h2 id="profile-title">ภาพรวมชั้นที่คุณเลือกสำรวจ</h2>
+          <dl class="combined-base"><div><dt>Base archetype</dt><dd id="base-archetype"></dd></div><div><dt>ราศี · ธาตุ</dt><dd id="base-western"></dd></div><div><dt>Life path</dt><dd id="base-life"></dd></div></dl>
+          <p class="combined-scope" id="scope"></p>
+          <section aria-labelledby="repeated-title"><h3 id="repeated-title">ธีมเชิงสัญลักษณ์ที่ปรากฏซ้ำ</h3><div id="repeated-list" class="theme-list"></div></section>
+          <section aria-labelledby="distinct-title"><h3 id="distinct-title">มุมเสริมที่แต่ละศาสตร์ให้ต่างกัน</h3><div id="distinct-list" class="perspective-list"></div></section>
+          <section aria-labelledby="layers-title"><h3 id="layers-title">ชั้นที่ใช้เป็นหลักฐาน</h3><ul id="explored-list" class="layer-list"></ul></section>
+          <p class="combined-reflection" id="reflection"></p>
+          <p class="combined-disclaimer">เนื้อหานี้เป็นการสังเคราะห์เชิงสัญลักษณ์เพื่อความบันเทิงและการสะท้อนตนเอง ไม่ใช่ข้อเท็จจริงทางวิทยาศาสตร์หรือคำแนะนำด้านสุขภาพ การเงิน กฎหมาย หรือความปลอดภัย</p>
+          <footer class="combined-watermark">sorathai.com · Combined Destiny</footer>
+        </div>
+      </article>
+      <div class="combined-controls"><button id="export-profile" type="button">บันทึกโปรไฟล์เป็นภาพ</button><a id="return-base" href="index.html">กลับ Base Destiny Card</a></div>
+      <p id="live-status" class="sr-only" role="status" aria-live="polite"></p>
+    </section>
+    <section id="missing-section" class="combined-missing" hidden aria-labelledby="missing-title"><h2 id="missing-title">เปิดมุมมองถัดไป</h2><p>ชั้นเหล่านี้ยังไม่ร่วมในการสังเคราะห์</p><div id="missing-list"></div></section>
+  </main>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script><script src="sorathai-profile.js"></script><script src="sorathai-reading.js"></script><script src="sorathai-combined.js"></script>
+  <script>
+  (function () { "use strict";
+    const $ = (id) => document.getElementById(id), profile = SorathaiProfile.fromLocation(location.search);
+    if (!profile) { $("invalid-state").hidden = false; return; }
+    const result = SorathaiCombined.synthesize(profile), base = SorathaiProfile.deriveBaseCard(profile), west = SorathaiReading.westernFor(profile.dob);
+    const link = (path) => SorathaiCombined.profileUrl(path, profile, location.search, location.hash);
+    $("base-link").href = $("return-base").href = $("empty-base").href = link("index.html");
+    $("missing-section").hidden = result.missing.length === 0;
+    $("missing-list").replaceChildren(...result.missing.map((id) => { const a=document.createElement("a"); a.href=link(SorathaiCombined.SCIENCES[id].href); a.textContent=SorathaiCombined.SCIENCES[id].name+" →"; return a; }));
+    if (!result.available) { $("empty-state").hidden=false; $("empty-copy").textContent=result.count===0 ? "ยังไม่มีศาสตร์ที่เปิด เลือกอย่างน้อย 2 ศาสตร์เพื่อดู Combined Profile" : "เปิดแล้ว 1 จาก 8 ชั้น ลองสำรวจอีกหนึ่งศาสตร์เพื่อเห็นธีมที่สนับสนุนกัน"; return; }
+    $("combined-result").hidden=false; $("profile-date").textContent=profile.dob.split("-").reverse().join("/"); $("progress-text").textContent=result.count+" จาก 8 ชั้น";
+    $("base-archetype").textContent=base.archetype; $("base-western").textContent=west.sign+" · ธาตุ"+west.element; $("base-life").textContent=base.lifePath; $("scope").textContent=result.statement;
+    $("repeated-list").replaceChildren(...(result.repeatedThemes.length ? result.repeatedThemes.map((item) => { const d=document.createElement("div"); d.innerHTML="<strong>"+item.label+"</strong><span>สนับสนุนโดย "+item.sciences.map((id)=>SorathaiCombined.SCIENCES[id].name).join(" · ")+"</span>"; return d; }) : [Object.assign(document.createElement("p"),{textContent:"ยังไม่มีธีมใดได้รับการสนับสนุนจากอย่างน้อย 2 ศาสตร์"})]));
+    $("distinct-list").replaceChildren(...(result.distinctPerspectives.length ? result.distinctPerspectives.map((item) => { const d=document.createElement("div"); d.innerHTML="<strong>"+item.scienceName+"</strong><span>"+item.themes.map((id)=>SorathaiCombined.THEMES[id]).join(" · ")+"</span><small>หลักฐาน: "+item.basis+"</small>"; return d; }) : [Object.assign(document.createElement("p"),{textContent:"ชั้นที่เปิดมีธีมร่วมกันทั้งหมดในขณะนี้"})]));
+    $("explored-list").replaceChildren(...result.evidence.map((item)=>{const li=document.createElement("li"); li.innerHTML="<strong>"+item.scienceName+"</strong><span>"+item.basis+"</span>"; return li;}));
+    $("reflection").textContent="ลองใช้ธีมที่ปรากฏซ้ำเป็นคำถามสะท้อนตนเอง และวางมุมที่แตกต่างไว้ข้างกันโดยไม่บังคับให้ทุกศาสตร์ต้องสรุปตรงกัน ผลนี้จะเปลี่ยนเมื่อคุณเลือกเปิดหรือรีเซ็ตชั้นศาสตร์เท่านั้น";
+    $("export-profile").addEventListener("click", async function(){ const status=$("live-status"); if(typeof html2canvas!=="function"){status.textContent="ไม่สามารถสร้างภาพได้ในขณะนี้";return;} status.textContent="กำลังสร้างภาพโปรไฟล์"; try{const canvas=await html2canvas($("combined-card"),{scale:2,useCORS:true,backgroundColor:"#f4f1ea",logging:false,windowWidth:Math.max(document.documentElement.clientWidth,$("combined-card").scrollWidth)});const a=document.createElement("a");a.download=SorathaiCombined.exportFilename(profile.dob);a.href=canvas.toDataURL("image/png");a.click();status.textContent="บันทึกภาพโปรไฟล์แล้ว";}catch(_){status.textContent="สร้างภาพไม่สำเร็จ กรุณาลองอีกครั้ง";}});
+  })();
+  </script>
+</body></html>

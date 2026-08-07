@@ -195,6 +195,7 @@ if(new URLSearchParams(location.search).get('dob')){
 <script src="sorathai-profile.js" defer></script>
 <script src="sorathai-explore.js" defer></script>
 <script src="sorathai-reading.js" defer></script>
+<script src="sorathai-combined.js" defer></script>
 <script src="horoscope-data.js" defer></script>
 <script>document.addEventListener("DOMContentLoaded",function(){
 window.SorathaiExplore.readingContext("thai");
@@ -237,6 +238,7 @@ function render(d,m,y,dob,p){
   $('back-link').href='index.html'+p;$('nav-home').href='index.html'+p;$('nav-dream').href='dream.html'+p;$('nav-num').href='numerology.html'+p;
   buildRelated('rel-g','thai',p);buildDrawer('drw-g',p);
   window.SorathaiReading.enhance('thai',window.SorathaiProfile.fromLocation(location.search));
+  window.SorathaiCombined.addEntryPoint(window.SorathaiProfile.fromLocation(location.search));
   $('s-entry').style.display='none';$('s-result').classList.add('show');window.scrollTo(0,0);
 }
 
