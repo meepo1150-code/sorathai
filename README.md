@@ -129,7 +129,13 @@ Google Fonts ใช้ `display=swap` และมี Georgia/system sans-serif 
 
 ## Manual QA status
 
-Static validator และ Node tests ไม่แทน browser/assistive-technology testing ก่อน deploy ต้องตรวจ
-keyboard, focus return, export ทั้งเมื่อ CDN พร้อมและไม่พร้อม, font blocking, 320px, tablet, desktop,
-200% zoom และ reduced motion ใน browser จริง หาก environment ไม่มี Chromium ต้องบันทึกข้อจำกัดนั้น
-ใน pull request อย่างตรงไปตรงมา
+Milestone 8 (Issue #14) มี release gate และแบบบันทึกหลักฐานแบบทีละขั้นที่
+[`docs/RELEASE_QA.md`](docs/RELEASE_QA.md) ครอบคลุม core/combined/dream/trust, responsive,
+accessibility, export, dependency failure และ console/network ตัว validator ยังล็อก public routes,
+science ID/URL, trust/Combined/export contracts, external-model endpoints และ deferred html2canvas
+
+คอนเทนเนอร์ที่ใช้ทำ Issue #14 ไม่มี Chromium/Chrome, Playwright, Puppeteer, Selenium
+หรือ browser runtime ที่เชื่อถือได้ จึงไม่มีการอ้าง browser evidence หรือ screenshot สถานะปัจจุบันคือ
+**static/integration QA complete; browser validation pending** และยังไม่ประกาศเป็น Release Candidate
+ข้อจำกัดที่ไม่ block static gate คือ visual reflow, assistive technology, export pixels และ live
+console/network ยังต้องตรวจตามเอกสารใน browser จริงก่อน release
