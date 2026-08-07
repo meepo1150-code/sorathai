@@ -59,7 +59,7 @@ for (const [id, path] of sciences) {
       await expect(page).toHaveURL(new RegExp(`dob=01011990.*focus=${focus}`));
     }
     await page.locator("#logo-link").click();
-    await expect(page).toHaveURL(/index\.html\?dob=01011990#profile-result/);
+    await expect(page).toHaveURL(/index\.html\?dob=01011990(?:&focus=(?:identity|love|career|challenge))?#profile-result/);
     await expect(page.locator("#profile-result")).toBeVisible();
     assertNoErrors();
   });

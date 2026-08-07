@@ -45,7 +45,7 @@
 <script src="sorathai-site.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script><script src="sorathai-profile.js" defer></script><script src="sorathai-reading.js" defer></script><script src="sorathai-combined.js" defer></script>
   <script>
-  (function () { "use strict";
+  document.addEventListener("DOMContentLoaded", function () { "use strict";
     const $ = (id) => document.getElementById(id), profile = SorathaiProfile.fromLocation(location.search);
     if (!profile) { $("invalid-state").hidden = false; return; }
     const result = SorathaiCombined.synthesize(profile), base = SorathaiProfile.deriveBaseCard(profile), west = SorathaiReading.westernFor(profile.dob);
@@ -61,6 +61,6 @@
     $("explored-list").replaceChildren(...result.evidence.map((item)=>{const li=document.createElement("li"); li.innerHTML="<strong>"+item.scienceName+"</strong><span>"+item.basis+"</span>"; return li;}));
     $("reflection").textContent=result.statement;
     $("export-profile").addEventListener("click", async function(){ const status=$("live-status"); if(typeof html2canvas!=="function"){status.textContent="ไม่สามารถสร้างภาพได้ในขณะนี้";return;} status.textContent="กำลังสร้างภาพโปรไฟล์"; try{const canvas=await html2canvas($("combined-card"),{scale:2,useCORS:true,backgroundColor:"#f4f1ea",logging:false,windowWidth:Math.max(document.documentElement.clientWidth,$("combined-card").scrollWidth)});const a=document.createElement("a");a.download=SorathaiCombined.exportFilename(profile.dob);a.href=canvas.toDataURL("image/png");a.click();status.textContent="บันทึกภาพโปรไฟล์แล้ว";}catch(_){status.textContent="สร้างภาพไม่สำเร็จ กรุณาลองอีกครั้ง";}});
-  })();
+  });
   </script>
 </body></html>
