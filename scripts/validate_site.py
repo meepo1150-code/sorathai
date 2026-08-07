@@ -202,6 +202,30 @@ def validate_release_contracts() -> list[str]:
             errors.append(f"{page}: missing Combined Profile entry point")
     if 'id="combined-profile"' not in home or 'href="profile.html"' not in home:
         errors.append("index.html: missing Combined Profile entry point")
+    if 'load(location.hash === "#profile-result")' not in home:
+        errors.append("index.html: profile-result fragment is not handled during profile restoration")
+
+    for page in SCIENCES.values():
+        source = (ROOT / page).read_text(encoding="utf-8")
+        required_render_markers = (
+            "function render(", "if(profile)", "render(d,m,y,dob,p)",
+            "$('s-entry').style.display='none'", "$('s-result').classList.add('show')",
+        )
+        for marker in required_render_markers:
+            if marker not in source:
+                errors.append(f"{page}: incomplete profile render initialization path ({marker})")
+        if 'id="logo-link"' not in source or "SorathaiProfile.homeUrl(" not in source:
+            errors.append(f"{page}: profile-aware Home controls are missing")
+        if "$('back-link').href=home" not in source or "$('logo-link').href=home" not in source or "$('nav-home').href=home" not in source:
+            errors.append(f"{page}: not all Home controls use the DOB-preserving destination")
+
+    western = (ROOT / "western-astrology.html").read_text(encoding="utf-8")
+    if "ELI[" in western:
+        errors.append("western-astrology.html: stale ELI reference remains")
+    if "tr[0]" in western:
+        errors.append("western-astrology.html: stale bare tr reference remains")
+    if "z.trait" not in western:
+        errors.append("western-astrology.html: quote does not use canonical zodiac trait data")
 
     production_js = sorted(ROOT.glob("*.js"))
     forbidden = (

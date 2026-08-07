@@ -152,6 +152,10 @@
     return querySplit[0] + "?" + params.toString() + hashPart;
   }
 
+  function homeUrl(profile, focus) {
+    return readingUrl("index.html#profile-result", profile, focus);
+  }
+
   function markScienceExplored(profile, scienceId, focus) {
     const next = migrate(profile);
     if (!next || typeof scienceId !== "string" || !/^[a-z0-9-]+$/.test(scienceId)) return next;
@@ -160,5 +164,5 @@
     return next;
   }
 
-  return { VERSION, STORAGE_KEY, FOCUS_VALUES, isValidFocus, isValidISO, toISO, toLegacy, create, migrate, validProfile, fromParts, save, restore, clear, fromLocation, readingUrl, markScienceExplored, lifePath, deriveBaseCard };
+  return { VERSION, STORAGE_KEY, FOCUS_VALUES, isValidFocus, isValidISO, toISO, toLegacy, create, migrate, validProfile, fromParts, save, restore, clear, fromLocation, readingUrl, homeUrl, markScienceExplored, lifePath, deriveBaseCard };
 });

@@ -127,7 +127,7 @@ if(new URLSearchParams(location.search).get('dob')){
 </script></head>
 <body>
 <div class="ad ad-b" style="max-width:480px;margin:0 auto"><!-- AdSense 320x50 --></div>
-<header class="hdr"><a class="back" aria-label="กลับหน้าหลัก" href="index.html" id="back-link">‹</a><a class="logo" href="index.html">Sorathai</a><span class="hdr-tag">Biorhythm</span></header>
+<header class="hdr"><a class="back" aria-label="กลับหน้าหลัก" href="index.html" id="back-link">‹</a><a class="logo" href="index.html" id="logo-link">Sorathai</a><span class="hdr-tag">Biorhythm</span></header>
 <main class="page" role="main">
 <div class="s-entry" id="s-entry">
   <div class="et">
@@ -209,7 +209,7 @@ function $(i){return document.getElementById(i)} function tx(i,v){const e=$(i);i
 function validate(d,m,y){return window.SorathaiProfile.fromParts(d,m,y)?null:'วันที่ไม่ถูกต้อง กรุณาตรวจสอบอีกครั้ง'}
 function buildPickers(sd,sm,sy){for(let d=1;d<=31;d++){const o=document.createElement('option');o.value=d;o.textContent=d;sd.appendChild(o)}TH_MONTHS.forEach((m,i)=>{const o=document.createElement('option');o.value=i+1;o.textContent=m;sm.appendChild(o)});const ny=new Date().getFullYear()+543;for(let y=ny;y>=ny-100;y--){const o=document.createElement('option');o.value=y-543;o.textContent=y;sy.appendChild(o)};const t=new Date();sd.value=t.getDate();sm.value=t.getMonth()+1;sy.value=t.getFullYear()}
 function buildRelated(gid,cur,p){const g=$(gid);if(!g)return;g.innerHTML='';SCI.filter(s=>s.k!==cur).forEach(s=>{const a=document.createElement('a');a.className='rc';a.href=s.url+(p||'');a.innerHTML='<div class="rc-acc" style="background:'+s.acc+'"></div><div class="rc-b"><span class="rc-ico">'+s.i+'</span><div class="rc-org">'+s.org+'</div><div class="rc-name">'+s.n+'</div><div class="rc-cta">ดูดวงเต็ม ›</div></div>';g.appendChild(a)})}
-function buildDrawer(gid,p){const g=$(gid);if(!g)return;g.innerHTML='';SCI.forEach(s=>{const a=document.createElement('a');a.className='ditem';a.href=s.url+(p||'');a.innerHTML='<span class="dico">'+s.i+'</span>'+s.n;g.appendChild(a)});const dr=document.createElement('a');dr.className='ditem';dr.href='dream.html'+(p||'');dr.innerHTML='<span class="dico">💭</span>ทำนายฝัน';g.appendChild(dr)}
+function buildDrawer(gid,p){const g=$(gid);if(!g)return;g.innerHTML='';SCI.forEach(s=>{const a=document.createElement('a');a.className='ditem';a.href=s.url+(p||'');a.innerHTML='<span class="dico">'+s.i+'</span>'+s.n;g.appendChild(a)});const dr=document.createElement('a');dr.className='ditem';dr.href='dream.html';dr.innerHTML='<span class="dico">💭</span>ทำนายฝัน';g.appendChild(dr)}
 function openDrw(){$('ovl').classList.add('open');$('drw').classList.add('open');document.body.style.overflow='hidden'}
 function closeDrw(){$('ovl').classList.remove('open');$('drw').classList.remove('open');document.body.style.overflow=''}
 
@@ -242,7 +242,7 @@ function render(d,m,y,dob,p){
   const sects=[['กายภาพ (23 วัน)','d','พลังกายภาพ: '+bar(phy,'#c0392b')+(phy>20?'วันนี้ร่างกายอยู่ในสภาพดี เหมาะสำหรับกิจกรรมที่ต้องใช้พลังงาน':phy<-20?'ร่างกายต้องการการพักผ่อน ควรลดกิจกรรมหนัก':'พลังกายอยู่ในระดับปกติ ทำกิจกรรมได้ทุกอย่างตามปกติ')],['อารมณ์ (28 วัน)','d','พลังอารมณ์: '+bar(emo,'#2980b9')+(emo>20?'อารมณ์ดี เป็นวันที่ดีสำหรับการพบปะสังสรรค์':emo<-20?'อารมณ์อาจแปรปรวน ควรระวังการตัดสินใจด้วยอารมณ์':'อารมณ์สมดุล สามารถรับมือกับสถานการณ์ต่างๆ ได้ดี')],['สติปัญญา (33 วัน)','d','พลังสติปัญญา: '+bar(int,'#2d6a4f')+(int>20?'ความคิดแล่น เหมาะสำหรับงานที่ต้องการความคิดสร้างสรรค์':int<-20?'ควรหลีกเลี่ยงการตัดสินใจสำคัญวันนี้':'สติปัญญาอยู่ในระดับปกติ')]];
   sects.forEach(([tp,tag,txt])=>{const dv=document.createElement('div');dv.className='rdg';dv.innerHTML='<div class="rdg-tp" style="color:'+G+'">'+tp+'<span class="dpill" style="color:'+G+';border:0.5px solid '+GB+'">วันนี้</span></div><div class="rdg-b">'+txt+'</div>';rdgs.appendChild(dv)});
   $('lk-sec').innerHTML='<p class="lk-lbl">วัฏจักรชีวิต</p><div class="lk-g"><div class="lk-b"><div class="lk-bl">อายุปัจจุบัน</div><div class="lk-bv">'+Math.floor(days/365.25)+' ปี</div></div><div class="lk-b"><div class="lk-bl">วันที่ของชีวิต</div><div class="lk-bv">'+days.toLocaleString()+'</div></div></div>';
-  $('back-link').href='index.html'+p;$('nav-home').href='index.html'+p;$('nav-dream').href='dream.html'+p;$('nav-num').href='numerology.html'+p;
+  const profile=window.SorathaiProfile.fromLocation(location.search),home=window.SorathaiProfile.homeUrl(profile,new URLSearchParams(location.search).get('focus'));$('back-link').href=home;$('logo-link').href=home;$('nav-home').href=home;$('nav-dream').href='dream.html';$('nav-num').href='numerology.html'+p;
   buildRelated('rel-g','bio',p);buildDrawer('drw-g',p);
   window.SorathaiReading.enhance('biorhythm',window.SorathaiProfile.fromLocation(location.search));
   window.SorathaiCombined.addEntryPoint(window.SorathaiProfile.fromLocation(location.search));
