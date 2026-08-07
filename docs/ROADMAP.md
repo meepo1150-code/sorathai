@@ -116,6 +116,22 @@ Sorathai จะพัฒนาเป็น astrology character-building experien
 ทำ dream interpretation ภายใน browser, เพิ่ม sitemap/SEO validation และกำหนด performance budget ใน README
 การทดสอบ browser/manual ยังคงเป็น release check และต้องรายงานตามจริงเมื่อ environment ไม่มี Chromium
 
+## Milestone 8 — Browser QA and Release Candidate hardening
+
+เป้าหมาย: ล็อก regression contracts และตรวจ flow จริงก่อนตัดสินใจเป็น Release Candidate โดยไม่เพิ่ม feature
+
+- [x] เพิ่ม release checklist แบบทำตามได้ที่ `docs/RELEASE_QA.md`
+- [x] เพิ่ม static regression contracts สำหรับ routes, 8 sciences, Combined Profile, trust, export,
+  external model/API endpoints และ deferred third-party export script
+- [x] ตรวจ storage failure ด้วย unit tests; core model คืนค่า failure โดยไม่ throw
+- [ ] รัน manual matrix ครบใน real browser พร้อม console/network และ export evidence
+- [ ] ประกาศ Release Candidate หลัง browser evidence และ CI ผ่าน
+
+สถานะ Issue #14: **static/integration QA complete; browser validation pending** สภาพแวดล้อมพัฒนาไม่มี
+Chromium/Chrome หรือ Playwright/Puppeteer/Selenium ที่รันได้ จึงไม่ได้อ้าง browser validation
+ประเด็น non-blocking ต่อ static gate ที่ยังเปิดอยู่คือ visual/reflow, assistive-technology behavior,
+downloaded-image clipping และ runtime console/network ใน browser จริง
+
 ## Deferred
 
 งานต่อไปนี้ยังไม่ควรทำจนกว่า core experience จะเสถียร:

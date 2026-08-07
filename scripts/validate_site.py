@@ -17,6 +17,22 @@ REQUIRED_TRUST_PAGES = {
     "chinese-astrology.html", "numerology.html", "mayan.html", "biorhythm.html",
     "nakshatra.html", "celtic.html", "dream.html", "dream-result.html",
 }
+SCIENCES = {
+    "thai": "thai-astrology.html", "western": "western-astrology.html",
+    "chinese": "chinese-astrology.html", "numerology": "numerology.html",
+    "mayan": "mayan.html", "biorhythm": "biorhythm.html",
+    "nakshatra": "nakshatra.html", "celtic": "celtic.html",
+}
+REQUIRED_ROUTES = {
+    "index.html", "profile.html", "dream.html", "dream-result.html",
+    "about.html", "privacy.html", "contact.html", *SCIENCES.values(),
+}
+EXPORT_TARGETS = {
+    "index.html": ("export-card", "export-status"),
+    "profile.html": ("export-profile", "live-status"),
+    "dream-result.html": ("btn-shr", "dream-export-status"),
+    **{page: ("btn-shr", "export-status") for page in SCIENCES.values()},
+}
 
 
 class PageParser(HTMLParser):
@@ -29,9 +45,12 @@ class PageParser(HTMLParser):
         self.ids: list[str] = []
         self.html_lang = ""
         self.landmarks: set[str] = set()
+        self.scripts: list[dict[str, str]] = []
+        self.classes: set[str] = set()
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         values = {key.lower(): value for key, value in attrs if value is not None}
+        attributes = {key.lower() for key, _ in attrs}
         tag = tag.lower()
 
         if tag == "title":
@@ -46,9 +65,12 @@ class PageParser(HTMLParser):
             self.links.append(("href", values["href"]))
         elif tag in {"script", "img", "source"} and values.get("src"):
             self.links.append(("src", values["src"]))
+        if tag == "script" and values.get("src"):
+            self.scripts.append({**values, **{key: "" for key in attributes - values.keys()}})
 
         if values.get("id"):
             self.ids.append(values["id"])
+        self.classes.update(values.get("class", "").split())
         if tag in {"main", "header", "footer", "nav"}:
             self.landmarks.add(tag)
 
@@ -91,6 +113,9 @@ def validate_html() -> list[str]:
 
     if not html_files:
         return ["No HTML files found at repository root"]
+    present = {page.name for page in html_files}
+    for route in sorted(REQUIRED_ROUTES - present):
+        errors.append(f"required public route is missing: {route}")
 
     for page in html_files:
         parser = PageParser()
@@ -138,10 +163,56 @@ def validate_html() -> list[str]:
                 if trust_page not in targets:
                     errors.append(f"{page.name}: missing trust link to {trust_page}")
 
+        if page.name in EXPORT_TARGETS:
+            button, status = EXPORT_TARGETS[page.name]
+            if button not in parser.ids and button not in parser.classes:
+                errors.append(f"{page.name}: missing export control target '{button}'")
+            if status not in parser.ids:
+                errors.append(f"{page.name}: missing export status target '{status}'")
+            canvas_scripts = [script for script in parser.scripts if "html2canvas" in script.get("src", "")]
+            if not canvas_scripts:
+                errors.append(f"{page.name}: missing optional html2canvas script")
+            elif any("defer" not in script for script in canvas_scripts):
+                errors.append(f"{page.name}: html2canvas must be deferred")
+
         visible_source = page.read_text(encoding="utf-8").lower()
         if page.name == "biorhythm.html" and any(term in visible_source for term in ("พิสูจน์ทางวิทยาศาสตร์", "ยืนยันทางวิทยาศาสตร์", "scientifically proven")):
             errors.append(f"{page.name}: presents Biorhythm as established science")
 
+    return errors
+
+
+def validate_release_contracts() -> list[str]:
+    """Guard cross-page release contracts that are easy to break during content edits."""
+    errors: list[str] = []
+    reading = (ROOT / "sorathai-reading.js").read_text(encoding="utf-8")
+    combined = (ROOT / "sorathai-combined.js").read_text(encoding="utf-8")
+    home = (ROOT / "index.html").read_text(encoding="utf-8")
+    for science_id, page in SCIENCES.items():
+        if not (ROOT / page).exists():
+            continue
+        if f'{science_id}: {{ id: "{science_id}"' not in reading:
+            errors.append(f"sorathai-reading.js: missing canonical science ID '{science_id}'")
+        if f'{science_id}: {{ name:' not in combined or f'href: "{page}"' not in combined:
+            errors.append(f"sorathai-combined.js: science '{science_id}' is not aligned to {page}")
+        source = (ROOT / page).read_text(encoding="utf-8")
+        if f'readingContext("{science_id}")' not in source:
+            errors.append(f"{page}: reading context ID is not '{science_id}'")
+        if "SorathaiCombined.addEntryPoint" not in source:
+            errors.append(f"{page}: missing Combined Profile entry point")
+    if 'id="combined-profile"' not in home or 'href="profile.html"' not in home:
+        errors.append("index.html: missing Combined Profile entry point")
+
+    production_js = sorted(ROOT.glob("*.js"))
+    forbidden = (
+        "openai", "anthropic", "generativelanguage.googleapis.com",
+        "fetch(", "xmlhttprequest", "websocket(",
+    )
+    for path in production_js:
+        source = path.read_text(encoding="utf-8").lower()
+        for marker in forbidden:
+            if marker in source:
+                errors.append(f"{path.name}: forbidden external model/API endpoint marker '{marker}'")
     return errors
 
 
@@ -183,7 +254,7 @@ def validate_sitemap() -> list[str]:
 
 
 def main() -> int:
-    errors = validate_html() + validate_sitemap()
+    errors = validate_html() + validate_sitemap() + validate_release_contracts()
     if errors:
         print("Sorathai validation failed:\n")
         for error in errors:
