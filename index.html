@@ -599,7 +599,7 @@
         <div class="card-actions">
           <button class="text-button" id="export-card" type="button">
             บันทึกการ์ดเป็นภาพ</button
-          ><button class="text-button" id="change-date" type="button">
+          ><a class="text-button" id="combined-profile" href="profile.html" hidden>Combined Profile</a><button class="text-button" id="change-date" type="button">
             เปลี่ยนวันเกิด</button
           ><button class="text-button danger" id="reset-date" type="button">
             ล้างวันเกิด
@@ -637,6 +637,7 @@
     <script src="sorathai-profile.js"></script>
     <script src="sorathai-explore.js"></script>
     <script src="horoscope-data.js"></script>
+    <script src="sorathai-combined.js"></script>
     <script>
       (function () {
         "use strict";
@@ -781,6 +782,10 @@
             }),
           );
           SorathaiExplore.enhance($("science-grid"), function () { return SorathaiProfile.restore() || profile; });
+          const combinedLink = $("combined-profile");
+          combinedLink.href = SorathaiCombined.profileUrl("profile.html", profile, location.search, location.hash);
+          combinedLink.hidden = false;
+          combinedLink.textContent = "Combined Profile · " + SorathaiCombined.normaliseSciences(profile.exploredSciences).length + "/8";
           $("profile-result").classList.add("visible");
           if (scroll)
             $("profile-result").scrollIntoView({
