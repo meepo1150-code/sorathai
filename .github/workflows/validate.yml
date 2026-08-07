@@ -12,7 +12,7 @@ permissions:
 jobs:
   validate:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 15
 
     steps:
       - name: Check out repository
@@ -33,3 +33,15 @@ jobs:
 
       - name: Test shared profile model
         run: node --test tests/*.test.js
+
+      - name: Install browser test dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Run browser regression tests
+        run: npm run test:e2e
+
+      - name: Check whitespace errors
+        run: git diff --check

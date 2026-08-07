@@ -496,7 +496,7 @@
   </head>
   <body>
     <header class="home-header home-shell">
-      <a class="home-logo" href="index.html">Sorathai</a
+      <a class="home-logo" id="home-logo" href="index.html">Sorathai</a
       ><span class="home-kicker">Destiny profile</span>
     </header>
     <main>
@@ -789,6 +789,7 @@
           combinedLink.href = SorathaiCombined.profileUrl("profile.html", profile, location.search, location.hash);
           combinedLink.hidden = false;
           combinedLink.textContent = "Combined Profile · " + SorathaiCombined.normaliseSciences(profile.exploredSciences).length + "/8";
+          $("home-logo").href = SorathaiProfile.homeUrl(profile);
           $("profile-result").classList.add("visible");
           if (scroll)
             $("profile-result").scrollIntoView({
@@ -807,6 +808,14 @@
         function load(scroll) {
           const profile = SorathaiProfile.fromLocation(location.search);
           if (profile) {
+            if (!new URLSearchParams(location.search).has("dob")) {
+              history.replaceState(
+                { dob: profile.dob },
+                "",
+                SorathaiProfile.homeUrl(profile),
+              );
+              scroll = true;
+            }
             setForm(profile);
             render(profile, scroll);
           } else $("profile-result").classList.remove("visible");
