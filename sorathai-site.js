@@ -275,7 +275,63 @@
     if (document.getElementById("sorathai-deep-content-style")) return;
     const style = document.createElement("style");
     style.id = "sorathai-deep-content-style";
-    style.textContent = ".reading-basis{margin:20px 24px 0;padding:18px 20px;border:1px solid var(--bdr);border-radius:14px;background:var(--surf)}.reading-basis b{display:block;font-size:12px;margin-bottom:7px}.reading-basis p{font-size:13px;line-height:1.75;color:var(--t2)}";
+    style.textContent = `
+.page{width:min(100%,680px);max-width:680px;padding-bottom:110px}
+.hdr{max-width:680px;min-height:58px;padding:12px clamp(18px,5vw,30px)}
+.back{min-width:38px;min-height:38px;display:grid;place-items:center;margin:-6px 0 -6px -8px;border-radius:50%}
+.logo{font-size:18px}.hdr-tag{max-width:50%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.s-entry{min-height:100svh}
+.et{padding:clamp(54px,12vw,88px) clamp(20px,7vw,40px) 38px}
+.ey{letter-spacing:2.4px;margin-bottom:26px}
+.ep{font-size:clamp(58px,17vw,78px);margin-bottom:22px}
+.ettl{font-size:clamp(29px,8vw,38px);line-height:1.2;text-wrap:balance}
+.esub{font-size:13px;line-height:1.7;max-width:38ch;margin:8px auto 38px}
+.ef{padding:28px clamp(18px,7vw,36px) 34px}
+.ef-lbl{letter-spacing:2.4px;margin-bottom:18px}
+.drum{height:58px;border-radius:12px}
+.btn-go{min-height:54px;border-radius:12px}
+.ef-note{line-height:1.6}
+.rh{padding:clamp(48px,10vw,72px) clamp(18px,5vw,30px) clamp(36px,8vw,52px)}
+.rh-ey{margin-bottom:28px;letter-spacing:2.3px}
+.rh-p{font-size:clamp(58px,17vw,78px);margin-bottom:20px}
+.rh-ttl{font-size:clamp(30px,9vw,44px);line-height:1.12;max-width:16ch;margin:0 auto 10px;text-wrap:balance}
+.rh-sub{line-height:1.6;letter-spacing:1.4px}
+.facts{align-items:stretch}.fact{display:flex;flex-direction:column;justify-content:center;min-width:0;padding:17px 8px}.fv{overflow-wrap:anywhere;line-height:1.35}
+.cw{padding:26px clamp(18px,5vw,30px) 0}
+.sc{box-shadow:0 14px 40px rgba(35,31,25,.07);border-color:rgba(35,31,25,.1)}
+.sc-hd{padding:18px clamp(16px,4vw,22px)}
+.sc-day{font-size:21px;line-height:1.25}.sc-dob{font-size:11px;line-height:1.5}
+.sc-q{font-family:var(--sans);font-style:normal;font-size:14px;line-height:1.85;padding:18px 20px;margin:0 clamp(16px,4vw,22px)}
+.sc-ft{gap:12px;flex-wrap:wrap}.btn-shr{min-height:40px;padding:8px 15px}
+.deep-reading-card{box-shadow:0 14px 40px rgba(35,31,25,.07)}
+.inherited-layer{padding:20px clamp(16px,4vw,22px);background:#f4f1ea}
+.layer-relation{line-height:1.5}.science-signature{margin:18px 0 16px}
+.science-signature strong{font-size:20px}.science-signature small{font-size:11px;line-height:1.5}
+.base-facts div{padding:11px 12px}.base-facts dd{font-size:12px;line-height:1.45}
+.reading-basis{width:min(calc(100% - 36px),42rem);margin:28px auto 0;padding:17px 18px;border:0;border-left:3px solid var(--reading-accent,#9a6d25);border-radius:0 12px 12px 0;background:#f4f1ea}
+.reading-basis b{display:block;font-size:12px;margin-bottom:7px}.reading-basis p{font-size:13px;line-height:1.75;color:#625d55}
+.rdgs{width:min(100%,42rem);margin-inline:auto;padding:0 clamp(18px,5vw,30px)}
+.rdg{padding:clamp(30px,7vw,46px) 0}.rdg-tp{margin-bottom:14px;letter-spacing:2.1px;line-height:1.5}
+.rdg-b{font-family:var(--sans);font-style:normal;font-size:clamp(15px,4.2vw,17px);line-height:1.9;color:#3d3934;max-width:62ch}
+.reading-focus-emphasis{margin:16px 0;padding:22px 18px!important;border:1px solid var(--reading-accent,#9a6d25)!important;border-radius:16px;background:var(--surf);box-shadow:0 8px 24px rgba(35,31,25,.04)}
+.focus-context{max-width:680px;padding:11px clamp(18px,5vw,30px);line-height:1.55;letter-spacing:.6px}
+.lk,.rel{width:min(100%,42rem);margin-inline:auto;padding-left:clamp(18px,5vw,30px);padding-right:clamp(18px,5vw,30px)}
+.lk{padding-top:32px}.rel{padding-top:44px}.rel-lbl,.lk-lbl{letter-spacing:2.2px}
+.rel-g{gap:10px}.rc{min-height:132px}.rc-b{padding:14px 15px 16px}.rc-ico{font-size:22px;margin-bottom:8px}.rc-name{font-size:15px;line-height:1.3}.rc-cta{font-size:11px;line-height:1.45;margin-top:7px}
+.lk-g{gap:10px}.lk-b{padding:16px}.lk-bv{font-size:17px}
+.disc{max-width:42rem;margin-inline:auto;padding:28px clamp(18px,5vw,30px);line-height:1.75}
+.combined-entry{max-width:680px;margin:22px clamp(18px,5vw,30px);padding:18px 20px;border-radius:16px}
+.bnav{max-width:680px;min-height:62px}.nitem{min-height:62px;padding:9px 6px 8px;justify-content:center}.nico{font-size:20px}
+.drw{max-width:680px;border-radius:26px 26px 0 0;box-shadow:0 -18px 52px rgba(28,22,12,.13)}.drw-g,.drw-grid{gap:10px;padding:8px 18px 28px}.ditem{min-height:74px;justify-content:center;padding:12px 6px;line-height:1.35}
+@media(min-width:700px){.cw{padding-left:40px;padding-right:40px}.base-facts{grid-template-columns:repeat(4,minmax(0,1fr))}.base-facts .base-focus{grid-column:1/-1}}
+@media(max-width:340px){
+  .et{padding-inline:20px}.ef{padding-inline:18px}
+  .cw{padding-left:12px;padding-right:12px}.inherited-layer{padding:15px}
+  .facts{display:grid;grid-template-columns:1fr 1fr}.fact{border-bottom:1px solid var(--bdr)}
+  .reading-basis{width:calc(100% - 24px);padding:15px}
+  .rdgs,.lk,.rel{padding-left:14px;padding-right:14px}
+  .rel-g{grid-template-columns:1fr}.rc{min-height:0}
+}`;
     document.head.appendChild(style);
   }
 
@@ -349,6 +405,7 @@
   function loadDeepContent() {
     const scienceId = currentScienceId();
     if (!scienceId) return;
+    ensureDeepStyles();
     ensureSharedContent(function (content) {
       if (["mayan", "biorhythm", "nakshatra", "celtic"].includes(scienceId)) ensureDeepExtension(function (deepContent) { observeDeepReading(scienceId, content, deepContent); });
       else observeDeepReading(scienceId, content, null);
