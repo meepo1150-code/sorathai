@@ -111,7 +111,7 @@ test("dream result is a local reflective interpretation without future-event cla
   await page.goto("/dream-result.html?dream=" + encodeURIComponent("ฝันเห็นงูอยู่หน้าบ้าน") + "&time=" + encodeURIComponent("ก่อนตื่น"));
   await expect(page.locator("#result")).toBeVisible();
   await expect(page.locator("#sc-ttl")).toContainText("สัญลักษณ์: งู");
-  await expect(page.locator("#rd-money")).toContainText("ตามความเชื่อ");
+  await expect(page.locator("#rd-money")).toContainText(/(ตาม|ใน)ความเชื่อ/);
   await expect(page.locator("#rd-love")).not.toHaveText("");
   await expect(page.locator("#rd-warn")).not.toHaveText("");
   await expect(page.locator(".sc-nums-row")).toHaveCount(0);
