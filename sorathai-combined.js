@@ -8,10 +8,10 @@
   const ORDER = Object.freeze(["thai", "western", "chinese", "numerology", "mayan", "biorhythm", "nakshatra", "celtic"]);
   const ALIASES = Object.freeze({ west: "western", chin: "chinese", num: "numerology", bio: "biorhythm", naksh: "nakshatra" });
   const SCIENCES = Object.freeze({
-    thai: { name: "โหราศาสตร์ไทย", href: "thai-astrology.html" }, western: { name: "Western Astrology", href: "western-astrology.html" },
-    chinese: { name: "Chinese Astrology", href: "chinese-astrology.html" }, numerology: { name: "Numerology", href: "numerology.html" },
-    mayan: { name: "Mayan Tzolk’in", href: "mayan.html" }, biorhythm: { name: "Biorhythm", href: "biorhythm.html" },
-    nakshatra: { name: "Nakshatra", href: "nakshatra.html" }, celtic: { name: "Celtic Tree", href: "celtic.html" }
+    thai: { name: "โหราศาสตร์ไทย", href: "thai-astrology.html" }, western: { name: "โหราศาสตร์ตะวันตก", href: "western-astrology.html" },
+    chinese: { name: "โหราศาสตร์จีน", href: "chinese-astrology.html" }, numerology: { name: "เลขศาสตร์", href: "numerology.html" },
+    mayan: { name: "ปฏิทินมายา", href: "mayan.html" }, biorhythm: { name: "ไบโอริทึม", href: "biorhythm.html" },
+    nakshatra: { name: "ดาวฤกษ์อินเดีย", href: "nakshatra.html" }, celtic: { name: "ต้นไม้เคลต์", href: "celtic.html" }
   });
   const THEMES = Object.freeze({
     initiative: "การริเริ่ม", stability: "ความมั่นคง", adaptability: "การปรับตัว", sensitivity: "ความละเอียดอ่อน",
@@ -43,7 +43,6 @@
       const existing = hr.WESTERN[hr.getWesternIdx(day, month)];
       if (existing && typeof existing.n === "string" && typeof existing.el === "string") return { sign: existing.n, element: existing.el };
     }
-    // Same boundary fallback as SorathaiReading for dependency-free tests.
     const cutoffs = [20, 19, 21, 20, 21, 21, 23, 23, 23, 23, 22, 22];
     const signs = ["ราศีมังกร", "ราศีกุมภ์", "ราศีมีน", "ราศีเมษ", "ราศีพฤษภ", "ราศีเมถุน", "ราศีกรกฎ", "ราศีสิงห์", "ราศีกันย์", "ราศีตุล", "ราศีพิจิก", "ราศีธนู", "ราศีมังกร"];
     const elements = ["ดิน", "ลม", "น้ำ", "ไฟ", "ดิน", "ลม", "น้ำ", "ไฟ", "ดิน", "ลม", "น้ำ", "ไฟ", "ดิน"];
@@ -77,11 +76,13 @@
   }
   function names(ids) { return ids.map(function (id) { return SCIENCES[id].name; }).join(" และ "); }
   function reflectionText(count, repeated, distinct) {
-    if (!count) return "จาก 0 ศาสตร์ที่เปิดแล้ว ยังไม่มีหลักฐานเชิงสัญลักษณ์สำหรับสังเคราะห์";
-    const scope = "จาก " + count + " ศาสตร์ที่เปิดแล้ว ";
-    let text = repeated.length ? "ธีม" + repeated[0].label + "ปรากฏซ้ำใน " + names(repeated[0].sciences) : "ยังไม่มีธีมใดปรากฏซ้ำจากอย่างน้อย 2 ศาสตร์";
-    if (distinct.length) text += " ขณะที่ " + distinct[0].scienceName + " เพิ่มมุมเรื่อง" + distinct[0].themes.map(function (id) { return THEMES[id]; }).join("และ");
-    return scope + text;
+    if (!count) return "ยังไม่มีศาสตร์ที่เปิด จึงยังสรุปภาพร่วมไม่ได้";
+    const scope = "จาก " + count + " ศาสตร์ที่คุณเปิดแล้ว ";
+    let text = repeated.length
+      ? "เรื่องที่พูดตรงกันเด่นที่สุดคือ “" + repeated[0].label + "” เพราะปรากฏทั้งใน" + names(repeated[0].sciences)
+      : "ยังไม่มีประเด็นใดปรากฏซ้ำจากอย่างน้อย 2 ศาสตร์ จึงควรอ่านแต่ละมุมแยกกันก่อน";
+    if (distinct.length) text += " ขณะเดียวกัน" + distinct[0].scienceName + "เติมมุมเรื่อง" + distinct[0].themes.map(function (id) { return THEMES[id]; }).join("และ") + "ที่ศาสตร์อื่นยังไม่ได้เน้น";
+    return scope + text + " ความสอดคล้องนี้เป็นการซ้อนภาษาสัญลักษณ์จากหลายระบบ ไม่ใช่หลักฐานว่าคำทำนายเป็นข้อเท็จจริงทางวิทยาศาสตร์";
   }
   function exportFilename(dob) { return /^\d{4}-\d{2}-\d{2}$/.test(dob || "") ? "sorathai-combined-" + dob + ".png" : "sorathai-combined.png"; }
   function profileUrl(path, profile, search, hash) {
@@ -92,8 +93,9 @@
   function addEntryPoint(profile) {
     if (!root.document || !profile) return;
     const card = document.getElementById("share-card"); if (!card || document.querySelector(".combined-entry")) return;
+    const count = normaliseSciences(profile.exploredSciences).length;
     const a = document.createElement("a"); a.className = "combined-entry"; a.href = profileUrl("profile.html", profile, location.search, location.hash);
-    a.innerHTML = "<strong>Combined Destiny Profile</strong><span>รวมชั้นที่สำรวจแล้ว " + normaliseSciences(profile.exploredSciences).length + "/8 →</span>";
+    a.innerHTML = "<strong>โปรไฟล์รวมหลายศาสตร์</strong><span>ดูสิ่งที่หลายศาสตร์พูดตรงกัน " + count + "/8 →</span>";
     card.insertAdjacentElement("afterend", a);
   }
   return { ORDER, ALIASES, SCIENCES, THEMES, MAPS, normaliseSciences, western, evidenceFor, reflectionText, synthesize, exportFilename, profileUrl, addEntryPoint };
