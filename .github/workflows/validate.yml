@@ -31,8 +31,11 @@ jobs:
       - name: Validate HTML links, metadata, and sitemap
         run: python scripts/validate_site.py
 
-      - name: Test shared profile model
+      - name: Test shared profile and reading models
         run: node --test tests/*.test.js
+
+      - name: Review generated reading content
+        run: node scripts/review_readings.js
 
       - name: Install browser test dependencies
         run: npm install --no-audit --no-fund
