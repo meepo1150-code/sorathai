@@ -37,9 +37,12 @@ test("home creates and restores the Base Destiny Card", async ({ page }) => {
   await page.selectOption("#birth-year", "1990");
   await page.locator("#birth-form").evaluate((form) => form.requestSubmit());
   await expect(page.locator("#profile-result")).toBeVisible();
+  await expect(page.locator(".base-consultation")).toBeVisible();
+  await expect(page.locator(".base-consultation")).toContainText("วิธีคิดและตัดสินใจ");
   await expect(page).toHaveURL(/dob=01011990/);
   await page.reload();
   await expect(page.locator("#profile-result")).toBeVisible();
+  await expect(page.locator(".base-consultation")).toBeVisible();
   assertNoErrors();
 });
 
@@ -47,6 +50,9 @@ for (const [id, path] of sciences) {
   test(`${id} renders direct, focused, and returns to its Base Card`, async ({ page }) => {
     const assertNoErrors = failOnPageErrors(page);
     await expectReading(page, path);
+    await expect(page.locator(".reading-basis")).toBeVisible();
+    await expect(page.locator("#rdgs")).not.toContainText("ดวงวันนี้");
+    await expect(page.locator("#rdgs")).not.toContainText("ช่วงนี้");
     await expectReading(page, path, "invalid");
     await expect(page.locator(".focus-context")).toHaveCount(0);
     for (const focus of focuses) {
@@ -55,6 +61,7 @@ for (const [id, path] of sciences) {
       await expect(page.locator(".explore-sheet")).toBeVisible();
       await page.locator(`[data-focus="${focus}"]`).click();
       await expect(page.locator("#s-result")).toBeVisible();
+      await expect(page.locator(".reading-basis")).toBeVisible();
       await expect(page.locator("#rh-ttl")).not.toHaveText("");
       await expect(page).toHaveURL(new RegExp(`dob=01011990.*focus=${focus}`));
     }
@@ -72,17 +79,21 @@ test("RPG choice, science links, history, and Combined Profile retain progress",
   await expect(page.locator(".explore-sheet")).toBeVisible();
   await page.locator('[data-focus="identity"]').click();
   await expect(page.locator("#s-result")).toBeVisible();
+  await expect(page.locator(".reading-basis")).toBeVisible();
   await expect(page).toHaveURL(/dob=01011990.*focus=identity/);
 
   await page.locator('#rel-g a[href*="western-astrology.html"]').click();
   await expect(page.locator("#s-result")).toBeVisible();
+  await expect(page.locator(".reading-basis")).toBeVisible();
   await expect(page).toHaveURL(/western-astrology\.html\?dob=01011990.*focus=identity/);
   await page.reload();
   await expect(page.locator("#s-result")).toBeVisible();
 
   await page.locator(".combined-entry").click();
   await expect(page.locator("#combined-result")).toBeVisible();
+  await expect(page.locator("#profile-title")).toContainText("ภาพรวมที่หลายศาสตร์เห็นร่วมกัน");
   await expect(page.locator("#progress-text")).toContainText("2 จาก 8");
+  await expect(page.locator("#reflection")).toContainText("ไม่ใช่หลักฐาน");
   await expect(page).toHaveURL(/dob=01011990/);
   await page.locator("#return-base").click();
   await expect(page.locator("#profile-result")).toBeVisible();
@@ -92,5 +103,20 @@ test("RPG choice, science links, history, and Combined Profile retain progress",
   await expect(page.locator("#combined-result")).toBeVisible();
   await page.goForward();
   await expect(page.locator("#profile-result")).toBeVisible();
+  assertNoErrors();
+});
+
+test("dream result is a local reflective interpretation without future-event claims", async ({ page }) => {
+  const assertNoErrors = failOnPageErrors(page);
+  await page.goto("/dream-result.html?dream=" + encodeURIComponent("ฝันเห็นงูอยู่หน้าบ้าน") + "&time=" + encodeURIComponent("ก่อนตื่น"));
+  await expect(page.locator("#result")).toBeVisible();
+  await expect(page.locator("#sc-ttl")).toContainText("สัญลักษณ์: งู");
+  await expect(page.locator("#rd-money")).toContainText("ตามความเชื่อ");
+  await expect(page.locator("#rd-love")).not.toHaveText("");
+  await expect(page.locator("#rd-warn")).not.toHaveText("");
+  await expect(page.locator(".sc-nums-row")).toHaveCount(0);
+  await expect(page.locator(".lucky-sec")).toHaveCount(0);
+  await expect(page.locator(".readings")).not.toContainText("จะได้เงิน");
+  await expect(page.locator(".readings")).not.toContainText("จะมีคนเข้ามา");
   assertNoErrors();
 });
