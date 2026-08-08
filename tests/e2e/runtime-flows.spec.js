@@ -142,7 +142,8 @@ test("trust routes render as first-party pages without browser errors", async ({
     await page.goto(`/${route}`);
     await expect(page.locator("main")).toBeVisible();
     await expect(page.locator("h1")).toBeVisible();
-    await expect(page.locator('a[href="privacy.html"], a[href="/privacy.html"]')).toHaveCountGreaterThan(0);
+    const privacyLinks = page.locator('a[href="privacy.html"], a[href="/privacy.html"]');
+    expect(await privacyLinks.count()).toBeGreaterThan(0);
   }
   assertNoErrors();
 });
