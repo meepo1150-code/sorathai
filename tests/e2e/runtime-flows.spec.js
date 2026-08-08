@@ -14,7 +14,9 @@ const focuses = ["identity", "love", "career", "challenge"];
 const trustRoutes = ["about.html", "privacy.html", "contact.html"];
 const releaseViewports = [
   { width: 320, height: 568 },
+  { width: 375, height: 667 },
   { width: 390, height: 844 },
+  { width: 430, height: 932 },
   { width: 768, height: 1024 },
   { width: 1280, height: 800 },
 ];
@@ -41,6 +43,18 @@ async function expectNoHorizontalPageOverflow(page) {
     scrollWidth: document.documentElement.scrollWidth,
   }));
   expect(dimensions.scrollWidth).toBeLessThanOrEqual(dimensions.clientWidth + 1);
+}
+
+async function seedCombinedProfile(page, exploredSciences) {
+  await page.goto("/index.html");
+  await page.evaluate((ids) => {
+    let profile = SorathaiProfile.create("1990-01-01");
+    ids.forEach((id) => {
+      profile = SorathaiProfile.markScienceExplored(profile, id);
+    });
+    if (!SorathaiProfile.save(profile)) throw new Error("failed to seed Sorathai profile");
+  }, exploredSciences);
+  await page.goto("/profile.html?dob=01011990");
 }
 
 test("home creates and restores the Base Destiny Card", async ({ page }) => {
@@ -121,6 +135,37 @@ test("RPG choice, science links, history, and Combined Profile retain progress",
   assertNoErrors();
 });
 
+test("Combined Profile renders the 0, 1, 2, and 8-science release states", async ({ page }) => {
+  const assertNoErrors = failOnPageErrors(page);
+  const allScienceIds = sciences.map(([id]) => id);
+  const states = [
+    { ids: [], available: false, copy: "ยังไม่มีศาสตร์ที่เปิด" },
+    { ids: ["thai"], available: false, copy: "คุณเปิดแล้ว 1 จาก 8 ศาสตร์" },
+    { ids: ["thai", "western"], available: true, progress: "2 จาก 8" },
+    { ids: allScienceIds, available: true, progress: "8 จาก 8" },
+  ];
+
+  for (const state of states) {
+    await seedCombinedProfile(page, state.ids);
+    if (state.available) {
+      await expect(page.locator("#combined-result")).toBeVisible();
+      await expect(page.locator("#progress-text")).toContainText(state.progress);
+      await expect(page.locator("#repeated-list")).toBeVisible();
+      await expect(page.locator("#distinct-list")).toBeVisible();
+      await expect(page.locator("#explored-list li")).toHaveCount(state.ids.length);
+      await expect(page.locator("#missing-section")).toHaveCount(state.ids.length === 8 ? 1 : 1);
+      if (state.ids.length === 8) await expect(page.locator("#missing-section")).toBeHidden();
+      else await expect(page.locator("#missing-section")).toBeVisible();
+    } else {
+      await expect(page.locator("#empty-state")).toBeVisible();
+      await expect(page.locator("#empty-copy")).toContainText(state.copy);
+      await expect(page.locator("#combined-result")).toBeHidden();
+    }
+    await expectNoHorizontalPageOverflow(page);
+  }
+  assertNoErrors();
+});
+
 test("dream result is a local reflective interpretation without future-event claims", async ({ page }) => {
   const assertNoErrors = failOnPageErrors(page);
   await page.goto("/dream-result.html?dream=" + encodeURIComponent("ฝันเห็นงูอยู่หน้าบ้าน") + "&time=" + encodeURIComponent("ก่อนตื่น"));
@@ -148,16 +193,35 @@ test("trust routes render as first-party pages without browser errors", async ({
   assertNoErrors();
 });
 
-test("release viewports keep Home and a deep reading free of page-level horizontal overflow", async ({ page }) => {
+test("release viewports keep Home, deep reading, Combined, Dream, and trust pages free of page-level horizontal overflow", async ({ page }) => {
   const assertNoErrors = failOnPageErrors(page);
   for (const viewport of releaseViewports) {
     await page.setViewportSize(viewport);
     await page.goto("/index.html?dob=01011990#profile-result");
     await expect(page.locator("#profile-result")).toBeVisible();
     await expectNoHorizontalPageOverflow(page);
+
     await page.goto("/western-astrology.html?dob=01011990&focus=identity");
     await expect(page.locator("#s-result")).toBeVisible();
     await expectNoHorizontalPageOverflow(page);
+
+    await seedCombinedProfile(page, ["thai", "western"]);
+    await expect(page.locator("#combined-result")).toBeVisible();
+    await expectNoHorizontalPageOverflow(page);
+
+    await page.goto("/dream.html");
+    await expect(page.locator("#dream-input")).toBeVisible();
+    await expectNoHorizontalPageOverflow(page);
+
+    await page.goto("/dream-result.html?dream=" + encodeURIComponent("ฝันเห็นงูอยู่หน้าบ้าน") + "&time=" + encodeURIComponent("ก่อนตื่น"));
+    await expect(page.locator("#result")).toBeVisible();
+    await expectNoHorizontalPageOverflow(page);
+
+    for (const route of trustRoutes) {
+      await page.goto(`/${route}`);
+      await expect(page.locator("main")).toBeVisible();
+      await expectNoHorizontalPageOverflow(page);
+    }
   }
   assertNoErrors();
 });
