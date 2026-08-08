@@ -5,19 +5,22 @@
 })(typeof globalThis !== "undefined" ? globalThis : this, function (root) {
   "use strict";
 
-  const FOCUS_LABELS = Object.freeze({ identity: "ตัวตน", love: "ความรัก", career: "การงาน", challenge: "จุดท้าทาย" });
+  const DEFAULT_FOCUS_LABELS = Object.freeze({ identity: "ตัวตน", love: "ความรัก", career: "การงาน", challenge: "จุดที่ควรระวัง" });
+  const FOCUS_LABELS = root.SorathaiContent && root.SorathaiContent.FOCUS
+    ? Object.freeze(Object.fromEntries(Object.entries(root.SorathaiContent.FOCUS).map(([id, item]) => [id, item.label])))
+    : DEFAULT_FOCUS_LABELS;
   const SCIENCES = Object.freeze({
-    thai: { id: "thai", name: "โหราศาสตร์ไทย", layer: "THAI LAYER", origin: "คติโหราศาสตร์ไทย", icon: "☀️", accent: "#9a6d25" },
-    western: { id: "western", name: "Western Astrology", layer: "WESTERN LAYER", origin: "คติกรีก–โรมัน", icon: "♈", accent: "#4a6582" },
-    chinese: { id: "chinese", name: "Chinese Astrology", layer: "CHINESE LAYER", origin: "คติจีนโบราณ", icon: "龍", accent: "#9a4b42" },
-    numerology: { id: "numerology", name: "Numerology", layer: "NUMEROLOGY LAYER", origin: "คติเลขศาสตร์", icon: "№", accent: "#386451" },
-    mayan: { id: "mayan", name: "Mayan Tzolk’in", layer: "MAYAN LAYER", origin: "ปฏิทินเมโซอเมริกา", icon: "◉", accent: "#705883" },
-    biorhythm: { id: "biorhythm", name: "Biorhythm", layer: "BIORHYTHM LAYER", origin: "แบบจำลองความเชื่อเรื่องวัฏจักร", icon: "◌", accent: "#426d82" },
-    nakshatra: { id: "nakshatra", name: "Nakshatra", layer: "NAKSHATRA LAYER", origin: "คติโหราศาสตร์อินเดีย", icon: "✦", accent: "#9b603b" },
-    celtic: { id: "celtic", name: "Celtic Tree", layer: "CELTIC LAYER", origin: "คติต้นไม้เคลต์", icon: "❧", accent: "#52705a" }
+    thai: { id: "thai", name: "โหราศาสตร์ไทย", layer: "มุมมองโหราศาสตร์ไทย", origin: "คติโหราศาสตร์ไทย", icon: "☀️", accent: "#9a6d25" },
+    western: { id: "western", name: "โหราศาสตร์ตะวันตก", layer: "มุมมองราศีตะวันตก", origin: "คติโหราศาสตร์ตะวันตก", icon: "♈", accent: "#4a6582" },
+    chinese: { id: "chinese", name: "โหราศาสตร์จีน", layer: "มุมมองนักษัตรจีน", origin: "คติโหราศาสตร์จีน", icon: "龍", accent: "#9a4b42" },
+    numerology: { id: "numerology", name: "เลขศาสตร์", layer: "มุมมองเลขเส้นทางชีวิต", origin: "คติเลขศาสตร์", icon: "№", accent: "#386451" },
+    mayan: { id: "mayan", name: "ปฏิทินมายา", layer: "มุมมองปฏิทินมายา", origin: "วัฏจักร Tzolk’in", icon: "◉", accent: "#705883" },
+    biorhythm: { id: "biorhythm", name: "ไบโอริทึม", layer: "มุมมองวัฏจักรไบโอริทึม", origin: "แบบจำลองวัฏจักรตามวันเกิด", icon: "◌", accent: "#426d82" },
+    nakshatra: { id: "nakshatra", name: "ดาวฤกษ์อินเดีย", layer: "มุมมองดาวฤกษ์อินเดีย", origin: "คติโหราศาสตร์อินเดีย", icon: "✦", accent: "#9b603b" },
+    celtic: { id: "celtic", name: "ต้นไม้เคลต์", layer: "มุมมองต้นไม้เคลต์", origin: "คติต้นไม้เชิงสัญลักษณ์", icon: "❧", accent: "#52705a" }
   });
   function safeConfig(id) {
-    return SCIENCES[id] || { id: "reading", name: "Deep Reading", layer: "REFLECTION LAYER", origin: "มุมมองเชิงสัญลักษณ์", icon: "✦", accent: "#776b58" };
+    return SCIENCES[id] || { id: "reading", name: "คำอ่านเชิงลึก", layer: "มุมมองเพิ่มเติม", origin: "มุมมองเชิงสัญลักษณ์", icon: "✦", accent: "#776b58" };
   }
   function westernFor(iso) {
     if (typeof iso !== "string") return null;
@@ -29,8 +32,6 @@
         return { sign: existing.n, element: existing.el };
       }
     }
-
-    // Dependency-free fallback for unit tests and partial embeds without horoscope-data.js.
     const cutoffs = [20, 19, 21, 20, 21, 21, 23, 23, 23, 23, 22, 22];
     const signs = ["ราศีมังกร", "ราศีกุมภ์", "ราศีมีน", "ราศีเมษ", "ราศีพฤษภ", "ราศีเมถุน", "ราศีกรกฎ", "ราศีสิงห์", "ราศีกันย์", "ราศีตุล", "ราศีพิจิก", "ราศีธนู", "ราศีมังกร"];
     const elements = ["ดิน", "ลม", "น้ำ", "ไฟ", "ดิน", "ลม", "น้ำ", "ไฟ", "ดิน", "ลม", "น้ำ", "ไฟ", "ดิน"];
@@ -57,7 +58,7 @@
   }
   function reorderForFocus(container, focus) {
     if (!container || !focus) return;
-    const needles = { identity: ["นิสัย", "ตัวตน", "บุคลิก"], love: ["รัก", "สัมพันธ์"], career: ["งาน", "การเงิน"], challenge: ["ระวัง", "ท้าทาย", "เงา"] }[focus];
+    const needles = { identity: ["นิสัย", "ตัวตน", "บุคลิก", "ภาพรวม"], love: ["รัก", "สัมพันธ์"], career: ["งาน", "การเงิน", "เส้นทาง"], challenge: ["ระวัง", "ท้าทาย", "เงา", "บทเรียน"] }[focus];
     const sections = Array.from(container.querySelectorAll(".rdg"));
     const match = sections.find(function (section) { return needles.some(function (word) { return section.textContent.indexOf(word) >= 0; }); });
     if (match) { match.classList.add("reading-focus-emphasis"); container.insertBefore(match, container.firstChild); }
@@ -71,7 +72,8 @@
     let layer = card.querySelector(".inherited-layer");
     if (!layer) { layer = document.createElement("section"); layer.className = "inherited-layer"; card.querySelector(".sc-top").insertAdjacentElement("afterend", layer); }
     const date = base.dob.split("-").reverse().join("/");
-    layer.innerHTML = '<div class="layer-relation"><span>BASE PROFILE</span><b aria-hidden="true">＋</b><span>' + context.science.layer + '</span></div><div class="science-signature"><span aria-hidden="true">' + context.science.icon + '</span><div><strong>' + context.science.name + '</strong><small>' + context.science.origin + '</small></div></div><dl class="base-facts"><div><dt>วันเกิด</dt><dd>' + date + '</dd></div><div><dt>Base archetype</dt><dd>' + base.archetype + '</dd></div><div><dt>ราศี · ธาตุ</dt><dd>' + base.westernSign + ' · ' + base.element + '</dd></div><div><dt>Life path</dt><dd>' + base.lifePath + '</dd></div>' + (base.focusLabel ? '<div class="base-focus"><dt>มุมที่เลือก</dt><dd>' + base.focusLabel + '</dd></div>' : '') + '</dl>';
+    const intro = root.SorathaiContent && typeof root.SorathaiContent.scienceIntro === "function" ? root.SorathaiContent.scienceIntro(scienceId) : context.science.origin;
+    layer.innerHTML = '<div class="layer-relation"><span>โปรไฟล์พื้นฐาน</span><b aria-hidden="true">＋</b><span>' + context.science.layer + '</span></div><div class="science-signature"><span aria-hidden="true">' + context.science.icon + '</span><div><strong>' + context.science.name + '</strong><small>' + intro + '</small></div></div><dl class="base-facts"><div><dt>วันเกิด</dt><dd>' + date + '</dd></div><div><dt>ภาพรวมพื้นฐาน</dt><dd>' + base.archetype + '</dd></div><div><dt>ราศี · ธาตุ</dt><dd>' + base.westernSign + ' · ' + base.element + '</dd></div><div><dt>เลขเส้นทางชีวิต</dt><dd>' + base.lifePath + '</dd></div>' + (base.focusLabel ? '<div class="base-focus"><dt>เรื่องที่อยากรู้</dt><dd>' + base.focusLabel + '</dd></div>' : '') + '</dl>';
     reorderForFocus(document.getElementById("rdgs"), context.focus);
     document.querySelectorAll("a[href]").forEach(function (link) {
       const value = link.getAttribute("href");
