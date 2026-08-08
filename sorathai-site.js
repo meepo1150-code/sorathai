@@ -34,14 +34,8 @@
   });
 
   const SCIENCE_ACCENTS = Object.freeze({
-    thai: "#c8952c",
-    western: "#4a6fa5",
-    chinese: "#c0392b",
-    numerology: "#2d6a4f",
-    mayan: "#7b4f9e",
-    biorhythm: "#2980b9",
-    nakshatra: "#d35400",
-    celtic: "#4a7c59"
+    thai: "#c8952c", western: "#4a6fa5", chinese: "#c0392b", numerology: "#2d6a4f",
+    mayan: "#7b4f9e", biorhythm: "#2980b9", nakshatra: "#d35400", celtic: "#4a7c59"
   });
 
   function markDecorativeIcons() {
@@ -98,20 +92,21 @@
     if (node && typeof value === "string" && node.textContent !== value) node.textContent = value;
   }
 
-  function ensureSharedContent(callback) {
-    if (window.SorathaiContent) { callback(window.SorathaiContent); return; }
-    let script = document.querySelector('script[data-sorathai-content-loader]');
+  function loadScriptOnce(src, marker, globalName, callback) {
+    if (window[globalName]) { callback(window[globalName]); return; }
+    let script = document.querySelector('script[' + marker + ']');
     if (!script) {
       script = document.createElement("script");
-      script.src = "sorathai-content.js";
+      script.src = src;
       script.async = true;
-      script.dataset.sorathaiContentLoader = "true";
+      script.setAttribute(marker, "true");
       document.head.appendChild(script);
     }
-    script.addEventListener("load", function () {
-      if (window.SorathaiContent) callback(window.SorathaiContent);
-    }, { once: true });
+    script.addEventListener("load", function () { if (window[globalName]) callback(window[globalName]); }, { once: true });
   }
+
+  function ensureSharedContent(callback) { loadScriptOnce("sorathai-content.js", "data-sorathai-content-loader", "SorathaiContent", callback); }
+  function ensureDeepExtension(callback) { loadScriptOnce("sorathai-deep-content.js", "data-sorathai-deep-loader", "SorathaiDeepContent", callback); }
 
   function ensureHomeStyles() {
     if (document.getElementById("sorathai-home-content-style")) return;
@@ -122,11 +117,9 @@
   }
 
   function updateConsultationSection(content) {
-    const facts = document.querySelector("#destiny-card .card-facts");
-    const elementNode = document.getElementById("fact-element");
+    const facts = document.querySelector("#destiny-card .card-facts"), elementNode = document.getElementById("fact-element");
     if (!facts || !elementNode || !content || typeof content.base !== "function") return;
-    const element = elementNode.textContent.replace(/^ธาตุ/, "").trim();
-    const reading = content.base(element);
+    const element = elementNode.textContent.replace(/^ธาตุ/, "").trim(), reading = content.base(element);
     if (!reading) return;
     setText(document.getElementById("card-summary"), reading.summary);
     let section = document.querySelector("#destiny-card .base-consultation");
@@ -137,15 +130,12 @@
       section.innerHTML = '<div class="base-consultation-row"><b>วิธีคิดและตัดสินใจ</b><p data-base="decision"></p></div><div class="base-consultation-row"><b>สิ่งที่คนอื่นมักเห็นในตัวคุณ</b><p data-base="visible"></p></div><div class="base-consultation-row"><b>จุดแข็ง</b><p data-base="strength"></p></div><div class="base-consultation-row caution"><b>จุดที่ควรระวัง</b><p data-base="caution"></p></div>';
       facts.insertAdjacentElement("afterend", section);
     }
-    ["decision", "visible", "strength", "caution"].forEach(function (key) {
-      setText(section.querySelector('[data-base="' + key + '"]'), reading[key]);
-    });
+    ["decision", "visible", "strength", "caution"].forEach(function (key) { setText(section.querySelector('[data-base="' + key + '"]'), reading[key]); });
   }
 
   function updateHomeScienceCards(content) {
     document.querySelectorAll("#science-grid a[data-science-id]").forEach(function (card) {
-      const id = card.dataset.scienceId;
-      const title = card.querySelector("h3"), description = card.querySelector("p");
+      const id = card.dataset.scienceId, title = card.querySelector("h3"), description = card.querySelector("p");
       if (content && typeof content.scienceName === "function") setText(title, content.scienceName(id));
       if (HOME_SCIENCE_DESCRIPTIONS[id]) setText(description, HOME_SCIENCE_DESCRIPTIONS[id]);
       if (title) card.dataset.scienceName = title.textContent;
@@ -202,38 +192,43 @@
     document.head.appendChild(style);
   }
 
-  function deepSectionsFor(scienceId, content, profile) {
+  function biorhythmValues(y, m, d) {
+    const now = new Date(), today = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()), born = Date.UTC(y, m - 1, d);
+    const days = Math.floor((today - born) / 86400000);
+    return {
+      physical: Math.round(Math.sin(2 * Math.PI * days / 23) * 100),
+      emotional: Math.round(Math.sin(2 * Math.PI * days / 28) * 100),
+      intellectual: Math.round(Math.sin(2 * Math.PI * days / 33) * 100)
+    };
+  }
+
+  function deepSectionsFor(scienceId, content, profile, deepContent) {
     if (!profile || !window.HR) return [];
     const parts = profile.dob.split("-").map(Number), y = parts[0], m = parts[1], d = parts[2];
-    if (scienceId === "thai" && typeof content.thaiReading === "function") {
-      const day = window.HR.THAI_DAY[new Date(y, m - 1, d).getDay()];
-      return content.thaiReading(day);
-    }
-    if (scienceId === "western" && typeof content.westernReading === "function") {
-      const sign = window.HR.WESTERN[window.HR.getWesternIdx(d, m)];
-      return content.westernReading(sign);
-    }
-    if (scienceId === "chinese" && typeof content.chineseReading === "function") {
-      const sign = window.HR.CHINESE[window.HR.getChineseIdx(y)];
-      return content.chineseReading(sign);
-    }
+    if (scienceId === "thai" && typeof content.thaiReading === "function") return content.thaiReading(window.HR.THAI_DAY[new Date(y, m - 1, d).getDay()]);
+    if (scienceId === "western" && typeof content.westernReading === "function") return content.westernReading(window.HR.WESTERN[window.HR.getWesternIdx(d, m)]);
+    if (scienceId === "chinese" && typeof content.chineseReading === "function") return content.chineseReading(window.HR.CHINESE[window.HR.getChineseIdx(y)]);
     if (scienceId === "numerology" && typeof content.numerologyReading === "function") {
       const card = window.SorathaiProfile.deriveBaseCard(profile), lifePath = card && card.lifePath;
-      const data = window.HR.NUMEROLOGY[lifePath] || window.HR.NUMEROLOGY[1];
-      return content.numerologyReading(lifePath, data);
+      return content.numerologyReading(lifePath, window.HR.NUMEROLOGY[lifePath] || window.HR.NUMEROLOGY[1]);
     }
+    if (!deepContent) return [];
+    if (scienceId === "mayan" && typeof deepContent.mayanReading === "function") return deepContent.mayanReading(window.HR.getMayan(d, m, y));
+    if (scienceId === "nakshatra" && typeof deepContent.nakshatraReading === "function") return deepContent.nakshatraReading(window.HR.getNakshatra(d, m, y));
+    if (scienceId === "celtic" && typeof deepContent.celticReading === "function") return deepContent.celticReading(window.HR.getCeltic(d, m));
+    if (scienceId === "biorhythm" && typeof deepContent.biorhythmReading === "function") return deepContent.biorhythmReading(biorhythmValues(y, m, d));
     return [];
   }
 
-  function rewriteDeepReading(scienceId, content) {
+  function rewriteDeepReading(scienceId, content, deepContent) {
     const result = document.getElementById("s-result"), rdgs = document.getElementById("rdgs");
     if (!result || !rdgs || !result.classList.contains("show") || !window.SorathaiProfile) return;
     const profile = window.SorathaiProfile.fromLocation(location.search);
     if (!profile) return;
-    const sections = deepSectionsFor(scienceId, content, profile);
+    const sections = deepSectionsFor(scienceId, content, profile, deepContent);
     if (!sections.length) return;
-    const stamp = scienceId + ":" + profile.dob;
-    if (rdgs.dataset.sorathaiContentStamp === stamp) return;
+    const dayStamp = scienceId === "biorhythm" ? ":" + new Date().toISOString().slice(0, 10) : "", stamp = scienceId + ":" + profile.dob + dayStamp;
+    if (rdgs.dataset.sorathaiContentStamp === stamp && rdgs.querySelector(".rdg")) return;
     ensureDeepStyles();
     let basis = result.querySelector(".reading-basis");
     if (!basis) {
@@ -257,17 +252,19 @@
     if (window.SorathaiReading && typeof window.SorathaiReading.enhance === "function") window.SorathaiReading.enhance(scienceId, profile);
   }
 
+  function observeDeepReading(scienceId, content, deepContent) {
+    rewriteDeepReading(scienceId, content, deepContent);
+    const result = document.getElementById("s-result"), rdgs = document.getElementById("rdgs");
+    if (result) new MutationObserver(function () { rewriteDeepReading(scienceId, content, deepContent); }).observe(result, { attributes: true, attributeFilter: ["class"] });
+    if (rdgs) new MutationObserver(function () { rewriteDeepReading(scienceId, content, deepContent); }).observe(rdgs, { childList: true });
+  }
+
   function loadDeepContent() {
     const scienceId = currentScienceId();
-    if (!scienceId || !["thai", "western", "chinese", "numerology"].includes(scienceId)) return;
+    if (!scienceId) return;
     ensureSharedContent(function (content) {
-      rewriteDeepReading(scienceId, content);
-      const result = document.getElementById("s-result"), rdgs = document.getElementById("rdgs");
-      if (result) new MutationObserver(function () { rewriteDeepReading(scienceId, content); }).observe(result, { attributes: true, attributeFilter: ["class"] });
-      if (rdgs) new MutationObserver(function () {
-        if (rdgs.dataset.sorathaiContentStamp) return;
-        rewriteDeepReading(scienceId, content);
-      }).observe(rdgs, { childList: true });
+      if (["mayan", "biorhythm", "nakshatra", "celtic"].includes(scienceId)) ensureDeepExtension(function (deepContent) { observeDeepReading(scienceId, content, deepContent); });
+      else observeDeepReading(scienceId, content, null);
     });
   }
 
