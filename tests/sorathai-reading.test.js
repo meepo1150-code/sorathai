@@ -52,8 +52,8 @@ test("export filenames are stable and include a safe science id", () => {
   assert.equal(Reading.exportFilename("unknown", "bad"), "sorathai-reading.png");
 });
 
-test("unknown science configuration has a safe neutral fallback", () => {
-  assert.deepEqual(Reading.safeConfig("missing"), { id: "reading", name: "Deep Reading", layer: "REFLECTION LAYER", origin: "มุมมองเชิงสัญลักษณ์", icon: "✦", accent: "#776b58" });
+test("unknown science configuration has a safe neutral Thai-first fallback", () => {
+  assert.deepEqual(Reading.safeConfig("missing"), { id: "reading", name: "คำอ่านเชิงลึก", layer: "มุมมองเพิ่มเติม", origin: "มุมมองเชิงสัญลักษณ์", icon: "✦", accent: "#776b58" });
 });
 
 test("reading helpers leave deterministic profile powers unchanged", () => {
