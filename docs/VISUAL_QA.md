@@ -15,6 +15,8 @@ The Playwright regression suite covers Home and a representative deep reading at
 
 Automated checks protect against page-level horizontal overflow and retain the existing runtime, persistence, exploration, Combined Profile, Dream, trust-route, reduced-motion, dependency-failure, and export-fallback flows.
 
+Phase 1 of Milestone 9 passed the complete automated matrix before Home/Base-specific polish began.
+
 ## Visual review order
 
 Review narrow mobile first, then expand outward:
