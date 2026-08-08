@@ -11,6 +11,13 @@ const sciences = [
   ["celtic", "celtic.html"],
 ];
 const focuses = ["identity", "love", "career", "challenge"];
+const trustRoutes = ["about.html", "privacy.html", "contact.html"];
+const releaseViewports = [
+  { width: 320, height: 568 },
+  { width: 390, height: 844 },
+  { width: 768, height: 1024 },
+  { width: 1280, height: 800 },
+];
 
 function failOnPageErrors(page) {
   const errors = [];
@@ -26,6 +33,14 @@ async function expectReading(page, path, focus) {
   await expect(page.locator("#rh-ttl")).not.toHaveText("");
   await expect(page.locator("#rdgs .rdg").first()).toBeVisible();
   await expect(page).toHaveURL(/dob=01011990/);
+}
+
+async function expectNoHorizontalPageOverflow(page) {
+  const dimensions = await page.evaluate(() => ({
+    clientWidth: document.documentElement.clientWidth,
+    scrollWidth: document.documentElement.scrollWidth,
+  }));
+  expect(dimensions.scrollWidth).toBeLessThanOrEqual(dimensions.clientWidth + 1);
 }
 
 test("home creates and restores the Base Destiny Card", async ({ page }) => {
@@ -118,5 +133,57 @@ test("dream result is a local reflective interpretation without future-event cla
   await expect(page.locator(".lucky-sec")).toHaveCount(0);
   await expect(page.locator(".readings")).not.toContainText("จะได้เงิน");
   await expect(page.locator(".readings")).not.toContainText("จะมีคนเข้ามา");
+  assertNoErrors();
+});
+
+test("trust routes render as first-party pages without browser errors", async ({ page }) => {
+  const assertNoErrors = failOnPageErrors(page);
+  for (const route of trustRoutes) {
+    await page.goto(`/${route}`);
+    await expect(page.locator("main")).toBeVisible();
+    await expect(page.locator("h1")).toBeVisible();
+    await expect(page.locator('a[href="privacy.html"], a[href="/privacy.html"]')).toHaveCountGreaterThan(0);
+  }
+  assertNoErrors();
+});
+
+test("release viewports keep Home and a deep reading free of page-level horizontal overflow", async ({ page }) => {
+  const assertNoErrors = failOnPageErrors(page);
+  for (const viewport of releaseViewports) {
+    await page.setViewportSize(viewport);
+    await page.goto("/index.html?dob=01011990#profile-result");
+    await expect(page.locator("#profile-result")).toBeVisible();
+    await expectNoHorizontalPageOverflow(page);
+    await page.goto("/western-astrology.html?dob=01011990&focus=identity");
+    await expect(page.locator("#s-result")).toBeVisible();
+    await expectNoHorizontalPageOverflow(page);
+  }
+  assertNoErrors();
+});
+
+test("URL-driven deep reading survives unavailable localStorage", async ({ page }) => {
+  await page.addInitScript(() => {
+    const fail = () => { throw new Error("storage blocked for release QA"); };
+    Storage.prototype.getItem = fail;
+    Storage.prototype.setItem = fail;
+    Storage.prototype.removeItem = fail;
+  });
+  const assertNoErrors = failOnPageErrors(page);
+  await page.goto("/western-astrology.html?dob=01011990&focus=love");
+  await expect(page.locator("#s-result")).toBeVisible();
+  await expect(page.locator("#rdgs .rdg").first()).toBeVisible();
+  await expect(page).toHaveURL(/dob=01011990.*focus=love/);
+  assertNoErrors();
+});
+
+test("reduced-motion preference preserves visible core states", async ({ page }) => {
+  const assertNoErrors = failOnPageErrors(page);
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/index.html?dob=01011990#profile-result");
+  await expect(page.locator("#profile-result")).toBeVisible();
+  await page.locator('a[data-science-id="thai"]').click();
+  await expect(page.locator(".explore-sheet")).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(page.locator(".explore-sheet")).not.toBeVisible();
   assertNoErrors();
 });
