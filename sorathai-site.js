@@ -213,6 +213,15 @@
       const sign = window.HR.WESTERN[window.HR.getWesternIdx(d, m)];
       return content.westernReading(sign);
     }
+    if (scienceId === "chinese" && typeof content.chineseReading === "function") {
+      const sign = window.HR.CHINESE[window.HR.getChineseIdx(y)];
+      return content.chineseReading(sign);
+    }
+    if (scienceId === "numerology" && typeof content.numerologyReading === "function") {
+      const card = window.SorathaiProfile.deriveBaseCard(profile), lifePath = card && card.lifePath;
+      const data = window.HR.NUMEROLOGY[lifePath] || window.HR.NUMEROLOGY[1];
+      return content.numerologyReading(lifePath, data);
+    }
     return [];
   }
 
@@ -235,20 +244,12 @@
     }
     setText(basis.querySelector("b"), content.scienceName(scienceId) + " กำลังดูอะไร");
     setText(basis.querySelector("p"), content.scienceIntro(scienceId));
-    const accent = SCIENCE_ACCENTS[scienceId] || "#776b58";
-    const fragment = document.createDocumentFragment();
+    const accent = SCIENCE_ACCENTS[scienceId] || "#776b58", fragment = document.createDocumentFragment();
     sections.forEach(function (section) {
-      const item = document.createElement("div");
-      item.className = "rdg";
-      const title = document.createElement("div");
-      title.className = "rdg-tp";
-      title.style.color = accent;
-      title.textContent = section.title;
-      const body = document.createElement("div");
-      body.className = "rdg-b";
-      body.textContent = section.body;
-      item.append(title, body);
-      fragment.appendChild(item);
+      const item = document.createElement("div"); item.className = "rdg";
+      const title = document.createElement("div"); title.className = "rdg-tp"; title.style.color = accent; title.textContent = section.title;
+      const body = document.createElement("div"); body.className = "rdg-b"; body.textContent = section.body;
+      item.append(title, body); fragment.appendChild(item);
     });
     rdgs.replaceChildren(fragment);
     rdgs.dataset.sorathaiContentStamp = stamp;
@@ -258,7 +259,7 @@
 
   function loadDeepContent() {
     const scienceId = currentScienceId();
-    if (!scienceId || (scienceId !== "thai" && scienceId !== "western")) return;
+    if (!scienceId || !["thai", "western", "chinese", "numerology"].includes(scienceId)) return;
     ensureSharedContent(function (content) {
       rewriteDeepReading(scienceId, content);
       const result = document.getElementById("s-result"), rdgs = document.getElementById("rdgs");
