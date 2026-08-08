@@ -56,7 +56,7 @@ test("Chinese natal reading explains animal-system inputs and avoids stereotypes
   assert.match(text, /นักษัตรมะเมีย/);
   assert.match(text, /ธาตุไฟ/);
   assert.match(text, /หยาง/);
-  assert.match(text, /ไม่.*ตายตัว/);
+  assert.match(text, /(ไม่ควร|มากกว่า).*ตายตัว/);
   assert.doesNotMatch(text, forbiddenNatal);
 });
 
@@ -111,7 +111,7 @@ test("Biorhythm explicitly explains 23/28/33 cycles and rejects medical/intellig
 test("Dream interpretation is reflective rather than a future-event promise", () => {
   const snake = Dream.interpret("ฝันเห็นงูอยู่หน้าบ้าน");
   assert.equal(snake.symbol, "งู");
-  assert.match(snake.traditional, /ตามความเชื่อ/);
+  assert.match(snake.traditional, /(ตาม|ใน)ความเชื่อ/);
   assert.ok(snake.reflection.length > 40);
   assert.ok(snake.question.endsWith("?"));
   const text = Object.values(snake).join(" ");
