@@ -112,7 +112,92 @@
     if (document.getElementById("sorathai-home-content-style")) return;
     const style = document.createElement("style");
     style.id = "sorathai-home-content-style";
-    style.textContent = ".base-consultation{margin:22px 0 4px;border-block:1px solid #d8d0c1}.base-consultation-row{padding:14px 2px;border-bottom:1px solid #d8d0c1}.base-consultation-row:last-child{border-bottom:0}.base-consultation-row b{display:block;font-size:11px;margin-bottom:5px}.base-consultation-row p{font-size:13px;line-height:1.7;color:#565149}.base-consultation-row.caution b{color:#8a352e}";
+    style.textContent = `
+.home-header{min-height:68px;height:auto;padding-block:14px}
+.home-logo{font-size:24px}
+.home-kicker{font-size:10px;letter-spacing:.18em}
+.landing{padding:clamp(36px,7vw,76px) 0 clamp(64px,10vw,110px)}
+.landing-grid{gap:clamp(36px,7vw,72px)}
+.intro-mark{margin-bottom:28px}
+.intro h1{text-wrap:balance}
+.intro p{font-size:clamp(15px,2.5vw,17px);line-height:1.85}
+.birth-panel{border-color:rgba(35,31,25,.1);box-shadow:0 20px 60px rgba(35,29,19,.08)}
+.birth-panel h2{font-size:26px}
+.birth-lead{line-height:1.75}
+.field select{border-radius:12px;transition:border-color .15s,box-shadow .15s}
+.primary{border-radius:12px;min-height:56px}
+.privacy{max-width:38ch;margin-inline:auto;line-height:1.65}
+.result{padding:clamp(62px,10vw,104px) 0}
+.result-heading{max-width:620px;margin:0 auto 36px}
+.result-heading h2{font-size:clamp(34px,7vw,48px);line-height:1.12;text-wrap:balance}
+.result-heading p{max-width:52ch;margin-inline:auto;font-size:15px;line-height:1.8}
+.destiny-card{border-color:#d2c8b6;box-shadow:0 28px 72px rgba(35,29,19,.11)}
+.card-top{min-height:66px}
+.card-main{padding-block:clamp(34px,6vw,48px)}
+.sign-row{align-items:flex-start}
+.sign-glyph{flex:0 0 auto}
+.identity h3{line-height:1.12;text-wrap:balance}
+.summary{font-family:var(--sans);font-style:normal;font-size:16px;line-height:1.85;color:#3e3933;margin:30px 0 28px}
+.card-facts{margin-bottom:4px}
+.fact{padding-block:17px}
+.base-consultation{margin:6px 0 0;border-top:0;border-bottom:1px solid #d8d0c1}
+.base-consultation-row{padding:18px 2px;border-bottom:1px solid #d8d0c1}
+.base-consultation-row:last-child{border-bottom:0}
+.base-consultation-row b{display:block;font-size:12px;letter-spacing:.01em;margin-bottom:7px}
+.base-consultation-row p{font-size:14px;line-height:1.8;color:#4e4942;max-width:58ch}
+.base-consultation-row.caution{background:linear-gradient(90deg,rgba(138,53,46,.045),transparent);padding-inline:10px;margin-inline:-10px}
+.base-consultation-row.caution b{color:#8a352e}
+.powers-title{margin-top:30px;font-weight:600}
+.powers{gap:16px 24px;padding:16px;border:1px solid rgba(35,31,25,.08);border-radius:14px;background:rgba(255,255,255,.35)}
+.power-head{font-size:12px}.power-track{height:4px}
+.power-note{max-width:58ch;line-height:1.7}
+.card-actions{max-width:680px;margin-top:22px;gap:8px}
+.text-button{min-height:46px;padding:9px 17px}
+#combined-profile{font-weight:700;border-color:#a9997f;background:#f1ecdf}
+#combined-profile.ready{background:#24221e;color:#fff;border-color:#24221e}
+#export-card{border-color:#aa9b81}
+#reset-date{border-color:transparent;text-decoration:underline;text-underline-offset:4px}
+.explore{margin-top:clamp(74px,11vw,112px);padding-top:clamp(32px,5vw,52px);border-top:1px solid var(--bdr)}
+.explore>p{max-width:58ch;font-size:15px;line-height:1.8}
+.science-grid{gap:14px;margin-top:32px}
+.science-card{min-height:112px;border-radius:16px;padding:21px;gap:16px;box-shadow:0 7px 22px rgba(35,31,25,.035)}
+.science-card:hover{box-shadow:0 10px 28px rgba(35,31,25,.07)}
+.science-card h3{font-size:16px}.science-card p{font-size:13px;line-height:1.65}
+.science-icon{width:38px;height:38px;display:grid;place-items:center;border-radius:50%;background:#f6f3ec}
+.arrow{font-size:17px}
+.dream{margin-top:34px;padding:26px 24px;border:1px solid var(--bdr);border-radius:16px;background:rgba(255,255,255,.45)}
+.dream strong{font:500 18px/1.4 var(--serif)}
+.dream p{font-size:13px;line-height:1.75;max-width:60ch}
+.disclaimer{margin-top:58px;line-height:1.75}
+@media(min-width:760px){
+  .landing-grid{grid-template-columns:minmax(0,1.15fr) minmax(330px,.85fr)}
+  .birth-panel{padding:34px}
+  .science-card{min-height:126px}
+}
+@media(max-width:520px){
+  .home-shell{padding-inline:18px}
+  .home-kicker{font-size:9px}
+  .landing{min-height:auto;padding-top:30px}
+  .intro h1{font-size:clamp(40px,13vw,58px)}
+  .date-fields{gap:7px}
+  .field select{height:54px;padding-inline:7px}
+  .card-top{padding:17px 19px}
+  .card-main{padding:30px 19px 26px}
+  .sign-row{gap:14px}
+  .sign-glyph{width:66px;height:66px;font-size:44px}
+  .summary{margin-top:24px}
+  .card-actions{display:grid;grid-template-columns:1fr 1fr;width:100%}
+  .card-actions .text-button{width:100%;justify-content:center;text-align:center}
+  #combined-profile{grid-column:1/-1;order:-1}
+  #reset-date{border:1px solid transparent}
+  .science-card{padding:18px 16px;min-height:104px}
+  .dream{padding:22px 18px}
+}
+@media(max-width:350px){
+  .card-actions{grid-template-columns:1fr}
+  #combined-profile{grid-column:auto}
+  .powers{grid-template-columns:1fr;padding:14px}
+}`;
     document.head.appendChild(style);
   }
 
@@ -160,8 +245,10 @@
     }
     const combined = document.getElementById("combined-profile");
     if (combined && !combined.hidden) {
-      const match = combined.textContent.match(/(\d+\/8)/);
-      setText(combined, "โปรไฟล์รวม" + (match ? " · " + match[1] : ""));
+      const match = combined.textContent.match(/(\d+)\/8/);
+      const count = match ? Number(match[1]) : 0;
+      setText(combined, "โปรไฟล์รวม" + (match ? " · " + match[0] : ""));
+      combined.classList.toggle("ready", count >= 2);
     }
     updateConsultationSection(content);
     updateHomeScienceCards(content);
