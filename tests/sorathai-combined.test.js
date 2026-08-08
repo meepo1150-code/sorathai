@@ -65,19 +65,31 @@ test("only explored sciences contribute and output changes with explored layers"
   assert.notDeepEqual(two, three);
 });
 
-test("reflective synthesis names repeated support and a distinct perspective", () => {
+test("reflective synthesis names repeated support and a distinct perspective in Thai", () => {
   const result = Combined.synthesize(profile(["western", "chinese", "numerology"]));
-  assert.match(result.statement, /^จาก 3 ศาสตร์ที่เปิดแล้ว/);
-  assert.match(result.statement, /ธีมการแสดงออกปรากฏซ้ำใน Chinese Astrology และ Numerology/);
-  assert.match(result.statement, /ขณะที่ Western Astrology เพิ่มมุมเรื่องความมั่นคง/);
+  assert.match(result.statement, /^จาก 3 ศาสตร์ที่คุณเปิดแล้ว/);
+  assert.match(result.statement, /เรื่องที่พูดตรงกันเด่นที่สุดคือ “การแสดงออก”/);
+  assert.match(result.statement, /โหราศาสตร์จีน และ เลขศาสตร์/);
+  assert.match(result.statement, /โหราศาสตร์ตะวันตกเติมมุมเรื่องความมั่นคง/);
+  assert.match(result.statement, /ไม่ใช่หลักฐานว่าคำทำนายเป็นข้อเท็จจริงทางวิทยาศาสตร์/);
 });
 
 test("reflective synthesis has a scoped fallback and changes with layers", () => {
   const two = Combined.synthesize(profile(["thai", "western"]));
   const three = Combined.synthesize(profile(["western", "chinese", "numerology"]));
-  assert.match(two.statement, /ยังไม่มีธีมใดปรากฏซ้ำจากอย่างน้อย 2 ศาสตร์/);
+  assert.match(two.statement, /ยังไม่มีประเด็นใดปรากฏซ้ำจากอย่างน้อย 2 ศาสตร์/);
   assert.notEqual(two.statement, three.statement);
   assert.equal(Combined.synthesize(profile(["numerology", "chinese", "western"])).statement, three.statement);
+});
+
+test("combined science names are Thai-first", () => {
+  assert.equal(Combined.SCIENCES.western.name, "โหราศาสตร์ตะวันตก");
+  assert.equal(Combined.SCIENCES.chinese.name, "โหราศาสตร์จีน");
+  assert.equal(Combined.SCIENCES.numerology.name, "เลขศาสตร์");
+  assert.equal(Combined.SCIENCES.mayan.name, "ปฏิทินมายา");
+  assert.equal(Combined.SCIENCES.biorhythm.name, "ไบโอริทึม");
+  assert.equal(Combined.SCIENCES.nakshatra.name, "ดาวฤกษ์อินเดีย");
+  assert.equal(Combined.SCIENCES.celtic.name, "ต้นไม้เคลต์");
 });
 
 test("synthesis never changes deterministic profile powers", () => {
