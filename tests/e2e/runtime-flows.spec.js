@@ -14,7 +14,9 @@ const focuses = ["identity", "love", "career", "challenge"];
 const trustRoutes = ["about.html", "privacy.html", "contact.html"];
 const releaseViewports = [
   { width: 320, height: 568 },
+  { width: 375, height: 667 },
   { width: 390, height: 844 },
+  { width: 430, height: 932 },
   { width: 768, height: 1024 },
   { width: 1280, height: 800 },
 ];
