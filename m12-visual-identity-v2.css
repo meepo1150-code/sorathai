@@ -1,0 +1,80 @@
+/* Milestone 12 — Sorathai visual identity v2
+   Editorial celestial system: richer identity without changing reading semantics. */
+
+:root{--sora-paper:#f8f1e5;--sora-ink:#211d18;--sora-hair:rgba(77,59,36,.14)}
+
+/* Reading hero: one composed object, not a white utility panel. */
+body[data-reading-science] .rh{
+  min-height:330px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:64px 42px 58px!important;
+  background:
+    radial-gradient(circle at 50% 38%,rgba(255,255,255,.82) 0 8%,transparent 32%),
+    radial-gradient(circle at 8% 8%,color-mix(in srgb,var(--identity-accent) 7%,transparent),transparent 28%),
+    radial-gradient(circle at 92% 88%,color-mix(in srgb,var(--identity-accent) 8%,transparent),transparent 31%),
+    linear-gradient(145deg,color-mix(in srgb,var(--identity-paper) 94%,#fff),color-mix(in srgb,var(--identity-accent) 7%,var(--identity-paper)))!important;
+}
+body[data-reading-science] .rh::before{inset:13px;border-radius:16px;border-color:color-mix(in srgb,var(--identity-accent) 20%,transparent)}
+body[data-reading-science] .rh::after{opacity:.105!important;filter:saturate(.75)}
+body[data-reading-science] .rh-lbl{font-size:10px!important;letter-spacing:.28em!important;font-weight:700!important;margin-bottom:22px!important;color:var(--identity-accent)!important}
+body[data-reading-science] .reading-emblem{width:92px!important;height:92px!important;margin-bottom:27px!important;background:color-mix(in srgb,var(--identity-paper) 84%,#fff)!important;box-shadow:0 14px 34px rgba(47,35,20,.06),inset 0 0 0 10px rgba(255,255,255,.32)!important}
+body[data-reading-science] .reading-emblem::before{inset:10px!important;border-color:color-mix(in srgb,var(--identity-accent) 34%,transparent)!important}
+body[data-reading-science] .reading-emblem::after{inset:-8px!important;border:1px dotted color-mix(in srgb,var(--identity-accent) 25%,transparent)!important;border-radius:50%;content:"";position:absolute}
+body[data-reading-science] #rh-ttl{font-size:clamp(34px,5vw,49px)!important;line-height:1.08!important;letter-spacing:-.025em!important;color:var(--sora-ink)!important;text-wrap:balance}
+body[data-reading-science] #rh-sub{margin-top:12px!important;font-size:11px!important;letter-spacing:.12em!important;color:color-mix(in srgb,var(--identity-accent) 50%,#777)!important}
+
+/* Science families: motifs become recognizable signatures. */
+body[data-reading-science="thai"] .rh::after{background:repeating-conic-gradient(from 0deg at 50% 50%,transparent 0 14deg,var(--identity-accent) 14deg 14.35deg,transparent 14.7deg 30deg);mask-image:radial-gradient(circle at center,transparent 0 31%,#000 32% 51%,transparent 52%)}
+body[data-reading-science="western"] .rh::after{background:radial-gradient(circle at 50% 50%,transparent 0 115px,var(--identity-accent) 116px 117px,transparent 118px 147px,var(--identity-accent) 148px 149px,transparent 150px),repeating-conic-gradient(from 0deg at 50% 50%,transparent 0 29deg,var(--identity-accent) 29deg 29.35deg,transparent 29.7deg 30deg);mask-image:radial-gradient(circle at center,transparent 0 20%,#000 21% 58%,transparent 59%)}
+body[data-reading-science="chinese"] .rh::after{background:radial-gradient(ellipse at 18% 78%,transparent 0 34%,var(--identity-accent) 34.4% 34.9%,transparent 35.4% 48%,var(--identity-accent) 48.4% 48.9%,transparent 49.4%),radial-gradient(ellipse at 82% 25%,transparent 0 30%,var(--identity-accent) 30.4% 30.9%,transparent 31.4% 44%,var(--identity-accent) 44.4% 44.9%,transparent 45.4%)}
+body[data-reading-science="numerology"] .rh::after{background:linear-gradient(30deg,transparent 49.6%,var(--identity-accent) 49.8% 50.2%,transparent 50.4%),linear-gradient(90deg,transparent 49.6%,var(--identity-accent) 49.8% 50.2%,transparent 50.4%);background-size:62px 62px;mask-image:radial-gradient(circle at center,#000,transparent 68%)}
+body[data-reading-science="mayan"] .rh::after{background:repeating-radial-gradient(circle at center,transparent 0 22px,var(--identity-accent) 22.5px 23px,transparent 23.5px 37px);mask-image:radial-gradient(circle at center,transparent 0 28%,#000 29% 62%,transparent 63%)}
+body[data-reading-science="biorhythm"] .rh::after{background:radial-gradient(ellipse at 50% 52%,transparent 0 28%,var(--identity-accent) 28.4% 28.9%,transparent 29.4% 42%,var(--identity-accent) 42.4% 42.9%,transparent 43.4%);transform:scaleX(1.9)!important}
+body[data-reading-science="nakshatra"] .rh::after{background:radial-gradient(circle,var(--identity-accent) 0 1.2px,transparent 1.7px) 0 0/43px 43px,repeating-conic-gradient(from 0deg at 50% 50%,transparent 0 12.5deg,var(--identity-accent) 12.8deg 13.1deg,transparent 13.4deg 27.7deg);mask-image:radial-gradient(circle at center,transparent 0 30%,#000 31% 60%,transparent 61%)}
+body[data-reading-science="celtic"] .rh::after{background:radial-gradient(ellipse at 50% 115%,transparent 0 41%,var(--identity-accent) 41.4% 41.9%,transparent 42.4% 50%,var(--identity-accent) 50.4% 50.9%,transparent 51.4%),linear-gradient(90deg,transparent 49.7%,var(--identity-accent) 49.8% 50.2%,transparent 50.3%);mask-image:linear-gradient(to top,#000,transparent 88%)}
+
+/* Facts visually attach to the identity plate. */
+body[data-reading-science] .focus-context{padding-block:12px!important;font-size:12px!important;letter-spacing:.025em!important}
+body[data-reading-science] .facts{transform:translateY(-1px);box-shadow:0 16px 38px rgba(47,35,20,.045)!important}
+body[data-reading-science] .fact{padding:20px 12px!important}
+body[data-reading-science] .fl{font-size:9px!important;letter-spacing:.16em!important;text-transform:uppercase}
+body[data-reading-science] .fv{font-family:"Noto Serif Thai",serif;font-size:15px!important;font-weight:700!important}
+
+/* Base card: turn the personal identity into the visual centerpiece. */
+#destiny-card[data-base-element] .card-main{padding-top:42px!important}
+#destiny-card[data-base-element] .identity{position:relative;max-width:650px}
+#destiny-card[data-base-element] .sign-glyph{width:100px!important;height:100px!important;font-size:49px!important;flex:0 0 100px!important;position:relative}
+#destiny-card[data-base-element] .sign-glyph::before{content:"";position:absolute;inset:-10px;border-radius:50%;border:1px dotted color-mix(in srgb,var(--base-accent) 34%,transparent)}
+#destiny-card[data-base-element] .sign-glyph::after{content:"";position:absolute;inset:-18px;border-radius:50%;border:1px solid color-mix(in srgb,var(--base-accent-2) 18%,transparent)}
+#destiny-card[data-base-element] .identity h3{font-size:clamp(30px,4.2vw,44px)!important;line-height:1.12!important;letter-spacing:-.025em!important;text-wrap:balance}
+#destiny-card[data-base-element] .identity p{font-size:13px!important;letter-spacing:.025em!important;margin-top:7px!important}
+#destiny-card[data-base-element] .summary{font-family:"Noto Serif Thai",serif;font-size:18px!important;line-height:1.85!important;max-width:780px;margin-top:34px!important}
+#destiny-card[data-base-element] .card-facts{margin-top:31px!important;border-block:1px solid color-mix(in srgb,var(--base-accent) 18%,transparent)!important}
+#destiny-card[data-base-element] .fact{padding-block:18px!important}
+
+/* Element motifs gain a central, emblematic composition. */
+#destiny-card[data-base-element="earth"] .card-main::before{height:300px!important;bottom:-65px!important;opacity:.13!important;background:linear-gradient(150deg,transparent 0 44%,var(--base-accent) 44.25% 44.65%,transparent 45%) 0 78px/250px 135px repeat-x,linear-gradient(30deg,transparent 0 45%,var(--base-accent-2) 45.25% 45.65%,transparent 46%) 110px 70px/285px 145px repeat-x,repeating-linear-gradient(0deg,transparent 0 32px,color-mix(in srgb,var(--base-accent) 42%,transparent) 32.5px 33px,transparent 33.5px 54px)}
+#destiny-card[data-base-element="water"] .card-main::before{height:280px!important;opacity:.13!important}
+#destiny-card[data-base-element="fire"] .card-main::before{width:390px!important;height:390px!important;opacity:.095!important}
+#destiny-card[data-base-element="air"] .card-main::before{height:260px!important;opacity:.11!important}
+
+/* Editorial reading panels: hierarchy over dashboard repetition. */
+body[data-reading-science] .rdg{padding:26px 28px 28px!important;border-radius:18px!important;box-shadow:0 12px 32px rgba(48,36,22,.035)!important}
+body[data-reading-science] .rdg h3{font-size:17px!important;letter-spacing:-.01em!important;margin-bottom:10px!important}
+body[data-reading-science] .rdg p{font-size:15px!important;line-height:1.85!important;max-width:68ch}
+body[data-reading-science] .rdg:nth-child(even){margin-left:18px}
+body[data-reading-science] .rdg:nth-child(odd){margin-right:18px}
+
+@media(max-width:620px){
+ body[data-reading-science] .rh{min-height:300px;padding:52px 22px 48px!important}
+ body[data-reading-science] .reading-emblem{width:80px!important;height:80px!important;margin-bottom:24px!important}
+ body[data-reading-science] #rh-ttl{font-size:34px!important}
+ #destiny-card[data-base-element] .card-main{padding-top:32px!important}
+ #destiny-card[data-base-element] .sign-glyph{width:82px!important;height:82px!important;flex-basis:82px!important;font-size:40px!important}
+ #destiny-card[data-base-element] .identity h3{font-size:30px!important}
+ #destiny-card[data-base-element] .summary{font-size:16px!important;line-height:1.75!important}
+ body[data-reading-science] .rdg{padding:22px 20px 24px!important;margin-inline:0!important}
+}
