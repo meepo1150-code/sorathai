@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://meepo1150-code.github.io/sorathai/sitemap.xml
+Sitemap: https://sorathai.pages.dev/sitemap.xml
