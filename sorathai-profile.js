@@ -26,7 +26,7 @@
 
   function toLegacy(value) {
     const iso = toISO(value);
-    return iso ? iso.slice(8) + iso.slice(5, 7) + iso.slice(0, 2) + iso.slice(2, 4) : null;
+    return iso ? iso.slice(8) + iso.slice(5, 7) + iso.slice(0, 4) : null;
   }
 
   function hash(text) {
