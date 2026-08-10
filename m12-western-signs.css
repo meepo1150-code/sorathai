@@ -1,0 +1,43 @@
+/* Milestone 12 — semantic identity for all 12 western zodiac results.
+   Visual-only. Keeps element family as foundation, then adds sign-specific nuance. */
+
+body[data-reading-key="western-capricorn"]{--identity-accent:#71644f;--identity-paper:#f4f0e7;--identity-soft:#e5ded0}
+body[data-reading-key="western-aquarius"]{--identity-accent:#547889;--identity-paper:#eef5f6;--identity-soft:#dbe9ed}
+body[data-reading-key="western-pisces"]{--identity-accent:#567f86;--identity-paper:#eef6f4;--identity-soft:#dcebe8}
+body[data-reading-key="western-aries"]{--identity-accent:#a45f45;--identity-paper:#fbf0e8;--identity-soft:#efdcd1}
+body[data-reading-key="western-taurus"]{--identity-accent:#6e7b55;--identity-paper:#f2f5e9;--identity-soft:#e2e8d5}
+body[data-reading-key="western-gemini"]{--identity-accent:#727991;--identity-paper:#f2f2f7;--identity-soft:#e2e3ed}
+body[data-reading-key="western-cancer"]{--identity-accent:#657f95;--identity-paper:#f0f4f7;--identity-soft:#dee7ed}
+body[data-reading-key="western-leo"]{--identity-accent:#a87838;--identity-paper:#faf2e5;--identity-soft:#eddfc7}
+body[data-reading-key="western-virgo"]{--identity-accent:#7c7057;--identity-paper:#f5f1e8;--identity-soft:#e6dfd2}
+body[data-reading-key="western-libra"]{--identity-accent:#8a7187;--identity-paper:#f7f0f5;--identity-soft:#e9dce6}
+body[data-reading-key="western-scorpio"]{--identity-accent:#6e586f;--identity-paper:#f4eff5;--identity-soft:#e3d9e5}
+body[data-reading-key="western-sagittarius"]{--identity-accent:#94624f;--identity-paper:#f9f0eb;--identity-soft:#ebdcd4}
+
+/* Constellation-like secondary marks: each sign uses different geometry. */
+body[data-reading-key="western-capricorn"] .rh::after{background-image:radial-gradient(circle at 24% 33%,var(--identity-accent) 0 1.4px,transparent 1.8px),radial-gradient(circle at 68% 28%,var(--identity-accent) 0 1.4px,transparent 1.8px),radial-gradient(circle at 78% 67%,var(--identity-accent) 0 1.4px,transparent 1.8px),linear-gradient(28deg,transparent 49.7%,var(--identity-accent) 49.85% 50.15%,transparent 50.3%)!important}
+body[data-reading-key="western-aquarius"] .rh::after{background-image:repeating-linear-gradient(0deg,transparent 0 34px,var(--identity-accent) 34.5px 35px,transparent 35.5px 68px),radial-gradient(circle at 24% 28%,var(--identity-accent) 0 1.2px,transparent 1.7px)!important}
+body[data-reading-key="western-pisces"] .rh::after{background-image:radial-gradient(ellipse at 31% 50%,transparent 0 30%,var(--identity-accent) 30.5% 31%,transparent 31.5%),radial-gradient(ellipse at 69% 50%,transparent 0 30%,var(--identity-accent) 30.5% 31%,transparent 31.5%)!important}
+body[data-reading-key="western-aries"] .rh::after{background-image:repeating-conic-gradient(from 0deg at 50% 50%,transparent 0 21deg,var(--identity-accent) 21.2deg 21.6deg,transparent 21.8deg 42deg)!important}
+body[data-reading-key="western-taurus"] .rh::after{background-image:radial-gradient(circle at 50% 50%,transparent 0 112px,var(--identity-accent) 113px 114px,transparent 115px),radial-gradient(circle at 50% 50%,transparent 0 145px,var(--identity-accent) 146px 146.7px,transparent 147.4px)!important}
+body[data-reading-key="western-gemini"] .rh::after{background-image:linear-gradient(90deg,transparent 31%,var(--identity-accent) 31.4% 31.8%,transparent 32.2% 67%,var(--identity-accent) 67.4% 67.8%,transparent 68.2%),linear-gradient(0deg,transparent 35%,var(--identity-accent) 35.4% 35.8%,transparent 36.2% 64%,var(--identity-accent) 64.4% 64.8%,transparent 65.2%)!important}
+body[data-reading-key="western-cancer"] .rh::after{background-image:radial-gradient(circle at 37% 44%,transparent 0 36px,var(--identity-accent) 37px 38px,transparent 39px),radial-gradient(circle at 63% 56%,transparent 0 36px,var(--identity-accent) 37px 38px,transparent 39px)!important}
+body[data-reading-key="western-leo"] .rh::after{background-image:repeating-conic-gradient(from 0deg at 50% 50%,transparent 0 14deg,var(--identity-accent) 14.2deg 14.6deg,transparent 14.8deg 28deg),radial-gradient(circle at center,transparent 0 122px,var(--identity-accent) 123px 124px,transparent 125px)!important}
+body[data-reading-key="western-virgo"] .rh::after{background-image:linear-gradient(24deg,transparent 49.7%,var(--identity-accent) 49.85% 50.15%,transparent 50.3%),linear-gradient(-24deg,transparent 49.7%,var(--identity-accent) 49.85% 50.15%,transparent 50.3%),radial-gradient(circle,var(--identity-accent) 0 1px,transparent 1.5px)!important;background-size:92px 92px,92px 92px,46px 46px!important}
+body[data-reading-key="western-libra"] .rh::after{background-image:linear-gradient(0deg,transparent 49%,var(--identity-accent) 49.4% 49.8%,transparent 50.2%),radial-gradient(ellipse at 50% 48%,transparent 0 34%,var(--identity-accent) 34.4% 35%,transparent 35.6%)!important}
+body[data-reading-key="western-scorpio"] .rh::after{background-image:radial-gradient(circle at 28% 35%,var(--identity-accent) 0 1.3px,transparent 1.8px),radial-gradient(circle at 52% 50%,var(--identity-accent) 0 1.3px,transparent 1.8px),radial-gradient(circle at 74% 66%,var(--identity-accent) 0 1.3px,transparent 1.8px),linear-gradient(34deg,transparent 49.7%,var(--identity-accent) 49.85% 50.15%,transparent 50.3%)!important}
+body[data-reading-key="western-sagittarius"] .rh::after{background-image:linear-gradient(38deg,transparent 49.6%,var(--identity-accent) 49.8% 50.2%,transparent 50.4%),linear-gradient(128deg,transparent 49.7%,var(--identity-accent) 49.85% 50.15%,transparent 50.3%)!important;background-size:118px 118px!important}
+
+/* Base card matches the same semantic secondary accent. */
+#destiny-card[data-base-sign="capricorn"]{--base-accent-2:#8f7751}
+#destiny-card[data-base-sign="aquarius"]{--base-accent-2:#648da0}
+#destiny-card[data-base-sign="pisces"]{--base-accent-2:#69959a}
+#destiny-card[data-base-sign="aries"]{--base-accent-2:#bb7050}
+#destiny-card[data-base-sign="taurus"]{--base-accent-2:#7d9169}
+#destiny-card[data-base-sign="gemini"]{--base-accent-2:#858ba3}
+#destiny-card[data-base-sign="cancer"]{--base-accent-2:#7995ab}
+#destiny-card[data-base-sign="leo"]{--base-accent-2:#c08b43}
+#destiny-card[data-base-sign="virgo"]{--base-accent-2:#97825e}
+#destiny-card[data-base-sign="libra"]{--base-accent-2:#a0849b}
+#destiny-card[data-base-sign="scorpio"]{--base-accent-2:#806883}
+#destiny-card[data-base-sign="sagittarius"]{--base-accent-2:#a76b54}
