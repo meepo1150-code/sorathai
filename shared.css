@@ -365,3 +365,76 @@ body{line-height:1.6;text-rendering:optimizeLegibility}
 @media(min-width:900px){
   .trust-header{padding-inline:0}.trust-main{width:min(100% - 48px,760px)}
 }
+
+/* ── Milestone 12: premium reading foundation ── */
+:root{
+  --bg:#f6f2e9;
+  --surf:#fffdf8;
+  --text:#24211c;
+  --t2:#696157;
+  --t3:#91877a;
+  --bdr:rgba(74,57,35,.11);
+  --bmd:rgba(74,57,35,.18);
+  --gold:#9a6d25;
+  --r:18px;
+  --rs:12px;
+  --shadow-card:0 18px 48px rgba(49,38,23,.08);
+}
+html,body{background:var(--bg)}
+body{color:var(--text)}
+.hdr,.bnav{background:rgba(246,242,233,.94)}
+.hdr{border-color:rgba(74,57,35,.10)}
+.logo{letter-spacing:-.01em}
+.rh{background:linear-gradient(180deg,#fffdf9 0%,#fbf7ef 100%)}
+.rh-ey,.rdg-tp,.rel-lbl,.lk-lbl{letter-spacing:2px}
+.rh-ttl{font-style:normal;font-weight:500}
+.rh-sub{color:var(--t2)}
+.facts{background:#fbf8f1}
+.fact{padding-block:18px}
+.fl{color:#8a7f71}
+.cw{padding-top:30px}
+.sc{background:#fffdf8;border:1px solid rgba(91,70,43,.13);border-radius:20px;box-shadow:var(--shadow-card)}
+.sc-hd{background:#f7f1e6;border-bottom-color:rgba(91,70,43,.11)}
+.sc-orb{background:#fffaf1;border-color:rgba(154,109,37,.24)}
+.sc-day{font-size:22px}
+.sc-q{font-family:var(--sans);font-style:normal;font-size:16px;color:#4f4941;border-left-color:#b5873f}
+.sc-ft{background:#faf5eb}
+.rdg{border-bottom-color:rgba(74,57,35,.10)}
+.rdg-tp{color:#6a604f}
+.rdg-b{font-size:clamp(16px,4.2vw,17px);line-height:1.95;color:#403b34}
+.reading-focus-emphasis{background:#fffaf2!important;border-radius:16px}
+.inherited-layer{background:#f3eee4}
+.base-facts{background:rgba(91,70,43,.10);border-color:rgba(91,70,43,.10)}
+.base-facts div{background:#fbf7ef}
+.rc,.lk-b{background:#fffdf8;border:1px solid rgba(91,70,43,.11);box-shadow:0 8px 22px rgba(49,38,23,.035)}
+.rc{transition:border-color .16s ease,box-shadow .16s ease,transform .16s ease}
+@media(hover:hover){.rc:hover{transform:translateY(-2px);border-color:rgba(154,109,37,.35);box-shadow:0 14px 28px rgba(49,38,23,.07)}}
+.explore-backdrop{background:rgba(30,25,18,.46)}
+.explore-sheet{background:#fffdf8;border:1px solid rgba(91,70,43,.12);box-shadow:0 -18px 60px rgba(30,24,16,.18)}
+.explore-sheet h2{font-style:normal;font-weight:500}
+.explore-focus button{background:#faf5eb;border-color:rgba(91,70,43,.12);border-radius:14px}
+.explore-focus button:hover{background:#fffaf1;border-color:rgba(154,109,37,.45)}
+.combined-page{background:#f1ece2}
+.combined-card,.combined-state{background:#fffaf2;border-color:#d8cdbd}
+.combined-card-body{font-size:15px}
+.theme-list>div,.perspective-list>div,.combined-missing a{background:#fffdf8}
+.trust-page{background:var(--bg)}
+.trust-header{border-bottom-color:rgba(74,57,35,.10)}
+.trust-main h1{font-style:normal;font-weight:500}
+.trust-main h2{font-weight:500}
+.trust-main p,.trust-main li,.trust-lead{color:#514b43}
+.trust-note{background:#f1eadf!important;border-color:#d3c4ad!important}
+.site-footer{border-top-color:rgba(74,57,35,.12)}
+@media(max-width:420px){
+  .rh{padding-top:46px}
+  .cw{padding-top:22px}
+  .rdg{padding-block:34px}
+  .sc{border-radius:17px}
+  .explore-sheet{border-radius:20px 20px 0 0}
+}
+@media(min-width:700px){
+  .page{padding-bottom:112px}
+  .rh{padding-top:70px;padding-bottom:52px}
+  .sc{border-radius:22px}
+  .reading-focus-emphasis{padding:26px 22px!important}
+}
