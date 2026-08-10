@@ -132,6 +132,11 @@ def validate_html() -> list[str]:
             errors.append(f"{page.name}: missing html lang")
         if "viewport" not in parser.meta_names:
             errors.append(f"{page.name}: missing viewport meta tag")
+        if page.name in {"profile.html", "dream-result.html"}:
+            page_source = page.read_text(encoding="utf-8").lower()
+            if 'name="robots"' not in page_source or "noindex" not in page_source:
+                errors.append(f"{page.name}: user-specific route must declare noindex")
+
         if page.name != "404.html":
             required_meta = {"description", "og:title", "og:description", "og:url", "og:image", "twitter:card", "twitter:title", "twitter:description", "twitter:image"}
             for name in sorted(required_meta - parser.meta_names):
@@ -270,7 +275,7 @@ def validate_sitemap() -> list[str]:
             errors.append(f"sitemap.xml: target does not exist: {url}")
         sitemap_targets.add(relative)
 
-    expected = {page.name for page in ROOT.glob("*.html") if page.name != "404.html"}
+    expected = {page.name for page in ROOT.glob("*.html") if page.name not in {"404.html", "profile.html", "dream-result.html"}}
     for missing in sorted(expected - sitemap_targets):
         errors.append(f"sitemap.xml: missing public page: {missing}")
 
