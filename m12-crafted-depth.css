@@ -14,8 +14,9 @@ body[data-reading-science]{
     radial-gradient(circle at 8% 18%,color-mix(in srgb,var(--identity-accent) 3%,transparent),transparent 24%),
     radial-gradient(circle at 93% 62%,color-mix(in srgb,var(--identity-accent) 3%,transparent),transparent 27%),
     var(--bg)!important;
+  overflow-x:clip;
 }
-body[data-reading-science] #s-result{position:relative;isolation:isolate}
+body[data-reading-science] #s-result{position:relative;isolation:isolate;overflow:clip}
 body[data-reading-science] #s-result::before,
 body[data-reading-science] #s-result::after{
   content:"";
@@ -113,6 +114,7 @@ body[data-reading-science] .rdg-tp{
     0 -1px 0 color-mix(in srgb,var(--base-accent) 10%,rgba(75,53,29,.06)) inset,
     0 30px 70px rgba(50,36,20,.105),
     0 5px 14px rgba(50,36,20,.045)!important;
+  overflow:hidden;
 }
 #destiny-card[data-base-element] .sign-row{isolation:isolate}
 #destiny-card[data-base-element] .sign-row::before{
