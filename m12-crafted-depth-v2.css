@@ -184,7 +184,68 @@ body[data-reading-science="celtic"] .rh::after,
 #destiny-card[data-base-element="fire"] .card-main::before{opacity:.145!important;filter:contrast(1.08)}
 #destiny-card[data-base-element="air"] .card-main::before{opacity:.16!important;filter:contrast(1.08)}
 
-/* Mobile: retain identity and depth, cut decorative cost and guarantee containment. */
+/* Final craft pass: reduce repeated ornament, sharpen hierarchy, and make materials read more clearly. */
+body[data-reading-science] .rdg:nth-child(4n+1)::before{opacity:.13!important}
+body[data-reading-science] .rdg:nth-child(4n+2)::before{opacity:.075!important;transform:scale(.78) rotate(12deg)!important}
+body[data-reading-science] .rdg:nth-child(4n+3)::before{opacity:.095!important;transform:scale(1.08)!important}
+body[data-reading-science] .rdg:nth-child(4n)::before{opacity:.055!important;transform:scale(.68) rotate(-18deg)!important}
+body[data-reading-science] .rdg:nth-child(3n)::after{opacity:.035!important}
+body[data-reading-science] .rdg:nth-child(3n+1)::after{opacity:.06!important}
+body[data-reading-science] .rdg:nth-child(3n+2)::after{opacity:.025!important}
+
+body[data-reading-science] .rdg-tp{
+  color:color-mix(in srgb,var(--identity-accent) 78%,#463d33)!important;
+  text-shadow:0 1px 0 rgba(255,255,255,.78);
+}
+body[data-reading-science] .rdg-b{color:#332e28!important}
+body[data-reading-science] .fl,
+body[data-reading-science] .lk-bl,
+body[data-reading-science] .rel-lbl{
+  color:color-mix(in srgb,var(--identity-accent) 34%,#756d63)!important;
+}
+body[data-reading-science] .fv,
+body[data-reading-science] .lk-bv{color:#2b2722!important}
+
+.science-card h3{color:#242019!important}
+.science-card p{color:#625b52!important}
+.science-card .arrow{
+  width:26px;height:26px;border-radius:50%;display:grid;place-items:center;
+  border:1px solid color-mix(in srgb,var(--science-tone) 18%,transparent);
+  background:rgba(255,255,255,.34);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.7);
+}
+
+#destiny-card[data-base-element]{
+  border-color:color-mix(in srgb,var(--base-accent) 31%,rgba(73,52,29,.12))!important;
+}
+#destiny-card[data-base-element] .card-top{
+  background:linear-gradient(90deg,color-mix(in srgb,var(--base-accent) 5%,rgba(255,255,255,.2)),rgba(255,255,255,.16),color-mix(in srgb,var(--base-accent-2) 5%,rgba(255,255,255,.2)))!important;
+  box-shadow:inset 0 -1px 0 color-mix(in srgb,var(--base-accent) 12%,transparent),0 1px 0 rgba(255,255,255,.65);
+}
+#destiny-card[data-base-element] .card-brand{letter-spacing:.035em}
+#destiny-card[data-base-element] .identity h3{
+  text-shadow:0 1px 0 rgba(255,255,255,.8);
+}
+#destiny-card[data-base-element] .card-facts{
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.74),inset 0 -1px 0 color-mix(in srgb,var(--base-accent) 8%,transparent)!important;
+}
+#destiny-card[data-base-element] .fact strong{color:#29231d!important}
+#destiny-card[data-base-element] .powers-title{
+  color:color-mix(in srgb,var(--base-accent) 44%,#736a60)!important;
+  letter-spacing:.12em!important;
+}
+#destiny-card[data-base-element] .power-track{background:color-mix(in srgb,var(--base-accent) 5%,rgba(255,255,255,.54))!important}
+#destiny-card[data-base-element] .power-fill{
+  background:linear-gradient(90deg,color-mix(in srgb,var(--base-accent) 90%,#665137),var(--base-accent-2))!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.38),0 1px 2px color-mix(in srgb,var(--base-accent) 15%,transparent)!important;
+}
+
+/* Preserve discipline identity while avoiding decorative repetition on compact related cards. */
+body[data-reading-science] .rc:nth-child(3n)::after{opacity:.045!important}
+body[data-reading-science] .rc:nth-child(3n+1)::after{opacity:.085!important}
+body[data-reading-science] .rc:nth-child(3n+2)::after{opacity:.065!important}
+
+/* Mobile: hierarchy stays strong, ornament steps back. */
 @media(max-width:620px){
   body[data-reading-science] .rh,
   body[data-reading-science] .rdg,
@@ -192,20 +253,25 @@ body[data-reading-science="celtic"] .rh::after,
   body[data-reading-science] .rc,
   .science-card,
   #destiny-card[data-base-element]{overflow:hidden!important}
-  body[data-reading-science] .rh::after{opacity:.08!important;transform:scale(.82)!important}
-  body[data-reading-science] .rdg::before{opacity:.075!important}
-  .science-card::after{opacity:.14!important;transform:scale(.86);transform-origin:center right}
-  #destiny-card[data-base-element] .sign-row::before{opacity:.68!important}
-  #destiny-card[data-base-element] .sign-row::after{opacity:.36!important}
+  body[data-reading-science] .rh::after{opacity:.072!important;transform:scale(.8)!important}
+  body[data-reading-science] .rdg::before{opacity:.06!important}
+  body[data-reading-science] .rdg::after{opacity:.025!important}
+  .science-card::after{opacity:.13!important;transform:scale(.84);transform-origin:center right}
+  .science-card .arrow{width:23px;height:23px}
+  #destiny-card[data-base-element] .sign-row::before{opacity:.64!important}
+  #destiny-card[data-base-element] .sign-row::after{opacity:.31!important}
+  #destiny-card[data-base-element] .card-top{box-shadow:inset 0 -1px 0 color-mix(in srgb,var(--base-accent) 9%,transparent)}
 }
 
 @media(max-width:390px){
-  body[data-reading-science] .rh::after{opacity:.055!important}
-  .science-card::after{opacity:.10!important}
-  #destiny-card[data-base-element] .sign-row::before{opacity:.56!important}
+  body[data-reading-science] .rh::after{opacity:.05!important}
+  .science-card::after{opacity:.09!important}
+  #destiny-card[data-base-element] .sign-row::before{opacity:.52!important}
+  #destiny-card[data-base-element] .sign-row::after{opacity:.25!important}
 }
 
 @media(prefers-reduced-motion:reduce){
   body[data-reading-science] .rh::after,
-  .science-card::after{transform:none!important}
+  .science-card::after,
+  body[data-reading-science] .rdg::before{transform:none!important}
 }
