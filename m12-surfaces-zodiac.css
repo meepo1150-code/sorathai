@@ -1,0 +1,199 @@
+/* Milestone 12 — unified paper surfaces + zodiac medallions
+   Presentation-only refinement. No calculation/profile/SEO behavior changes. */
+
+:root{
+  --m12-paper:#fffaf2;
+  --m12-paper-2:#fbf5ea;
+  --m12-paper-3:#f7efe2;
+  --m12-line:rgba(101,78,45,.14);
+  --m12-line-soft:rgba(101,78,45,.085);
+  --m12-shadow:0 16px 42px rgba(58,43,23,.055);
+  --m12-shadow-soft:0 8px 24px rgba(58,43,23,.038);
+}
+
+/* One material language for framed UI surfaces. */
+.birth-panel,
+.destiny-card,
+.sc,
+.lk-b,
+.rc,
+.science-card,
+.trust-note,
+.ditem,
+.drw,
+.text-button,
+.card-facts,
+.facts{
+  border-color:var(--m12-line)!important;
+}
+
+.birth-panel,
+.destiny-card,
+.sc,
+.lk-b,
+.rc,
+.science-card,
+.trust-note,
+.ditem,
+.drw{
+  background:
+    radial-gradient(circle at 14% 8%,rgba(255,255,255,.82),transparent 30%),
+    linear-gradient(145deg,var(--m12-paper),var(--m12-paper-2))!important;
+  box-shadow:var(--m12-shadow-soft)!important;
+}
+
+/* Larger feature cards receive subtle inner paper framing instead of flat white blocks. */
+.birth-panel,
+.destiny-card,
+.sc{
+  position:relative;
+  box-shadow:var(--m12-shadow)!important;
+}
+.birth-panel::after,
+.destiny-card::after,
+.sc::after{
+  content:"";
+  position:absolute;
+  inset:7px;
+  border:1px solid rgba(255,255,255,.62);
+  border-radius:inherit;
+  pointer-events:none;
+}
+
+/* Internal rows should feel carved from the same sheet, not separate white cells. */
+.card-top,
+.card-main,
+.sc-hd,
+.sc-ft,
+.ss,
+.fact,
+.facts,
+.card-facts{
+  background:transparent!important;
+}
+.card-top,
+.sc-hd,
+.sc-ft,
+.sc-nums,
+.fact,
+.card-facts{
+  border-color:var(--m12-line-soft)!important;
+}
+.sc-stats{background:var(--m12-line-soft)!important}
+.ss{box-shadow:inset 0 0 0 .5px rgba(255,255,255,.35)}
+
+/* Editorial highlight blocks stay warm and restrained. */
+.sc-q,
+.focus-context{
+  background:linear-gradient(90deg,rgba(255,248,235,.92),rgba(255,251,245,.55))!important;
+}
+.sc-q{border-left-color:color-mix(in srgb,var(--reading-accent,#9a6d25) 62%,#b89b6b)!important}
+
+/* Metric and utility frames use a softer radius/contrast hierarchy. */
+.lk-b,
+.rc,
+.ditem,
+.text-button{
+  border-radius:14px!important;
+  box-shadow:0 6px 18px rgba(58,43,23,.028)!important;
+}
+.text-button{
+  background:rgba(255,250,242,.72)!important;
+}
+
+/* Zodiac glyphs: force a text-like symbol treatment and wrap them in an orbital seal. */
+.sign-glyph,
+.sc-orb{
+  position:relative!important;
+  overflow:visible!important;
+  color:#6d5430!important;
+  font-family:Georgia,'Times New Roman',serif!important;
+  font-variant-emoji:text;
+  background:
+    radial-gradient(circle at 50% 44%,#fffdfa 0 48%,transparent 49%),
+    linear-gradient(145deg,#fff9ef,#f7eddd)!important;
+  border:1px solid rgba(158,116,55,.28)!important;
+  box-shadow:
+    inset 0 0 0 7px rgba(255,253,248,.78),
+    inset 0 0 0 8px rgba(158,116,55,.12),
+    0 8px 24px rgba(70,49,20,.05)!important;
+}
+.sign-glyph::after,
+.sc-orb::after{
+  content:"";
+  position:absolute;
+  inset:-7px;
+  border:1px dotted rgba(158,116,55,.22);
+  border-radius:50%;
+  pointer-events:none;
+}
+.sign-glyph::before,
+.sc-orb::before{
+  content:"";
+  position:absolute;
+  width:5px;
+  height:5px;
+  border-radius:50%;
+  top:-4px;
+  right:13%;
+  background:#a97829;
+  box-shadow:-36px 54px 0 -1px rgba(169,120,41,.58);
+  opacity:.68;
+}
+.sign-glyph{
+  width:84px!important;
+  height:84px!important;
+  font-size:46px!important;
+  line-height:1!important;
+}
+.sc-orb{
+  width:58px!important;
+  height:58px!important;
+  font-size:30px!important;
+}
+
+/* On western-reading pages, show the actual zodiac glyph in the hero instead of a generic sun mark. */
+body:has(.deep-reading-card[style*="#4a6582"]) .rh-p{
+  width:96px!important;
+  height:96px!important;
+  font-size:42px!important;
+  line-height:1!important;
+  color:#6f5b99!important;
+  font-family:Georgia,'Times New Roman',serif!important;
+  font-variant-emoji:text;
+  background:
+    radial-gradient(circle at center,#fffdf8 0 49%,transparent 50%),
+    repeating-conic-gradient(from 0deg,rgba(111,91,153,.16) 0 1deg,transparent 1deg 30deg),
+    #fff8ed!important;
+  border-color:rgba(111,91,153,.25)!important;
+  box-shadow:0 14px 34px rgba(70,53,103,.07)!important;
+}
+body:has(.deep-reading-card[style*="#4a6582"]) .rh-p::before{display:none!important}
+body:has(.deep-reading-card[style*="#4a6582"]) .rh-p::after{
+  inset:10px!important;
+  border:1px solid rgba(111,91,153,.18)!important;
+  box-shadow:0 0 0 8px rgba(255,253,248,.72);
+}
+
+/* Keep exported/share card surfaces consistent with the in-app reading. */
+.deep-reading-card{
+  background:
+    radial-gradient(circle at 12% 4%,rgba(255,255,255,.7),transparent 32%),
+    linear-gradient(155deg,#fffaf2,#f8f0e4)!important;
+  border-color:var(--m12-line)!important;
+  box-shadow:0 18px 46px rgba(58,43,23,.06)!important;
+}
+.deep-reading-card .science-signature>span{
+  background:linear-gradient(145deg,#fffdf8,#f5ecde)!important;
+}
+
+@media(max-width:620px){
+  .birth-panel,.destiny-card,.sc{box-shadow:0 10px 30px rgba(58,43,23,.045)!important}
+  .sign-glyph{width:72px!important;height:72px!important;font-size:40px!important}
+  .sc-orb{width:54px!important;height:54px!important;font-size:28px!important}
+  body:has(.deep-reading-card[style*="#4a6582"]) .rh-p{width:86px!important;height:86px!important;font-size:38px!important}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .sign-glyph,.sc-orb{transition:none!important}
+}
