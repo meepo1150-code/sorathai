@@ -1,0 +1,130 @@
+/* Milestone 12 — Sorathai science emblems + editorial navigation */
+
+/* Replace emoji-heavy science marks with a restrained Sorathai emblem system. */
+.science-card{
+  grid-template-columns:58px minmax(0,1fr) auto!important;
+  gap:18px!important;
+  align-items:center!important;
+}
+.science-card .science-icon,
+.rc .rc-ico{
+  width:52px!important;
+  height:52px!important;
+  margin:0!important;
+  display:grid!important;
+  place-items:center!important;
+  flex:0 0 52px!important;
+  overflow:hidden!important;
+  font-size:0!important;
+  line-height:1!important;
+  border:1px solid rgba(74,57,35,.12)!important;
+  border-radius:14px!important;
+  background:#fbf7ef!important;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.55)!important;
+}
+.science-card .science-icon::before,
+.rc .rc-ico::before{
+  display:block;
+  font:500 24px/1 Georgia,'Times New Roman',serif;
+  letter-spacing:0;
+  color:var(--science-tone,#8c6a37);
+}
+
+.science-card[data-science-id="thai"],.rc[href*="thai-astrology"]{--science-tone:#9a6d25}
+.science-card[data-science-id="western"],.rc[href*="western-astrology"]{--science-tone:#725c9d}
+.science-card[data-science-id="chinese"],.rc[href*="chinese-astrology"]{--science-tone:#657b64}
+.science-card[data-science-id="numerology"],.rc[href*="numerology"]{--science-tone:#4c6285}
+.science-card[data-science-id="mayan"],.rc[href*="mayan"]{--science-tone:#675aa3}
+.science-card[data-science-id="biorhythm"],.rc[href*="biorhythm"]{--science-tone:#65778b}
+.science-card[data-science-id="nakshatra"],.rc[href*="nakshatra"]{--science-tone:#a56d2d}
+.science-card[data-science-id="celtic"],.rc[href*="celtic"]{--science-tone:#587257}
+
+.science-card[data-science-id="thai"] .science-icon::before,.rc[href*="thai-astrology"] .rc-ico::before{content:"✦"}
+.science-card[data-science-id="western"] .science-icon::before,.rc[href*="western-astrology"] .rc-ico::before{content:"☉"}
+.science-card[data-science-id="chinese"] .science-icon::before,.rc[href*="chinese-astrology"] .rc-ico::before{content:"辰";font-family:var(--sans);font-size:20px;font-weight:500}
+.science-card[data-science-id="numerology"] .science-icon::before,.rc[href*="numerology"] .rc-ico::before{content:"3";font-size:25px;font-style:italic}
+.science-card[data-science-id="mayan"] .science-icon::before,.rc[href*="mayan"] .rc-ico::before{content:"◎";font-size:27px}
+.science-card[data-science-id="biorhythm"] .science-icon::before,.rc[href*="biorhythm"] .rc-ico::before{content:"∿";font-size:30px}
+.science-card[data-science-id="nakshatra"] .science-icon::before,.rc[href*="nakshatra"] .rc-ico::before{content:"✧";font-size:27px}
+.science-card[data-science-id="celtic"] .science-icon::before,.rc[href*="celtic"] .rc-ico::before{content:"↟";font-size:28px}
+
+.science-card h3{font-weight:600!important;letter-spacing:-.005em!important}
+.science-card p{max-width:46ch!important;color:#625c53!important}
+.science-card .arrow{font-size:18px!important;opacity:.72!important;transform:translateX(-2px)}
+@media(hover:hover){
+  .science-card:hover .science-icon{border-color:rgba(154,109,37,.30)!important;background:#fffaf1!important}
+  .science-card:hover .arrow{opacity:1!important;transform:translateX(1px)}
+}
+
+/* Deep-reading hero: one calm editorial mark instead of large emoji artwork. */
+.rh-p{
+  width:86px!important;
+  height:86px!important;
+  margin:0 auto 24px!important;
+  display:grid!important;
+  place-items:center!important;
+  font-size:0!important;
+  border:1px solid rgba(74,57,35,.12)!important;
+  border-radius:50%!important;
+  background:#fffaf2!important;
+  box-shadow:0 10px 30px rgba(49,38,23,.035)!important;
+}
+.rh-p::before{
+  content:"✦";
+  font:400 38px/1 Georgia,'Times New Roman',serif;
+  color:var(--reading-accent,#9a6d25);
+}
+.science-signature>span{
+  font-size:0!important;
+  width:42px!important;
+  height:42px!important;
+  border-radius:12px!important;
+  background:#fffaf2!important;
+}
+.science-signature>span::before{
+  content:"✦";
+  font:400 20px/1 Georgia,'Times New Roman',serif;
+  color:var(--reading-accent,#9a6d25);
+}
+
+/* Related sciences become editorial rows/cards rather than an app-launcher grid. */
+.rel{padding-top:54px!important}
+.rel-lbl{margin-bottom:18px!important;color:#81786d!important}
+.rel-g{grid-template-columns:1fr!important;gap:10px!important}
+.rc{
+  min-height:0!important;
+  border-radius:12px!important;
+  box-shadow:none!important;
+  background:#fffdf8!important;
+}
+.rc-acc{height:1px!important;opacity:.42!important}
+.rc-b{
+  min-height:88px!important;
+  padding:16px 18px!important;
+  display:grid!important;
+  grid-template-columns:52px minmax(0,1fr)!important;
+  grid-template-rows:auto auto auto!important;
+  column-gap:15px!important;
+  align-items:center!important;
+}
+.rc-ico{grid-column:1!important;grid-row:1/4!important}
+.rc-org,.rc-name,.rc-cta{grid-column:2!important}
+.rc-org{font-size:8px!important;letter-spacing:1.4px!important;margin-bottom:2px!important}
+.rc-name{font-family:var(--sans)!important;font-size:14px!important;font-weight:600!important;line-height:1.35!important}
+.rc-cta{font-size:10px!important;margin-top:4px!important;color:#8a8175!important}
+@media(min-width:920px){.rel-g{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+
+/* The old fixed four-tab bar reads as a generic mobile app and competes with the reading.
+   Navigation remains available through header/back links, related-science cards and footer. */
+.bnav{display:none!important}
+.page{padding-bottom:48px!important}
+.site-footer{margin-bottom:28px!important}
+
+@media(max-width:420px){
+  .science-card{grid-template-columns:50px minmax(0,1fr) auto!important;gap:13px!important}
+  .science-card .science-icon,.rc .rc-ico{width:46px!important;height:46px!important;flex-basis:46px!important;border-radius:12px!important}
+  .science-card .science-icon::before,.rc .rc-ico::before{font-size:22px}
+  .rc-b{grid-template-columns:46px minmax(0,1fr)!important;min-height:82px!important;padding:14px 15px!important;column-gap:13px!important}
+  .rh-p{width:76px!important;height:76px!important;margin-bottom:22px!important}
+  .rh-p::before{font-size:34px!important}
+}
