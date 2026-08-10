@@ -28,9 +28,7 @@
     const hr = root.HR;
     if (hr && typeof hr.getWesternIdx === "function" && Array.isArray(hr.WESTERN)) {
       const existing = hr.WESTERN[hr.getWesternIdx(day, month)];
-      if (existing && typeof existing.n === "string" && typeof existing.el === "string") {
-        return { sign: existing.n, element: existing.el };
-      }
+      if (existing && typeof existing.n === "string" && typeof existing.el === "string") return { sign: existing.n, element: existing.el };
     }
     const cutoffs = [20, 19, 21, 20, 21, 21, 23, 23, 23, 23, 22, 22];
     const signs = ["ราศีมังกร", "ราศีกุมภ์", "ราศีมีน", "ราศีเมษ", "ราศีพฤษภ", "ราศีเมถุน", "ราศีกรกฎ", "ราศีสิงห์", "ราศีกันย์", "ราศีตุล", "ราศีพิจิก", "ราศีธนู", "ราศีมังกร"];
@@ -56,6 +54,39 @@
     const date = typeof dob === "string" && /^\d{4}-\d{2}-\d{2}$/.test(dob) ? "-" + dob : "";
     return "sorathai-" + id + date + ".png";
   }
+  function hashText(value) {
+    let hash = 2166136261;
+    String(value || "").split("").forEach(function (char) { hash ^= char.charCodeAt(0); hash = Math.imul(hash, 16777619); });
+    return hash >>> 0;
+  }
+  function semanticVisualKey(scienceId, title) {
+    const text = String(title || "").trim();
+    if (scienceId === "thai") {
+      const days = [["จันทร์","monday"],["อังคาร","tuesday"],["พุธ","wednesday"],["พฤหัส","thursday"],["ศุกร์","friday"],["เสาร์","saturday"],["อาทิตย์","sunday"]];
+      const found = days.find(function (item) { return text.indexOf(item[0]) >= 0; });
+      if (found) return "thai-" + found[1];
+    }
+    if (scienceId === "western") {
+      const signs = [["มังกร","capricorn"],["กุมภ์","aquarius"],["มีน","pisces"],["เมษ","aries"],["พฤษภ","taurus"],["เมถุน","gemini"],["กรกฎ","cancer"],["สิงห์","leo"],["กันย์","virgo"],["ตุล","libra"],["พิจิก","scorpio"],["ธนู","sagittarius"]];
+      const found = signs.find(function (item) { return text.indexOf(item[0]) >= 0; });
+      if (found) return "western-" + found[1];
+    }
+    return scienceId + "-result";
+  }
+  function applyVisualIdentity(scienceId) {
+    if (!root.document || !document.body) return null;
+    const hero = document.getElementById("rh-ttl"), sub = document.getElementById("rh-sub"), facts = document.querySelector(".facts");
+    const title = hero ? hero.textContent : "", subtitle = sub ? sub.textContent : "", factText = facts ? facts.textContent : "";
+    const seedText = [scienceId, title, subtitle, factText].join("|");
+    const seed = hashText(seedText), variant = seed % 12 + 1;
+    document.body.dataset.readingScience = safeConfig(scienceId).id;
+    document.body.dataset.readingVariant = String(variant);
+    document.body.dataset.readingKey = semanticVisualKey(scienceId, title);
+    document.body.style.setProperty("--identity-shift-x", String(seed % 29 - 14) + "px");
+    document.body.style.setProperty("--identity-shift-y", String((seed >>> 5) % 23 - 11) + "px");
+    document.body.style.setProperty("--identity-rotation", String(((seed >>> 9) % 25 - 12) / 10) + "deg");
+    return { key: document.body.dataset.readingKey, variant: variant };
+  }
   function reorderForFocus(container, focus) {
     if (!container || !focus) return;
     const needles = { identity: ["นิสัย", "ตัวตน", "บุคลิก", "ภาพรวม"], love: ["รัก", "สัมพันธ์"], career: ["งาน", "การเงิน", "เส้นทาง"], challenge: ["ระวัง", "ท้าทาย", "เงา", "บทเรียน"] }[focus];
@@ -66,6 +97,7 @@
   function enhance(scienceId, profile) {
     if (!root.document || !profile) return;
     const context = deriveContext(profile, root.location ? root.location.search : "", scienceId), base = inheritedBase(profile, context.focus);
+    applyVisualIdentity(scienceId);
     const card = document.getElementById("share-card");
     if (!card || !base) return;
     card.classList.add("deep-reading-card"); card.style.setProperty("--reading-accent", context.science.accent);
@@ -92,5 +124,5 @@
     } catch (_) { announce("สร้างภาพไม่สำเร็จ กรุณาลองอีกครั้ง"); return false; }
     finally { if (overlay) overlay.classList.remove("show"); }
   }
-  return { FOCUS_LABELS, SCIENCES, safeConfig, westernFor, deriveContext, inheritedBase, scienceUrl, exportFilename, enhance, exportCard };
+  return { FOCUS_LABELS, SCIENCES, safeConfig, westernFor, deriveContext, inheritedBase, scienceUrl, exportFilename, applyVisualIdentity, enhance, exportCard };
 });
