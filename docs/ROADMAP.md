@@ -2,144 +2,104 @@
 
 ## Guiding experience
 
-Sorathai จะพัฒนาเป็น astrology character-building experience ไม่ใช่ชุดหน้าเว็บดูดวงที่แยกจากกัน
-
-เส้นทางหลัก:
+Sorathai เป็น astrology-inspired character/profile experience ที่ต่อเนื่อง ไม่ใช่ชุดหน้าเว็บดูดวงแยกจากกัน
 
 `Birth date → Base Destiny Card → RPG-style choice → Deep Reading Card → Combined Profile`
 
-## Milestone 1 — Foundation readiness
+## Milestone 1 — Foundation readiness ✅
 
-เป้าหมาย: ทำให้ repository พร้อมแก้ไขอย่างปลอดภัย
+Repository มี README/roadmap, static validation, GitHub Actions, sitemap/link checks และ development workflow ที่ใช้ branch + PR + automated gates
 
-- [x] เพิ่ม README และ product vision
-- [x] เพิ่ม roadmap
-- [x] เพิ่ม automated static validation
-- [x] เพิ่ม GitHub Actions
-- [x] ตรวจทุก URL ใน sitemap
-- [x] บันทึก baseline ของหน้าและ flow ปัจจุบัน
+## Milestone 2 — Base profile model ✅
 
-เกณฑ์ผ่าน:
+- profile schema กลางและ ISO DOB ภายในระบบ
+- deterministic powers
+- localStorage พร้อม safe fallback/migration
+- legacy `?dob=DDMMYYYY`
+- cross-page profile continuity
 
-- Pull request ทุกชุดมี automated checks
-- internal links และ sitemap targets ไม่พัง
-- มีเอกสารอธิบายโครงสร้างและแนวทางพัฒนา
+## Milestone 3 — Home experience redesign ✅
 
-## Milestone 2 — Base profile model
+Issue #4 ปิดแล้ว: Home → DOB → Base Destiny Card → science selection พร้อม accessible date form, profile restore/reset, export และ mobile/reduced-motion support
 
-เป้าหมาย: ทำให้ทุกหน้าอ้างอิงตัวตนผู้ใช้ชุดเดียวกัน
+## Milestone 4 — RPG exploration layer ✅
 
-- นิยาม schema ของ `SorathaiProfile`
-- ใช้วันเกิดรูปแบบ ISO `YYYY-MM-DD` ภายในระบบ
-- สร้างค่าพลังแบบ deterministic และอธิบายที่มาได้
-- เก็บ profile ใน `localStorage`
-- รองรับ URL เดิมที่ใช้ `?dob=` โดยไม่ทำลายลิงก์เก่า
-- เพิ่ม privacy copy ว่าข้อมูลประมวลผลบนอุปกรณ์ เมื่อพฤติกรรมจริงสอดคล้อง
+มี exploration sheet สั้น ๆ พร้อม focus `identity`, `love`, `career`, `challenge`, skip action, keyboard/focus behavior และ no-JavaScript semantic links
 
-เกณฑ์ผ่าน:
+## Milestone 5 — Layered deep-reading cards ✅
 
-- วันเกิดเดียวกันได้ Base Card เดิมทุกครั้ง
-- เปิดหน้าศาสตร์อื่นแล้วยังเห็น profile เดิม
-- ไม่มีข้อมูลสำคัญสูญหายระหว่าง navigation
+8 ศาสตร์ใช้ shared Deep Reading shell ที่ขยายจาก Base Profile เดิม รักษา DOB/focus continuity, export, disclaimers และ calculation contracts
 
-## Milestone 3 — Home experience redesign
+## Milestone 6 — Combined Profile ✅
 
-เป้าหมาย: ทำหน้าแรกให้เป็น entry point ที่สวยและชัดเจนที่สุด
+Combined Profile ใช้เฉพาะศาสตร์ที่ผู้ใช้สำรวจแล้ว มี repeated themes ที่ต้องมี evidence อย่างน้อย 2 ศาสตร์, distinct perspectives, explored/missing layers และ deterministic export/synthesis
 
-- Hero แบบ minimal/clean
-- date picker ที่เข้าถึงง่าย
-- loading/reveal transition ที่ไม่หน่วง
-- Base Destiny ID Card รุ่นใหม่
-- คำอธิบายสั้นของค่าพลัง
-- CTA เลือกศาสตร์ต่อที่เด่นชัด
-- รองรับมือถือขนาดเล็กและ reduced motion
+## Milestone 7 — Content, trust, accessibility, performance ✅
 
-สถานะ: เสร็จสิ้นใน Issue #4 — หน้าแรกใช้ flow `วันเกิด → Base Destiny Card → เลือกศาสตร์ต่อ`
-พร้อม date form ที่เข้าถึงได้, profile continuity, image export และแยกทำนายฝันออกจากศาสตร์ที่คำนวณจากวันเกิด
+Issue #12 ปิดแล้ว:
 
-เกณฑ์ผ่าน:
+- About / Privacy / Contact + shared trust navigation
+- disclaimer และ Biorhythm wording ที่ไม่อ้าง scientific validation
+- accessibility/source hardening และ dependency fallbacks
+- performance budget
+- metadata/sitemap validation foundation
+- Dream interpretation ทำงานใน browser โดยไม่เรียก external AI model
 
-- ผู้ใช้เข้าใจว่าต้องทำอะไรโดยไม่อ่านคำอธิบายยาว
-- ไม่มี layout shift รุนแรง
-- ใช้งานด้วย keyboard ได้
+## Milestone 8 — Browser QA & Release Candidate hardening ✅ automated gate
 
-## Milestone 4 — RPG exploration layer
+Issue #14 และ PR #22 ปิดแล้ว:
 
-เป้าหมาย: เปลี่ยนการเลือกศาสตร์ให้มี narrative แต่ไม่ขวางการเข้าถึงผลลัพธ์
+- `docs/RELEASE_QA.md`
+- Chromium/Playwright ใน GitHub Actions
+- 8 sciences × focus navigation
+- DOB/profile persistence และ Home return
+- Combined Profile states
+- Dream/trust flows
+- storage failure, blocked Google Fonts และ html2canvas failure coverage
+- responsive overflow and reduced-motion checks
 
-- บทสนทนาไม่เกิน 2–3 ขั้น
-- เลือกเป้าหมายคำอ่าน เช่น ตัวตน ความรัก งาน หรือจุดท้าทาย
-- skip dialogue ได้
-- จดจำศาสตร์ที่เปิดแล้ว
-- animation เบาและมี reduced-motion fallback
+Automated browser evidence ผ่านแล้ว สิ่งที่ยังไม่ควรอ้างว่า certified คือ real-device visual review, human 200% zoom inspection, downloaded PNG pixel inspection, full keyboard walkthrough และ screen-reader certification
 
-เกณฑ์ผ่าน:
+## Milestone 9 — Visual & UX polish ✅
 
-- ผู้ใช้เข้าถึงคำอ่านเชิงลึกได้เร็ว
-- narrative ช่วยเพิ่มบริบท ไม่ใช่เพิ่มขั้นตอนโดยไร้ประโยชน์
+Issue #23 / PR #24 ปิดแล้ว:
 
-## Milestone 5 — Layered deep-reading cards
+- shared Thai typography/spacing/card hierarchy
+- Home + Base Destiny Card action hierarchy
+- coherent visual shell สำหรับ 8 Deep Reading pages
+- Dream visual polish
+- Combined 0/1/2/8 browser-state coverage
+- responsive matrix 320 / 375 / 390 / 430 / 768 / 1280px
 
-เป้าหมาย: ทำให้แต่ละศาสตร์ขยาย Base Card เดิมอย่างต่อเนื่อง
+Functionality/calculation/profile contracts ถูกล็อกระหว่าง visual pass
 
-- สร้าง component card กลาง
-- แสดง Base layer และ Science layer
-- ลด HTML/JS ซ้ำระหว่างหน้าศาสตร์
-- เพิ่มคำอธิบาย calculation/source/limitations
-- แชร์เป็นภาพพร้อม watermark ได้
+## Milestone 10 — Launch readiness & discoverability 🚧
 
-เกณฑ์ผ่าน:
+Issue #25 / PR #27
 
-- ทุกศาสตร์ใช้ visual language เดียวกัน
-- ผู้ใช้เห็นความสัมพันธ์ระหว่าง Base Card กับข้อมูลใหม่
+เป้าหมาย: ทำให้ product พร้อมเปิดให้ผู้ใช้จริงและเริ่มพิสูจน์ traffic/engagement ก่อน monetization
 
-## Milestone 6 — Combined profile
+งานหลัก:
 
-เป้าหมาย: รวมศาสตร์ที่ผู้ใช้เปิดแล้วเป็นโปรไฟล์เดียว
+- production canonical origin ที่ตรงกับ deployment จริง
+- canonical / Open Graph / Twitter / sitemap / robots consistency
+- intentional indexability ของ landing pages เทียบกับ user-specific result shells
+- default social preview asset ที่มีอยู่จริง
+- search context ที่มีประโยชน์บน 8 science pages โดยไม่ทำ thin/doorway SEO spam
+- provider-neutral `sorathai-events.js` contract ที่ no-op โดย default และห้าม DOB/dream/reading text
+- launch checklist + Search Console owner actions
+- 90-day baseline metrics โดยไม่สร้าง target ก่อนมีข้อมูลจริง
+- static/unit/content/Playwright gates ต้องเขียวเหมือนเดิม
 
-- progress ของศาสตร์ที่สำรวจ
-- synthesis ที่ไม่สร้างข้อสรุปเกินข้อมูล
-- combined card สำหรับแชร์
-- reset/export profile
+## Deferred until post-launch evidence
 
-## Milestone 7 — Content, trust, accessibility, performance
+ยังไม่ควรทำเพียงเพราะทำได้:
 
-- About, Privacy, Contact และ disclaimer
-- ปรับถ้อยคำ Biorhythm ไม่ให้สื่อว่าเป็นวิทยาศาสตร์ที่ยืนยันแล้ว
-- ตรวจ contrast, labels, focus states และ screen-reader semantics
-- self-host หรือเพิ่ม fallback สำหรับ dependency สำคัญ
-- performance budget และ image/font optimization
-- structured data เฉพาะที่ตรงตามเนื้อหาจริง
-
-สถานะ: เสร็จสิ้นใน Issue #12 — เพิ่ม About/Privacy/Contact และ trust navigation, ทำ disclaimer
-ให้สอดคล้อง, ปรับ landmark/focus/dialog/export fallback, ใช้ font fallback พร้อม `display=swap`,
-ทำ dream interpretation ภายใน browser, เพิ่ม sitemap/SEO validation และกำหนด performance budget ใน README
-การทดสอบ browser/manual ยังคงเป็น release check และต้องรายงานตามจริงเมื่อ environment ไม่มี Chromium
-
-## Milestone 8 — Browser QA and Release Candidate hardening
-
-เป้าหมาย: ล็อก regression contracts และตรวจ flow จริงก่อนตัดสินใจเป็น Release Candidate โดยไม่เพิ่ม feature
-
-- [x] เพิ่ม release checklist แบบทำตามได้ที่ `docs/RELEASE_QA.md`
-- [x] เพิ่ม static regression contracts สำหรับ routes, 8 sciences, Combined Profile, trust, export,
-  external model/API endpoints และ deferred third-party export script
-- [x] ตรวจ storage failure ด้วย unit tests; core model คืนค่า failure โดยไม่ throw
-- [ ] รัน manual matrix ครบใน real browser พร้อม console/network และ export evidence
-- [ ] ประกาศ Release Candidate หลัง browser evidence และ CI ผ่าน
-
-สถานะ Issue #14: **static/integration QA complete; browser validation pending** สภาพแวดล้อมพัฒนาไม่มี
-Chromium/Chrome หรือ Playwright/Puppeteer/Selenium ที่รันได้ จึงไม่ได้อ้าง browser validation
-ประเด็น non-blocking ต่อ static gate ที่ยังเปิดอยู่คือ visual/reflow, assistive-technology behavior,
-downloaded-image clipping และ runtime console/network ใน browser จริง
-
-## Deferred
-
-งานต่อไปนี้ยังไม่ควรทำจนกว่า core experience จะเสถียร:
-
-- ระบบสมาชิก
-- backend sync
-- AI chatbot ที่เสียค่า API ต่อข้อความ
-- payment และ premium report
+- ระบบสมาชิก / backend sync
+- AI chatbot ที่มี API cost ต่อข้อความ
+- payment / premium report
 - mobile application
-- เพิ่มศาสตร์ใหม่เกินรายการปัจจุบัน
-- optimization เพื่อรายได้โฆษณา
+- เพิ่มศาสตร์ใหม่
+- ads/monetization optimization
+
+ลำดับหลัง Milestone 10 ควรขึ้นกับข้อมูลจริงจาก traffic, completion, sciences-per-profile, Combined reach, return และ share/export behavior ไม่ใช่จำนวน feature ที่อยากเพิ่ม

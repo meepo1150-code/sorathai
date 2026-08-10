@@ -1,60 +1,60 @@
 # Sorathai
 
-Sorathai คือเว็บไซต์ดูดวงแบบ mobile-first ที่เปลี่ยนวันเกิดของผู้ใช้ให้เป็น **Destiny Identity Card** และเปิดทางให้สำรวจคำอ่านเชิงลึกจากศาสตร์หลายระบบในประสบการณ์เดียวกัน
+Sorathai คือเว็บไซต์ดูดวงแบบ mobile-first ที่เปลี่ยนวันเกิดของผู้ใช้ให้เป็น **Base Destiny Card** และเปิดทางให้สำรวจคำอ่านเชิงลึกจากหลายระบบความเชื่อในประสบการณ์เดียวกัน
 
 ## Product vision
 
-ประสบการณ์หลักของผู้ใช้ควรต่อเนื่องดังนี้:
+ประสบการณ์หลักของผู้ใช้:
 
 1. กรอกวันเกิดจากหน้าแรก
-2. รับ Base Destiny ID Card พร้อมข้อมูลตัวตนและค่าพลังเบื้องต้น
-3. เลือกศาสตร์ที่ต้องการสำรวจผ่านบทสนทนาแบบ narrative/RPG
-4. รับ Deep Reading Card ที่ซ้อนและขยายข้อมูลจาก Base Card เดิม
+2. รับ Base Destiny Card พร้อมข้อมูลตัวตนและค่าพลังเชิงสัญลักษณ์
+3. เลือกศาสตร์ที่ต้องการสำรวจผ่านบทสนทนาแบบ narrative/RPG สั้น ๆ
+4. รับ Deep Reading Card ที่ขยายจาก Base Card เดิม
 5. กลับไปเปิดศาสตร์อื่นและสะสมเป็น Combined Profile
 
-เว็บไซต์ควรให้ความรู้สึกมินิมัล สะอาด สวยงาม ใช้งานง่าย และไม่บังคับสมัครสมาชิกในระยะแรก
+เว็บไซต์เน้นความมินิมัล สะอาด อ่านง่าย และไม่บังคับสมัครสมาชิก
 
-## Current sciences
+## Current readings
 
 - โหราศาสตร์ไทย
-- Western Astrology
-- Chinese Astrology
-- Numerology
-- Mayan Tzolk'in
-- Biorhythm
-- Nakshatra
-- Celtic Tree Astrology
-- Dream interpretation
+- โหราศาสตร์ตะวันตก
+- โหราศาสตร์จีน
+- เลขศาสตร์
+- ปฏิทินมายา
+- ไบโอริทึม
+- ดาวฤกษ์อินเดีย
+- ต้นไม้เคลต์
+- ทำนายฝัน (เส้นทางแยกจากโปรไฟล์วันเกิด)
 
 ## Technical approach
 
-ปัจจุบันเป็น static website ที่ใช้ HTML, CSS และ JavaScript ฝั่ง browser เหมาะกับ hosting ต้นทุนต่ำและการ deploy แบบ static
+ปัจจุบันเป็น static website ที่ใช้ HTML, CSS และ JavaScript ฝั่ง browser เหมาะกับ hosting ต้นทุนต่ำและ deployment แบบ static
 
-หลักการพัฒนาต่อ:
+หลักการพัฒนา:
 
-- Mobile-first
-- Progressive enhancement
-- วันเกิดและโปรไฟล์เก็บในอุปกรณ์ผู้ใช้เมื่อทำได้
-- ผลลัพธ์จากวันเกิดเดียวกันต้องคงที่
-- ลดโค้ดซ้ำระหว่างหน้าศาสตร์
-- ทุกการเปลี่ยนแปลงสำคัญต้องผ่าน automated validation
-- เนื้อหาความเชื่อต้องมี disclaimer และไม่อ้างเป็นคำแนะนำด้านสุขภาพ การเงิน กฎหมาย หรือความปลอดภัย
+- Mobile-first และ progressive enhancement
+- วันเกิด/โปรไฟล์ประมวลผลและเก็บในอุปกรณ์ผู้ใช้เมื่อทำได้
+- ผลลัพธ์จากวันเกิดเดียวกันต้อง deterministic
+- ลดโค้ดซ้ำด้วย shared modules/design system
+- การเปลี่ยนแปลงสำคัญต้องผ่าน static, unit/content และ Playwright browser regression
+- เนื้อหาความเชื่อใช้เพื่อความบันเทิง/สะท้อนตนเอง ไม่ใช่คำแนะนำด้านสุขภาพ การเงิน กฎหมาย หรือความปลอดภัย
 
 ## Repository structure
 
-ไฟล์หลักในปัจจุบัน:
+ไฟล์หลัก:
 
-- `index.html` — หน้าแรกและ Base Destiny ID Card
-- `*-astrology.html`, `numerology.html`, `mayan.html`, `nakshatra.html`, `celtic.html`, `biorhythm.html` — หน้าคำอ่านแต่ละศาสตร์
-- `dream.html`, `dream-result.html`, `dream-data.js` — ระบบทำนายฝัน
-- `horoscope-data.js` — ข้อมูลคำอ่านหลัก
-- `shared.css` — design system และ component ร่วม
-- `sorathai-profile.js` — โมเดลโปรไฟล์กลาง การตรวจวันเกิด URL และ persistence
-- `sitemap.xml`, `robots.txt` — SEO foundation
+- `index.html` — Home + Base Destiny Card
+- `profile.html` — Combined Profile
+- `*-astrology.html`, `numerology.html`, `mayan.html`, `nakshatra.html`, `celtic.html`, `biorhythm.html` — 8 deep readings
+- `dream.html`, `dream-result.html` — เส้นทางทำนายฝัน
+- `horoscope-data.js` — ข้อมูล/ตารางคำนวณหลัก
+- `sorathai-profile.js` — profile, DOB validation, URL และ persistence
+- `sorathai-reading.js`, `sorathai-content.js`, `sorathai-combined.js` — shared reading/synthesis layers
+- `sorathai-site.js`, `shared.css` — shared UX/design system
+- `sorathai-events.js` — provider-neutral privacy-safe measurement contract; no network transport by default
+- `sitemap.xml`, `robots.txt` — crawl/index foundation
 
 ## Local preview
-
-เปิดเว็บด้วย static server แทนการดับเบิลคลิกไฟล์โดยตรง:
 
 ```bash
 python -m http.server 8000
@@ -64,78 +64,62 @@ python -m http.server 8000
 
 ## Validation
 
-รันตัวตรวจพื้นฐาน:
-
 ```bash
 python scripts/validate_site.py
-```
-
-ตัวตรวจจะตรวจไฟล์ HTML, internal links, sitemap targets และ metadata สำคัญเบื้องต้น
-
-ทดสอบโมเดลโปรไฟล์ด้วย Node.js โดยไม่ต้องติดตั้ง dependency:
-
-```bash
 node --test tests/*.test.js
+node scripts/review_readings.js
+npm run test:e2e
+git diff --check
 ```
+
+GitHub Actions ติดตั้ง Chromium และรัน Playwright จริง จึงใช้เป็น browser regression gate ของ core journey
 
 ## Profile storage
 
-วันเกิดถูกแปลงเป็น ISO `YYYY-MM-DD` และประมวลผลใน browser เท่านั้น โมเดลบันทึก object
-`{ version: 2, dob, powers, exploredSciences, lastFocus }` ที่ key เดิม
-`sorathai.profile.v1` ใน `localStorage` โดยโปรไฟล์ version 1 จะถูกย้ายข้อมูลอัตโนมัติ เมื่อ storage
-ใช้งานไม่ได้ เว็บไซต์ยังทำงานต่อโดยไม่ persistence ได้ ลิงก์เดิม `?dob=DDMMYYYY` ยังคงรองรับ
-และ query ที่ไม่ใช่วันจริงจะไม่แสดงคำอ่าน
+วันเกิดถูกแปลงเป็น ISO `YYYY-MM-DD` และประมวลผลใน browser โมเดลบันทึก `{ version: 2, dob, powers, exploredSciences, lastFocus }` ที่ key `sorathai.profile.v1` ใน `localStorage` พร้อม migration จาก profile รุ่นก่อน เมื่อ storage ใช้งานไม่ได้ core reading ยังทำงานต่อโดยไม่ persistence ได้ และ legacy `?dob=DDMMYYYY` ยังรองรับ
 
-หน้าแรกแสดงปีพุทธศักราชแก่ผู้ใช้ แต่แปลงและบันทึกวันเกิดเป็น Gregorian ISO ภายในเสมอ
-Base Destiny Card ใช้ค่าพลัง deterministic เดิมร่วมกับเลขเส้นทางชีวิตและ archetype; ค่าดังกล่าว
-เป็นสัญลักษณ์เพื่อการสะท้อนตนเอง ไม่ใช่ผลการวัดทางวิทยาศาสตร์ ผู้ใช้เปลี่ยนหรือล้างวันเกิดได้จากหน้าแรก
+หน้าแรกแสดงปีพุทธศักราชแก่ผู้ใช้ แต่ใช้ Gregorian ISO ภายใน Base Destiny Card ใช้ค่าพลัง deterministic ที่ถูกอธิบายว่าเป็นตัวชี้วัดเชิงสัญลักษณ์ ไม่ใช่ผลการวัดทางวิทยาศาสตร์ ผู้ใช้เปลี่ยนหรือล้างวันเกิดได้จากหน้าแรก
 
-การเลือกการ์ดศาสตร์บนหน้าแรกจะเปิด exploration sheet แบบสองขั้นสั้น ๆ ผู้ใช้เลือกมุมคำอ่าน
-`identity`, `love`, `career` หรือ `challenge` หรือข้ามไปยังคำอ่านทันทีได้ ลิงก์ยังคงเป็นลิงก์
-HTML ปกติและนำทางตรงได้เมื่อ JavaScript ไม่ทำงาน
-
-## Development workflow
-
-1. สร้าง branch แยกจาก `main`
-2. แก้ทีละ milestone ขนาดเล็ก
-3. รัน validation
-4. เปิด pull request
-5. ตรวจ visual flow บนมือถือก่อน merge
-
-ดูแผนงานที่ [`docs/ROADMAP.md`](docs/ROADMAP.md)
+RPG exploration รองรับ `identity`, `love`, `career`, `challenge` และมีทางข้ามไปคำอ่านได้ทันที ลิงก์ HTML ปกติยังนำทางได้เมื่อ JavaScript ไม่ทำงาน
 
 ## Trust, privacy, and dependencies
 
-Public trust routes are [`about.html`](about.html), [`privacy.html`](privacy.html), and
-[`contact.html`](contact.html). The contact page states truthfully that this repository has not yet
-published a public contact channel.
+Public trust routes: [`about.html`](about.html), [`privacy.html`](privacy.html), [`contact.html`](contact.html)
 
-“เปลี่ยนวันเกิด” เปิดแบบฟอร์มโดยยังเก็บโปรไฟล์เดิม ส่วน “ล้างวันเกิด” ลบ key ของ Sorathai จาก
-`localStorage` การล้าง site data ใน browser ให้ผลเดียวกัน แต่ไม่ลบ URL ในประวัติ รูปที่ดาวน์โหลด
-หรือลิงก์ที่แชร์ พารามิเตอร์ `dob` ใน URL อาจเปิดเผยวันเกิดแก่ผู้ที่เห็นลิงก์ ข้อความฝันเก็บใน
-`sorathai_dreams` และการตีความรุ่นนี้ใช้ข้อมูลภายใน browser โดยไม่เรียกบริการ AI ภายนอก
+“เปลี่ยนวันเกิด” เปิดแบบฟอร์มโดยยังเก็บโปรไฟล์เดิม ส่วน “ล้างวันเกิด” ลบ Sorathai profile จาก `localStorage` พารามิเตอร์ `dob` ใน URL อาจเปิดเผยวันเกิดแก่ผู้ที่เห็นลิงก์ จึงห้ามส่ง raw URL/DOB เข้า measurement payload
 
-Google Fonts ใช้ `display=swap` และมี Georgia/system sans-serif fallback จึงยังอ่านได้เมื่อถูกบล็อก
-`html2canvas` โหลดจาก cdnjs เฉพาะหน้าที่มี export; core reading/navigation ไม่พึ่ง CDN และ export
-จะแจ้งสถานะอย่างสุภาพหาก library ไม่พร้อม
+Google Fonts ใช้ `display=swap` และมี system fallbacks `html2canvas` โหลดแบบ deferred เฉพาะหน้าที่มี export; core reading/navigation ไม่พึ่ง CDN และ export มี graceful fallback เมื่อ library ไม่พร้อม
 
 ## Lightweight performance budget
 
-- ห้ามเพิ่ม blocking third-party JavaScript ใน critical path; non-critical scripts ต้อง `defer`
-- ไม่โหลด `html2canvas` บนหน้าที่ไม่มี export และ core reading ต้องไม่พึ่ง CDN
-- ไม่มี autoplay และไม่เพิ่ม first-screen asset ขนาดใหญ่โดยไม่มี dimensions/พื้นที่สำรอง
-- ใช้ shared module/CSS แทน large duplicated inline code เมื่อทำได้โดยไม่เปลี่ยน product logic
-- third-party origins ใน flow ปัจจุบันจำกัดไว้ที่ Google Fonts และ cdnjs ตาม privacy page
+- ห้ามเพิ่ม blocking third-party JavaScript ใน critical path
+- non-critical scripts ต้อง `defer` เมื่อปลอดภัย
+- ไม่โหลด `html2canvas` บนหน้าที่ไม่มี export
+- ไม่มี autoplay และไม่เพิ่ม first-screen asset ขนาดใหญ่โดยไม่มีเหตุผล
+- ใช้ shared module/CSS แทน duplicated inline code เมื่อทำได้โดยไม่เปลี่ยน product behavior
 
-## Manual QA status
+## Release status
 
-Milestone 8 (Issue #14) มี release gate และแบบบันทึกหลักฐานแบบทีละขั้นที่
-[`docs/RELEASE_QA.md`](docs/RELEASE_QA.md) ครอบคลุม core/combined/dream/trust, responsive,
-accessibility, export, dependency failure และ console/network ตัว validator ยังล็อก public routes,
-science ID/URL, trust/Combined/export contracts, external-model endpoints และ deferred html2canvas
+Milestone 8 browser hardening และ Milestone 9 visual/UX polish เสร็จแล้ว CI มี Chromium/Playwright coverage สำหรับ Home, 8 sciences, focus navigation, profile persistence, Combined Profile หลาย state, Dream, trust routes, storage/dependency fallbacks, reduced motion และ release viewport matrix
 
-คอนเทนเนอร์ที่ใช้ทำ Issue #14 ไม่มี Chromium/Chrome, Playwright, Puppeteer, Selenium
-หรือ browser runtime ที่เชื่อถือได้ จึงไม่มีการอ้าง browser evidence หรือ screenshot สถานะปัจจุบันคือ
-**static/integration QA complete; browser validation pending** และยังไม่ประกาศเป็น Release Candidate
-ข้อจำกัดที่ไม่ block static gate คือ visual reflow, assistive technology, export pixels และ live
-console/network ยังต้องตรวจตามเอกสารใน browser จริงก่อน release
+Automated browser regression **ไม่เท่ากับ** manual certification สิ่งที่ยังต้องตรวจด้วยมนุษย์ก่อนประกาศ production-quality accessibility/visual certification ได้แก่ real-device review, 200% zoom human inspection, downloaded PNG pixels, keyboard walkthrough และ screen reader
+
+Milestone 10 (Issue #25) กำลังเตรียม launch/discoverability: canonical production identity, search/social metadata, share preview, intentional indexability, privacy-safe measurement contract และ launch checklist ดู [`docs/LAUNCH_CHECKLIST.md`](docs/LAUNCH_CHECKLIST.md)
+
+## Production identity
+
+ระหว่างที่ยังไม่มี custom domain ที่ตั้งค่าและยืนยันใน repository จะใช้ Cloudflare Pages root origin เป็น canonical ชั่วคราว:
+
+`https://sorathai.pages.dev/`
+
+เมื่อมี custom domain ให้เปลี่ยน canonical, Open Graph, sitemap และ robots ใน release เดียว พร้อมตั้ง redirect ก่อน migration ใน Search Console เพื่อไม่สร้าง SEO signals ซ้ำซ้อน
+
+## Development workflow
+
+1. สร้าง branch จาก `main`
+2. แก้เป็น checkpoint ขนาดเล็ก
+3. เปิด Draft PR ตั้งแต่ต้นเพื่อให้ CI เฝ้า
+4. รัน static/unit/content/browser regression
+5. merge เมื่อ scope เสร็จและ gates เขียว
+
+ดูแผนงานที่ [`docs/ROADMAP.md`](docs/ROADMAP.md)
