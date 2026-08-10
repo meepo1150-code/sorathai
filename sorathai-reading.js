@@ -73,6 +73,25 @@
     }
     return scienceId + "-result";
   }
+  function repairChineseResult(profile) {
+    if (!root.document || !profile || !root.HR || !Array.isArray(root.HR.CHINESE) || typeof root.HR.getChineseIdx !== "function") return;
+    const year = Number(profile.dob.slice(0, 4)), ch = root.HR.CHINESE[root.HR.getChineseIdx(year)];
+    if (!ch) return;
+    const name = ch.name || ch.n || "", element = ch.element || ch.el || "", polarity = ch.pol || "", icon = ch.ico || ch.i || "辰";
+    const set = function (id, value) { const node = document.getElementById(id); if (node && value !== undefined && value !== null) node.textContent = String(value); };
+    set("rh-ttl", name ? "ปีนักษัตร" + name : "ราศีจีน");
+    set("rh-sub", [name, element ? "ธาตุ" + element : "", polarity].filter(Boolean).join(" · "));
+    set("rh-ico", icon); set("e-ico", icon);
+    set("fc1", element || "—"); set("fc2", polarity || "—"); set("fc3", String(year + 543));
+    set("sc-orb", icon); set("sc-ttl", name ? "ปี" + name : "ราศีจีน");
+    set("ss1", name || "—"); set("ss2", element || "—"); set("ss3", polarity || "—"); set("ss4", "นักษัตร");
+    const title = name ? "ดูดวงราศีจีน ปี" + name + " — Sorathai" : "ดูดวงราศีจีน — Sorathai";
+    document.title = title;
+    document.querySelectorAll("#s-result *").forEach(function (node) {
+      if (node.children.length || typeof node.textContent !== "string" || node.textContent.indexOf("undefined") < 0) return;
+      node.textContent = node.textContent.replace(/undefined/gi, "—");
+    });
+  }
   function applyVisualIdentity(scienceId) {
     if (!root.document || !document.body) return null;
     const hero = document.getElementById("rh-ttl"), sub = document.getElementById("rh-sub"), facts = document.querySelector(".facts");
@@ -97,6 +116,7 @@
   function enhance(scienceId, profile) {
     if (!root.document || !profile) return;
     const context = deriveContext(profile, root.location ? root.location.search : "", scienceId), base = inheritedBase(profile, context.focus);
+    if (scienceId === "chinese") repairChineseResult(profile);
     applyVisualIdentity(scienceId);
     const card = document.getElementById("share-card");
     if (!card || !base) return;
@@ -124,5 +144,5 @@
     } catch (_) { announce("สร้างภาพไม่สำเร็จ กรุณาลองอีกครั้ง"); return false; }
     finally { if (overlay) overlay.classList.remove("show"); }
   }
-  return { FOCUS_LABELS, SCIENCES, safeConfig, westernFor, deriveContext, inheritedBase, scienceUrl, exportFilename, applyVisualIdentity, enhance, exportCard };
+  return { FOCUS_LABELS, SCIENCES, safeConfig, westernFor, deriveContext, inheritedBase, scienceUrl, exportFilename, applyVisualIdentity, repairChineseResult, enhance, exportCard };
 });
