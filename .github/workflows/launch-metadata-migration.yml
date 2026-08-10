@@ -1,0 +1,42 @@
+name: Apply launch metadata migration
+
+on:
+  push:
+    branches:
+      - agent/launch-readiness
+
+permissions:
+  contents: write
+
+jobs:
+  migrate:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out launch branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/launch-readiness
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Apply deterministic metadata migration
+        run: python scripts/migrate_launch_metadata.py
+
+      - name: Commit migration result when needed
+        shell: bash
+        run: |
+          if git diff --quiet; then
+            echo "Metadata already normalized."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- '*.html' sitemap.xml scripts/validate_site.py
+          git commit -m "feat: normalize launch metadata and indexability"
+          git push origin HEAD:agent/launch-readiness
