@@ -1,0 +1,322 @@
+/* Milestone 12 — Sorathai visual identity v3
+   Full-system art direction based on R&D: editorial astrology, bespoke science motifs,
+   personal-result variation, restrained ornament, and consistent hierarchy. */
+
+:root{
+  --sora-ink-strong:#211d18;
+  --sora-ink-soft:#5f584f;
+  --sora-paper-warm:#f8f1e5;
+  --sora-paper-light:#fcf8f0;
+  --sora-line:rgba(76,58,35,.14);
+}
+
+/* Global reading rhythm — larger identity moment, quieter supporting data. */
+body[data-reading-science] .rh{
+  min-height:360px!important;
+  padding:70px 44px 62px!important;
+  border-radius:24px 24px 0 0!important;
+}
+body[data-reading-science] .rh-lbl{
+  margin-bottom:24px!important;
+  font-size:9.5px!important;
+  letter-spacing:.34em!important;
+}
+body[data-reading-science] .reading-emblem{
+  width:104px!important;
+  height:104px!important;
+  margin-bottom:30px!important;
+  color:var(--identity-accent)!important;
+  border-width:1px!important;
+  box-shadow:0 18px 42px rgba(45,32,18,.055),inset 0 0 0 12px rgba(255,255,255,.28)!important;
+}
+body[data-reading-science] .reading-emblem::before{
+  inset:11px!important;
+  border-style:solid!important;
+}
+body[data-reading-science] .reading-emblem::after{
+  inset:-12px!important;
+  border-style:dashed!important;
+  border-width:1px!important;
+  opacity:.72;
+}
+body[data-reading-science] #rh-ttl{
+  max-width:760px;
+  font-size:clamp(36px,5vw,52px)!important;
+  font-weight:500!important;
+  line-height:1.06!important;
+  letter-spacing:-.03em!important;
+}
+body[data-reading-science] #rh-sub{
+  max-width:620px;
+  margin-inline:auto;
+  font-size:11px!important;
+  line-height:1.75!important;
+  letter-spacing:.115em!important;
+}
+
+/* Deliberately distinct visual grammars for all eight sciences. */
+body[data-reading-science="thai"] .reading-emblem{
+  border-radius:50% 50% 46% 54%/52% 48% 52% 48%!important;
+}
+body[data-reading-science="thai"] .rh::after{
+  background:
+    repeating-conic-gradient(from 0deg at 50% 50%,transparent 0 14.55deg,var(--identity-accent) 14.7deg 15deg,transparent 15.15deg 29.55deg),
+    radial-gradient(circle at 50% 50%,transparent 0 126px,var(--identity-accent) 127px 127.8px,transparent 128.6px)!important;
+  mask-image:radial-gradient(circle at center,transparent 0 31%,#000 32% 63%,transparent 64%)!important;
+}
+
+body[data-reading-science="western"] .reading-emblem{
+  border-radius:50%!important;
+  box-shadow:0 18px 42px rgba(55,46,78,.055),inset 0 0 0 12px rgba(255,255,255,.3)!important;
+}
+body[data-reading-science="western"] .rh::after{
+  background:
+    radial-gradient(circle at 50% 50%,transparent 0 116px,var(--identity-accent) 117px 117.7px,transparent 118.4px 150px,var(--identity-accent) 151px 151.7px,transparent 152.4px),
+    repeating-conic-gradient(from 0deg at 50% 50%,transparent 0 29.5deg,var(--identity-accent) 29.65deg 30deg)!important;
+  mask-image:radial-gradient(circle at center,transparent 0 22%,#000 23% 61%,transparent 62%)!important;
+}
+
+body[data-reading-science="chinese"] .reading-emblem{
+  border-radius:22px!important;
+  transform:rotate(45deg);
+}
+body[data-reading-science="chinese"] .reading-emblem>*{transform:rotate(-45deg)}
+body[data-reading-science="chinese"] .rh::after{
+  background:
+    radial-gradient(ellipse at 18% 70%,transparent 0 35%,var(--identity-accent) 35.4% 35.9%,transparent 36.4% 49%,var(--identity-accent) 49.4% 49.9%,transparent 50.4%),
+    radial-gradient(ellipse at 82% 28%,transparent 0 30%,var(--identity-accent) 30.4% 30.9%,transparent 31.4% 45%,var(--identity-accent) 45.4% 45.9%,transparent 46.4%),
+    linear-gradient(45deg,var(--identity-accent) .6px,transparent .6px) 0 0/38px 38px!important;
+  opacity:.07!important;
+}
+
+body[data-reading-science="numerology"] .reading-emblem{border-radius:22px!important}
+body[data-reading-science="numerology"] .rh::after{
+  background:
+    linear-gradient(30deg,transparent 49.7%,var(--identity-accent) 49.85% 50.15%,transparent 50.3%),
+    linear-gradient(90deg,transparent 49.7%,var(--identity-accent) 49.85% 50.15%,transparent 50.3%),
+    radial-gradient(circle at center,transparent 0 104px,var(--identity-accent) 105px 105.7px,transparent 106.4px)!important;
+  background-size:70px 70px,70px 70px,100% 100%!important;
+  mask-image:radial-gradient(circle at center,#000 0 58%,transparent 72%)!important;
+}
+
+body[data-reading-science="mayan"] .reading-emblem{border-radius:30%!important}
+body[data-reading-science="mayan"] .rh::after{
+  background:
+    repeating-radial-gradient(circle at center,transparent 0 18px,var(--identity-accent) 18.5px 19.2px,transparent 19.8px 33px),
+    repeating-conic-gradient(from 7deg at 50% 50%,transparent 0 22deg,var(--identity-accent) 22.2deg 22.6deg,transparent 22.8deg 45deg)!important;
+  mask-image:radial-gradient(circle at center,transparent 0 27%,#000 28% 64%,transparent 65%)!important;
+}
+
+body[data-reading-science="biorhythm"] .reading-emblem{border-radius:38% 62% 46% 54%/55% 42% 58% 45%!important}
+body[data-reading-science="biorhythm"] .rh::after{
+  background:
+    radial-gradient(ellipse at 30% 50%,transparent 0 33%,var(--identity-accent) 33.4% 34%,transparent 34.6% 48%,var(--identity-accent) 48.4% 49%,transparent 49.6%),
+    radial-gradient(ellipse at 70% 50%,transparent 0 33%,var(--identity-accent) 33.4% 34%,transparent 34.6% 48%,var(--identity-accent) 48.4% 49%,transparent 49.6%)!important;
+  transform:scaleX(1.7) rotate(var(--identity-rotation,0deg))!important;
+}
+
+body[data-reading-science="nakshatra"] .reading-emblem{
+  border-radius:50%!important;
+  box-shadow:0 18px 42px rgba(92,54,24,.05),inset 0 0 0 12px rgba(255,255,255,.3)!important;
+}
+body[data-reading-science="nakshatra"] .rh::after{
+  background:
+    radial-gradient(circle,var(--identity-accent) 0 1.15px,transparent 1.65px) 0 0/46px 46px,
+    repeating-conic-gradient(from 0deg at 50% 50%,transparent 0 12.8deg,var(--identity-accent) 13deg 13.25deg,transparent 13.45deg 26.35deg)!important;
+  mask-image:radial-gradient(circle at center,transparent 0 28%,#000 29% 64%,transparent 65%)!important;
+}
+
+body[data-reading-science="celtic"] .reading-emblem{border-radius:50% 50% 44% 56%/42% 42% 58% 58%!important}
+body[data-reading-science="celtic"] .rh::after{
+  background:
+    radial-gradient(ellipse at 50% 118%,transparent 0 38%,var(--identity-accent) 38.4% 39%,transparent 39.6% 49%,var(--identity-accent) 49.4% 50%,transparent 50.6%),
+    linear-gradient(90deg,transparent 49.72%,var(--identity-accent) 49.82% 50.18%,transparent 50.28%),
+    linear-gradient(35deg,transparent 49.76%,var(--identity-accent) 49.86% 50.14%,transparent 50.24%)!important;
+  mask-image:linear-gradient(to top,#000 0 70%,transparent 95%)!important;
+}
+
+/* Semantic result keys become genuinely distinct, not merely recoloured. */
+body[data-reading-key="thai-monday"] .reading-emblem{border-radius:50%!important}
+body[data-reading-key="thai-tuesday"] .reading-emblem{transform:rotate(7deg)}
+body[data-reading-key="thai-wednesday"] .reading-emblem{border-radius:35% 65% 35% 65%/45% 45% 55% 55%!important}
+body[data-reading-key="thai-thursday"] .reading-emblem{box-shadow:0 18px 42px rgba(76,48,20,.05),inset 0 0 0 12px rgba(255,255,255,.28),0 0 0 6px color-mix(in srgb,var(--identity-accent) 7%,transparent)!important}
+body[data-reading-key="thai-friday"] .reading-emblem{border-radius:50% 50% 38% 62%/52% 48% 52% 48%!important}
+body[data-reading-key="thai-saturday"] .reading-emblem{border-radius:22px!important;transform:rotate(45deg)}
+body[data-reading-key="thai-sunday"] .reading-emblem{box-shadow:0 18px 42px rgba(94,47,20,.06),inset 0 0 0 12px rgba(255,255,255,.25),0 0 0 9px color-mix(in srgb,var(--identity-accent) 6%,transparent)!important}
+
+body[data-reading-key^="western-"] .reading-emblem::after{border-style:dotted!important}
+body[data-reading-key="western-capricorn"] .rh::after{transform:rotate(-4deg) scale(.98)!important}
+body[data-reading-key="western-aquarius"] .rh::after{transform:rotate(6deg) scale(1.04)!important}
+body[data-reading-key="western-pisces"] .rh::after{transform:scaleX(1.08) rotate(-2deg)!important}
+body[data-reading-key="western-aries"] .rh::after{transform:rotate(10deg)!important}
+body[data-reading-key="western-taurus"] .rh::after{transform:scale(.96)!important}
+body[data-reading-key="western-gemini"] .rh::after{transform:scaleX(-1)!important}
+body[data-reading-key="western-cancer"] .rh::after{transform:rotate(-9deg)!important}
+body[data-reading-key="western-leo"] .rh::after{transform:scale(1.07)!important}
+body[data-reading-key="western-virgo"] .rh::after{transform:rotate(3deg) scale(.98)!important}
+body[data-reading-key="western-libra"] .rh::after{transform:scaleY(.95)!important}
+body[data-reading-key="western-scorpio"] .rh::after{transform:rotate(-6deg) scale(1.03)!important}
+body[data-reading-key="western-sagittarius"] .rh::after{transform:rotate(8deg) scale(1.02)!important}
+
+/* Stable per-result variation affects composition across all sciences. */
+body[data-reading-variant="1"] .rh::after{background-position:0 0!important}
+body[data-reading-variant="2"] .rh::after{background-position:8px -4px!important}
+body[data-reading-variant="3"] .rh::after{background-position:-10px 6px!important}
+body[data-reading-variant="4"] .rh::after{background-position:14px 9px!important}
+body[data-reading-variant="5"] .rh::after{background-position:-6px -12px!important}
+body[data-reading-variant="6"] .rh::after{background-position:12px -8px!important}
+body[data-reading-variant="7"] .rh::after{filter:saturate(.72) contrast(.96)}
+body[data-reading-variant="8"] .rh::after{filter:saturate(.82) brightness(.98)}
+body[data-reading-variant="9"] .rh::after{filter:saturate(.68) contrast(1.03)}
+body[data-reading-variant="10"] .rh::after{opacity:.085!important}
+body[data-reading-variant="11"] .rh::after{opacity:.125!important}
+body[data-reading-variant="12"] .rh::after{opacity:.095!important}
+
+/* Facts: quieter utility UI, stronger editorial grouping. */
+body[data-reading-science] .focus-context{
+  padding:13px 20px!important;
+  font-size:11.5px!important;
+  line-height:1.65!important;
+}
+body[data-reading-science] .facts{
+  width:min(calc(100% - 64px),620px)!important;
+  border-radius:0 0 20px 20px!important;
+}
+body[data-reading-science] .fact{
+  padding:21px 13px 20px!important;
+}
+body[data-reading-science] .fact::before{
+  width:16px!important;
+  height:16px!important;
+  margin-bottom:8px!important;
+}
+body[data-reading-science] .fl{font-size:8.5px!important;letter-spacing:.18em!important}
+body[data-reading-science] .fv{font-size:14.5px!important;line-height:1.45!important}
+
+/* Reading panels use alternating art moments rather than repeated identical boxes. */
+body[data-reading-science] .rdgs{gap:18px!important}
+body[data-reading-science] .rdg{
+  min-height:144px;
+  padding:28px 30px 30px!important;
+  border-radius:20px!important;
+}
+body[data-reading-science] .rdg:nth-child(2n){margin-left:24px!important;margin-right:0!important}
+body[data-reading-science] .rdg:nth-child(2n+1){margin-right:24px!important;margin-left:0!important}
+body[data-reading-science] .rdg:nth-child(3n)::before{width:190px!important;height:190px!important;right:-58px!important;top:-64px!important}
+body[data-reading-science] .rdg:nth-child(3n+1)::before{right:auto!important;left:-64px!important;top:-72px!important;transform:scale(.9) rotate(18deg)!important}
+body[data-reading-science] .rdg:nth-child(3n+2)::before{top:auto!important;bottom:-82px!important;right:-48px!important;transform:scale(1.08)!important}
+body[data-reading-science] .rdg-tp{font-size:9.5px!important;letter-spacing:.19em!important;margin-bottom:13px!important}
+body[data-reading-science] .rdg-b{max-width:70ch;font-size:15px!important;line-height:1.9!important;color:#302b25!important}
+
+/* Related science cards become compact editorial tiles. */
+body[data-reading-science] .rc{
+  border-radius:18px!important;
+  box-shadow:0 8px 24px rgba(43,32,19,.028)!important;
+}
+body[data-reading-science] .rc:hover{transform:translateY(-2px)!important;box-shadow:0 12px 30px rgba(43,32,19,.055)!important}
+body[data-reading-science] .rc-name{font-family:"Noto Serif Thai",serif!important;font-size:15px!important;font-weight:600!important}
+body[data-reading-science] .rc-org{font-size:8.5px!important;letter-spacing:.14em!important}
+
+/* Base Destiny Card becomes a personal sigil plate. */
+#destiny-card[data-base-element]{border-radius:22px!important}
+#destiny-card[data-base-element] .card-top{min-height:70px!important;padding-inline:28px!important}
+#destiny-card[data-base-element] .card-main{padding:48px 32px 34px!important}
+#destiny-card[data-base-element] .sign-row{
+  position:relative;
+  z-index:2;
+  align-items:center!important;
+  gap:28px!important;
+  padding:14px 0 20px;
+}
+#destiny-card[data-base-element] .sign-glyph{
+  width:116px!important;
+  height:116px!important;
+  flex-basis:116px!important;
+  font-size:54px!important;
+  box-shadow:0 16px 40px rgba(48,35,20,.06),inset 0 0 0 13px rgba(255,255,255,.26)!important;
+}
+#destiny-card[data-base-element] .sign-glyph::before{inset:-12px!important;border-style:dashed!important}
+#destiny-card[data-base-element] .sign-glyph::after{inset:-23px!important;opacity:.75}
+#destiny-card[data-base-element] .identity h3{font-size:clamp(33px,4.6vw,47px)!important;max-width:560px}
+#destiny-card[data-base-element] .identity p{font-size:12.5px!important;letter-spacing:.06em!important}
+#destiny-card[data-base-element] .summary{
+  position:relative;
+  z-index:2;
+  max-width:62ch!important;
+  margin:34px 0 32px!important;
+  font-size:17px!important;
+  line-height:1.9!important;
+}
+#destiny-card[data-base-element] .card-facts{
+  position:relative;
+  z-index:2;
+  border-radius:14px!important;
+  border:1px solid color-mix(in srgb,var(--base-accent) 14%,transparent)!important;
+  overflow:hidden;
+  background:color-mix(in srgb,var(--base-paper) 80%,rgba(255,255,255,.34))!important;
+}
+#destiny-card[data-base-element] .fact{padding:18px 14px!important}
+#destiny-card[data-base-element] .powers{
+  position:relative;
+  z-index:2;
+  border-radius:16px!important;
+  padding:18px!important;
+}
+#destiny-card[data-base-element] .base-consultation{position:relative;z-index:2}
+
+/* Personal element motifs are more illustrative while staying minimal. */
+#destiny-card[data-base-element="earth"] .card-main::before{
+  height:350px!important;
+  bottom:-88px!important;
+  background:
+    linear-gradient(150deg,transparent 0 43.6%,var(--base-accent) 43.85% 44.15%,transparent 44.4%) 0 74px/245px 138px repeat-x,
+    linear-gradient(30deg,transparent 0 44.6%,var(--base-accent-2) 44.85% 45.15%,transparent 45.4%) 116px 72px/288px 148px repeat-x,
+    repeating-linear-gradient(0deg,transparent 0 31px,color-mix(in srgb,var(--base-accent) 34%,transparent) 31.5px 32px,transparent 32.5px 54px)!important;
+  opacity:.15!important;
+}
+#destiny-card[data-base-element="water"] .card-main::before{height:330px!important;bottom:-78px!important;opacity:.15!important}
+#destiny-card[data-base-element="fire"] .card-main::before{width:440px!important;height:440px!important;right:-150px!important;top:-110px!important;opacity:.11!important}
+#destiny-card[data-base-element="air"] .card-main::before{height:310px!important;top:20px!important;opacity:.13!important}
+
+/* Fine grain only in CSS, no raster texture asset required. */
+#destiny-card[data-base-element]::after,
+body[data-reading-science] .deep-reading-card::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  opacity:.025;
+  background-image:radial-gradient(circle at 20% 30%,#3b2c1b .45px,transparent .55px),radial-gradient(circle at 70% 65%,#3b2c1b .4px,transparent .5px);
+  background-size:7px 7px,9px 9px;
+  mix-blend-mode:multiply;
+}
+
+@media(max-width:620px){
+  body[data-reading-science] .rh{min-height:315px!important;padding:54px 20px 48px!important}
+  body[data-reading-science] .reading-emblem{width:84px!important;height:84px!important;margin-bottom:25px!important}
+  body[data-reading-science] #rh-ttl{font-size:clamp(32px,9.2vw,39px)!important}
+  body[data-reading-science] .facts{width:calc(100% - 30px)!important}
+  body[data-reading-science] .rdgs{gap:12px!important}
+  body[data-reading-science] .rdg{min-height:0;padding:22px 19px 23px!important;margin-inline:0!important;border-radius:16px!important}
+  body[data-reading-science] .rdg-b{font-size:14.5px!important;line-height:1.84!important}
+  #destiny-card[data-base-element] .card-top{padding-inline:20px!important}
+  #destiny-card[data-base-element] .card-main{padding:34px 20px 27px!important}
+  #destiny-card[data-base-element] .sign-row{gap:18px!important;align-items:flex-start!important}
+  #destiny-card[data-base-element] .sign-glyph{width:88px!important;height:88px!important;flex-basis:88px!important;font-size:42px!important}
+  #destiny-card[data-base-element] .identity h3{font-size:29px!important;line-height:1.12!important}
+  #destiny-card[data-base-element] .summary{font-size:15.5px!important;line-height:1.82!important}
+}
+
+@media(max-width:390px){
+  body[data-reading-science] .rh{min-height:295px!important;padding-inline:16px!important}
+  body[data-reading-science] #rh-ttl{font-size:31px!important}
+  #destiny-card[data-base-element] .sign-row{gap:14px!important}
+  #destiny-card[data-base-element] .sign-glyph{width:76px!important;height:76px!important;flex-basis:76px!important;font-size:36px!important}
+  #destiny-card[data-base-element] .identity h3{font-size:26px!important}
+}
+
+@media(prefers-reduced-motion:reduce){
+  body[data-reading-science] .rh::after,
+  #destiny-card[data-base-element] .card-main::before,
+  #destiny-card[data-base-element] .card-main::after{transform:none!important}
+}
