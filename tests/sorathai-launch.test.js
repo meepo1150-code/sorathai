@@ -71,6 +71,12 @@ test('public HTML no longer advertises the unconfigured sorathai.com origin', ()
   }
 });
 
+test('image-export controls are labeled as save actions rather than native share actions', () => {
+  const dream = read('dream-result.html');
+  assert.match(dream, />บันทึกการ์ด<\/button>/);
+  assert.equal(/>แชร์<\/button>/.test(dream), false);
+});
+
 test('measurement contract contains no network transport primitives', () => {
   const source = read('sorathai-events.js').toLowerCase();
   for (const marker of ['fetch(', 'xmlhttprequest', 'websocket(', 'sendbeacon(', 'navigator.sendbeacon']) {
