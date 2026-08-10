@@ -4,7 +4,7 @@
 
 Temporary canonical production origin while no custom domain is configured:
 
-`https://meepo1150-code.github.io/sorathai/`
+`https://sorathai.pages.dev/`
 
 Before launch, confirm:
 
@@ -24,7 +24,7 @@ Must be green on the launch commit:
 - `node scripts/review_readings.js`
 - `npm run test:e2e`
 - `git diff --check`
-- GitHub Pages deployment
+- GitHub Pages / Cloudflare Pages deployment checks
 
 ## Owner/manual actions
 
