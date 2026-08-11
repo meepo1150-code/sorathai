@@ -85,6 +85,7 @@
     set("fc1", element || "—"); set("fc2", polarity || "—"); set("fc3", String(year + 543));
     set("sc-orb", icon); set("sc-ttl", name ? "ปี" + name : "ราศีจีน");
     set("ss1", name || "—"); set("ss2", element || "—"); set("ss3", polarity || "—"); set("ss4", "นักษัตร");
+    document.title = "โหราศาสตร์จีน: นักษัตร ธาตุ และหยินหยาง — Sorathai";
     document.querySelectorAll("#s-result *").forEach(function (node) {
       if (node.children.length || typeof node.textContent !== "string" || node.textContent.indexOf("undefined") < 0) return;
       node.textContent = node.textContent.replace(/undefined/gi, "—");
