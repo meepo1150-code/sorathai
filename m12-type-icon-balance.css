@@ -1,0 +1,167 @@
+/* Milestone 12 — type + icon balance pass
+   Removes the remaining prototype-scale feel from deep readings and aligns
+   iconography with the engraved / sigil visual language. Presentation only. */
+
+:root{
+  --m12-meta-size:11px;
+  --m12-label-size:12px;
+  --m12-copy-size:16px;
+  --m12-copy-leading:1.78;
+}
+
+/* Deep-reading hierarchy: metadata should be quiet, not microscopic. */
+body[data-reading-science] .rh-ey,
+body[data-reading-science] .rh-lbl{
+  font-size:11px!important;
+  line-height:1.45!important;
+}
+body[data-reading-science] #rh-sub,
+body[data-reading-science] .rh-sub{
+  font-size:12px!important;
+  line-height:1.55!important;
+}
+body[data-reading-science] .fact .fl,
+body[data-reading-science] .ssl,
+body[data-reading-science] .snl,
+body[data-reading-science] .lk-lbl,
+body[data-reading-science] .rel-lbl{
+  font-size:10px!important;
+  line-height:1.5!important;
+}
+body[data-reading-science] .fact .fv,
+body[data-reading-science] .ssv{
+  font-size:15px!important;
+  line-height:1.45!important;
+}
+
+/* Reading panels: strengthen labels, daily-state pills, and body copy. */
+body[data-reading-science] .rdg{
+  padding:32px 28px!important;
+}
+body[data-reading-science] .rdg-tp{
+  font-size:12px!important;
+  line-height:1.45!important;
+  letter-spacing:.11em!important;
+  margin-bottom:15px!important;
+}
+body[data-reading-science] .dpill{
+  font-size:10px!important;
+  line-height:1!important;
+  letter-spacing:.06em!important;
+  padding:5px 10px!important;
+  min-height:24px;
+  display:inline-flex;
+  align-items:center;
+}
+body[data-reading-science] .rdg-b{
+  font-size:16px!important;
+  line-height:var(--m12-copy-leading)!important;
+  max-width:64ch!important;
+}
+
+/* Inherited base layer / profile header. */
+body[data-reading-science] .layer-relation{
+  font-size:10px!important;
+  line-height:1.5!important;
+  letter-spacing:.14em!important;
+}
+body[data-reading-science] .science-signature strong{
+  font-size:20px!important;
+  line-height:1.25!important;
+}
+body[data-reading-science] .science-signature small{
+  font-size:12px!important;
+  line-height:1.55!important;
+}
+body[data-reading-science] .base-facts dt{
+  font-size:10px!important;
+  line-height:1.45!important;
+}
+body[data-reading-science] .base-facts dd{
+  font-size:14px!important;
+  line-height:1.5!important;
+}
+body[data-reading-science] .sc-day{
+  font-size:21px!important;
+}
+body[data-reading-science] .sc-dob{
+  font-size:11px!important;
+}
+body[data-reading-science] .sc-q{
+  font-size:15px!important;
+  line-height:1.85!important;
+}
+
+/* Treat result glyphs as engraved seals rather than emoji stickers. */
+body[data-reading-science="chinese"] .rh-p,
+body[data-reading-science="chinese"] .sc-orb,
+body[data-reading-science="chinese"] #e-ico{
+  font-family:"Noto Serif TC","Noto Serif SC","Times New Roman",serif!important;
+  font-variant-emoji:text;
+  font-style:normal!important;
+  text-shadow:none!important;
+}
+body[data-reading-science="chinese"] .sc-orb{
+  font-size:30px!important;
+  font-weight:500!important;
+}
+body[data-reading-science="chinese"] .rh-p{
+  font-size:54px!important;
+  font-weight:500!important;
+}
+
+/* Base Destiny small labels were visually undersized beside the new sigil. */
+#destiny-card[data-base-element] .fact span{
+  font-size:10px!important;
+  line-height:1.45!important;
+}
+#destiny-card[data-base-element] .fact strong{
+  font-size:15px!important;
+  line-height:1.5!important;
+}
+#destiny-card[data-base-element] .identity p,
+#destiny-card[data-base-element] .power-note{
+  font-size:13px!important;
+}
+
+@media(max-width:620px){
+  :root{--m12-copy-size:15.5px}
+  body[data-reading-science] .rdg{
+    padding:27px 22px!important;
+  }
+  body[data-reading-science] .rdg-tp{
+    font-size:11.5px!important;
+    letter-spacing:.09em!important;
+    margin-bottom:13px!important;
+  }
+  body[data-reading-science] .dpill{
+    font-size:10px!important;
+    padding:5px 9px!important;
+  }
+  body[data-reading-science] .rdg-b{
+    font-size:15.5px!important;
+    line-height:1.82!important;
+  }
+  body[data-reading-science] .fact .fl,
+  body[data-reading-science] .ssl,
+  body[data-reading-science] .snl{
+    font-size:9.5px!important;
+  }
+  body[data-reading-science] .fact .fv,
+  body[data-reading-science] .ssv{
+    font-size:14px!important;
+  }
+  body[data-reading-science] .science-signature strong{font-size:19px!important}
+  body[data-reading-science] .science-signature small{font-size:11.5px!important}
+  body[data-reading-science] .base-facts dt{font-size:9.5px!important}
+  body[data-reading-science] .base-facts dd{font-size:13.5px!important}
+  body[data-reading-science] .sc-q{font-size:14.5px!important}
+  #destiny-card[data-base-element] .fact span{font-size:9.5px!important}
+}
+
+@media(max-width:390px){
+  body[data-reading-science] .rdg{padding:25px 18px!important}
+  body[data-reading-science] .rdg-b{font-size:15px!important;line-height:1.8!important}
+  body[data-reading-science] .rdg-tp{font-size:11px!important}
+  #destiny-card[data-base-element] .fact span{font-size:9px!important}
+}
