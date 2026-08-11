@@ -10,7 +10,7 @@
     ? Object.freeze(Object.fromEntries(Object.entries(root.SorathaiContent.FOCUS).map(([id, item]) => [id, item.label])))
     : DEFAULT_FOCUS_LABELS;
   const SCIENCES = Object.freeze({
-    thai: { id: "thai", name: "โหราศาสตร์ไทย", layer: "มุมมองโหราศาสตร์ไทย", origin: "คติโหราศาสตร์ไทย", icon: "☀️", accent: "#9a6d25" },
+    thai: { id: "thai", name: "โหราศาสตร์ไทย", layer: "มุมมองโหราศาสตร์ไทย", origin: "คติโหราศาสตร์ไทย", icon: "☉", accent: "#9a6d25" },
     western: { id: "western", name: "โหราศาสตร์ตะวันตก", layer: "มุมมองราศีตะวันตก", origin: "คติโหราศาสตร์ตะวันตก", icon: "♈", accent: "#4a6582" },
     chinese: { id: "chinese", name: "โหราศาสตร์จีน", layer: "มุมมองนักษัตรจีน", origin: "คติโหราศาสตร์จีน", icon: "龍", accent: "#9a4b42" },
     numerology: { id: "numerology", name: "เลขศาสตร์", layer: "มุมมองเลขเส้นทางชีวิต", origin: "คติเลขศาสตร์", icon: "№", accent: "#386451" },
@@ -73,11 +73,21 @@
     }
     return scienceId + "-result";
   }
+  function chineseSealGlyph(name) {
+    const value = String(name || "");
+    const glyphs = [
+      [["หนู","ชวด"],"子"], [["วัว","ฉลู"],"丑"], [["เสือ","ขาล"],"寅"], [["กระต่าย","เถาะ"],"卯"],
+      [["มังกร","มะโรง"],"辰"], [["งู","มะเส็ง"],"巳"], [["ม้า","มะเมีย"],"午"], [["แพะ","มะแม"],"未"],
+      [["ลิง","วอก"],"申"], [["ไก่","ระกา"],"酉"], [["หมา","สุนัข","จอ"],"戌"], [["หมู","กุน"],"亥"]
+    ];
+    const found = glyphs.find(function (entry) { return entry[0].some(function (token) { return value.indexOf(token) >= 0; }); });
+    return found ? found[1] : "辰";
+  }
   function repairChineseResult(profile) {
     if (!root.document || !profile || !root.HR || !Array.isArray(root.HR.CHINESE) || typeof root.HR.getChineseIdx !== "function") return;
     const year = Number(profile.dob.slice(0, 4)), ch = root.HR.CHINESE[root.HR.getChineseIdx(year)];
     if (!ch) return;
-    const name = ch.name || ch.n || "", element = ch.element || ch.el || "", polarity = ch.pol || "", icon = ch.ico || ch.i || "辰";
+    const name = ch.name || ch.n || "", element = ch.element || ch.el || "", polarity = ch.pol || "", icon = chineseSealGlyph(name);
     const set = function (id, value) { const node = document.getElementById(id); if (node && value !== undefined && value !== null) node.textContent = String(value); };
     set("rh-ttl", name ? "ปีนักษัตร" + name : "ราศีจีน");
     set("rh-sub", [name, element ? "ธาตุ" + element : "", polarity].filter(Boolean).join(" · "));
