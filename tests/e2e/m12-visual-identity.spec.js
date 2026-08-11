@@ -40,11 +40,13 @@ for (const [id, path] of sciences) {
   });
 }
 
-test("Chinese reading never leaks legacy-schema undefined values", async ({ page }) => {
+test("Chinese reading repairs legacy-schema values without mutating SEO metadata", async ({ page }) => {
   await page.goto("/chinese-astrology.html?dob=01011990");
   await expect(page.locator("#s-result")).toBeVisible();
   await expect(page.locator("#rh-ttl")).not.toHaveText("");
   await expect(page.locator("#s-result")).not.toContainText(/undefined/i);
   await expect(page.locator("#fc1")).not.toHaveText("");
   await expect(page.locator("#ss1")).not.toHaveText("");
+  await expect(page).toHaveTitle("โหราศาสตร์จีน: นักษัตร ธาตุ และหยินหยาง — Sorathai");
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", "https://sorathai.pages.dev/chinese-astrology.html");
 });
