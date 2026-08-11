@@ -1,0 +1,73 @@
+/* Milestone 12 — final micro polish
+   Spacing, contrast, tactile hierarchy, and mobile consistency only.
+   Presentation-only; no calculation/profile/SEO/privacy/monetization behavior changes. */
+
+:root{
+  --m12-hairline:rgba(72,54,31,.105);
+  --m12-soft-shadow:rgba(45,32,18,.045);
+}
+
+/* Home: quieter chrome, stronger content rhythm. */
+.result-heading{max-width:720px!important;margin-inline:auto!important}
+.result-heading .eyebrow,.explore .eyebrow{color:#7d6a4f!important}
+.result-heading h2,.explore h2{color:#25211c!important}
+.result-heading p,.explore>p{color:#625b52!important}
+.science-grid{align-items:stretch}
+.science-card{box-shadow:0 1px 0 rgba(255,255,255,.8) inset,0 13px 30px var(--m12-soft-shadow)!important}
+.science-card h3{color:#26221d!important}
+.science-card p{color:#625b52!important}
+.science-card .arrow{display:grid;place-items:center;width:26px;height:26px;border:1px solid color-mix(in srgb,var(--science-tone) 20%,transparent);border-radius:50%;background:rgba(255,255,255,.28)}
+
+/* Base Destiny: make the identity block the hero, supporting data recede. */
+#destiny-card[data-base-element] .card-top{letter-spacing:.02em}
+#destiny-card[data-base-element] .identity h3{margin-bottom:7px!important;letter-spacing:-.025em!important}
+#destiny-card[data-base-element] .identity p{font-weight:600!important}
+#destiny-card[data-base-element] .summary{color:#494138!important}
+#destiny-card[data-base-element] .card-facts{margin-top:2px!important}
+#destiny-card[data-base-element] .fact span{font-size:9px!important;letter-spacing:.12em!important;text-transform:uppercase}
+#destiny-card[data-base-element] .fact strong{font-size:14px!important;color:#2e2923!important}
+#destiny-card[data-base-element] .powers-title{color:#72695e!important;letter-spacing:.08em!important}
+#destiny-card[data-base-element] .power-note{color:#81786c!important;line-height:1.75!important}
+
+/* Deep Reading: reduce repeated visual noise and preserve a clear reading cadence. */
+body[data-reading-science] .rh{border-bottom-color:color-mix(in srgb,var(--identity-accent) 22%,var(--m12-hairline))!important}
+body[data-reading-science] #rh-sub{color:#777067!important}
+body[data-reading-science] .facts{box-shadow:0 1px 0 rgba(255,255,255,.68) inset,0 9px 22px rgba(45,32,18,.022)!important}
+body[data-reading-science] .fact{background:rgba(255,253,249,.22)}
+body[data-reading-science] .rdg{transition:border-color .18s ease,box-shadow .18s ease,transform .18s ease}
+body[data-reading-science] .rdg:nth-child(3n+2)::before{opacity:.07!important}
+body[data-reading-science] .rdg:nth-child(3n)::before{opacity:.095!important}
+body[data-reading-science] .rdg-tp{color:color-mix(in srgb,var(--identity-accent) 82%,#4e453b)!important}
+body[data-reading-science] .rdg-b{color:#36312b!important}
+body[data-reading-science] .lk-lbl,body[data-reading-science] .rel-lbl{color:#746b61!important}
+body[data-reading-science] .lk-b,body[data-reading-science] .rc{border-color:color-mix(in srgb,var(--identity-accent) 20%,var(--m12-hairline))!important}
+
+/* Crafted interaction: visible on desktop, inert on touch. */
+@media(hover:hover){
+  .science-card:hover{transform:translateY(-2px)!important}
+  body[data-reading-science] .rdg:hover{transform:translateY(-1px);border-color:color-mix(in srgb,var(--identity-accent) 38%,rgba(87,63,37,.12))!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 18px 34px rgba(45,31,17,.055)!important}
+  body[data-reading-science] .rc:hover{transform:translateY(-1px)}
+}
+
+/* Mobile: protect breathing room and keep the crafted details subordinate to text. */
+@media(max-width:620px){
+  .result-heading{padding-inline:4px}
+  .science-card .arrow{width:22px;height:22px;font-size:16px!important}
+  #destiny-card[data-base-element] .summary{margin-top:28px!important;margin-bottom:26px!important}
+  #destiny-card[data-base-element] .card-facts{border-radius:12px!important}
+  body[data-reading-science] .rh-lbl{letter-spacing:.26em!important}
+  body[data-reading-science] #rh-sub{letter-spacing:.095em!important}
+  body[data-reading-science] .rdg-tp{letter-spacing:.15em!important}
+  body[data-reading-science] .rdg-b{max-width:none!important}
+  body[data-reading-science] .lk-g,body[data-reading-science] .rel-g{gap:10px!important}
+}
+
+@media(max-width:390px){
+  .science-card .arrow{border:0;background:transparent}
+  #destiny-card[data-base-element] .fact span{font-size:8px!important}
+  body[data-reading-science] .rdg::before{opacity:.055!important}
+}
+
+@media(prefers-reduced-motion:reduce){
+  body[data-reading-science] .rdg{transition:none!important}
+}
