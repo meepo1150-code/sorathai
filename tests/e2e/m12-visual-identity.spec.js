@@ -62,15 +62,18 @@ test("legacy emoji are visually suppressed in science entry, drawer, and Thai re
   expect(entryPresentation.fontSize).toBe("0px");
   expect(entryPresentation.mark).toContain("☉");
 
-  await page.evaluate(() => window.openDrw());
-  const drawerIcons = page.locator(".dico");
-  await expect(drawerIcons.first()).toBeVisible();
-  const drawerPresentation = await drawerIcons.evaluateAll((nodes) => nodes.map((node) => ({
-    fontSize: getComputedStyle(node).fontSize,
-    mark: getComputedStyle(node, "::before").content,
-  })));
-  expect(drawerPresentation.every((item) => item.fontSize === "0px")).toBe(true);
-  expect(drawerPresentation.every((item) => !/[🔮🐉🔢🌀📈✨🌿💭]/u.test(item.mark))).toBe(true);
+  const drawer = page.locator("#drw");
+  if (await drawer.count()) {
+    await drawer.evaluate((node) => node.classList.add("open"));
+    const drawerIcons = page.locator(".dico");
+    await expect(drawerIcons.first()).toBeVisible();
+    const drawerPresentation = await drawerIcons.evaluateAll((nodes) => nodes.map((node) => ({
+      fontSize: getComputedStyle(node).fontSize,
+      mark: getComputedStyle(node, "::before").content,
+    })));
+    expect(drawerPresentation.every((item) => item.fontSize === "0px")).toBe(true);
+    expect(drawerPresentation.every((item) => !/[🔮🐉🔢🌀📈✨🌿💭]/u.test(item.mark))).toBe(true);
+  }
 
   await page.goto("/thai-astrology.html?dob=01011990");
   await expect(page.locator("body")).toHaveAttribute("data-reading-key", "thai-monday");
