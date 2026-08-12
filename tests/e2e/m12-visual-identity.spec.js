@@ -50,3 +50,51 @@ test("Chinese reading repairs legacy-schema values without mutating SEO metadata
   await expect(page).toHaveTitle("โหราศาสตร์จีน: นักษัตร ธาตุ และหยินหยาง — Sorathai");
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", "https://sorathai.pages.dev/chinese-astrology.html");
 });
+
+test("legacy emoji are visually suppressed in science entry, drawer, and Thai result seals", async ({ page }) => {
+  await page.goto("/thai-astrology.html");
+  const entry = page.locator(".ep");
+  await expect(entry).toBeVisible();
+  const entryPresentation = await entry.evaluate((node) => ({
+    fontSize: getComputedStyle(node).fontSize,
+    mark: getComputedStyle(node, "::before").content,
+  }));
+  expect(entryPresentation.fontSize).toBe("0px");
+  expect(entryPresentation.mark).toContain("☉");
+
+  await page.evaluate(() => window.openDrw());
+  const drawerIcons = page.locator(".dico");
+  await expect(drawerIcons.first()).toBeVisible();
+  const drawerPresentation = await drawerIcons.evaluateAll((nodes) => nodes.map((node) => ({
+    fontSize: getComputedStyle(node).fontSize,
+    mark: getComputedStyle(node, "::before").content,
+  })));
+  expect(drawerPresentation.every((item) => item.fontSize === "0px")).toBe(true);
+  expect(drawerPresentation.every((item) => !/[🔮🐉🔢🌀📈✨🌿💭]/u.test(item.mark))).toBe(true);
+
+  await page.goto("/thai-astrology.html?dob=01011990");
+  await expect(page.locator("body")).toHaveAttribute("data-reading-key", "thai-monday");
+  const planet = await page.locator("#sc-orb").evaluate((node) => ({
+    fontSize: getComputedStyle(node).fontSize,
+    mark: getComputedStyle(node, "::after").content,
+  }));
+  expect(planet.fontSize).toBe("0px");
+  expect(planet.mark).toContain("☾");
+});
+
+test("dream UI uses Sorathai text marks instead of visible pictographic emoji", async ({ page }) => {
+  await page.goto("/dream.html");
+  const hero = await page.locator(".hero-ico").evaluate((node) => ({
+    fontSize: getComputedStyle(node).fontSize,
+    mark: getComputedStyle(node, "::before").content,
+  }));
+  expect(hero.fontSize).toBe("0px");
+  expect(hero.mark).toContain("☾");
+
+  const chips = await page.locator(".chip[data-v]").evaluateAll((nodes) => nodes.map((node) => ({
+    fontSize: getComputedStyle(node).fontSize,
+    label: getComputedStyle(node, "::after").content,
+  })));
+  expect(chips.length).toBeGreaterThan(0);
+  expect(chips.every((item) => item.fontSize === "0px" && item.label !== "none")).toBe(true);
+});
