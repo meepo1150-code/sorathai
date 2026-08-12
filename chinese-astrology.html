@@ -111,42 +111,92 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-font
 <meta property="og:type" content="website">
 <meta property="og:title" content="โหราศาสตร์จีน: นักษัตร ธาตุ และหยินหยาง — Sorathai">
 <meta property="og:description" content="อ่านนักษัตรปีเกิด ธาตุ และหยินหยางตามระบบที่คำนวณได้ เพื่อสำรวจรูปแบบสังคม การตัดสินใจ ความสัมพันธ์ การงาน จุดแข็ง และจุดบอด">
-<meta property="og:image" content="https://sorathai.pages.dev/assets/og-default.png">
 <meta property="og:url" content="https://sorathai.pages.dev/chinese-astrology.html">
+<meta property="og:image" content="https://sorathai.pages.dev/og-image.png">
+<meta property="og:locale" content="th_TH">
+<meta property="og:site_name" content="Sorathai">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="โหราศาสตร์จีน: นักษัตร ธาตุ และหยินหยาง — Sorathai">
 <meta name="twitter:description" content="อ่านนักษัตรปีเกิด ธาตุ และหยินหยางตามระบบที่คำนวณได้ เพื่อสำรวจรูปแบบสังคม การตัดสินใจ ความสัมพันธ์ การงาน จุดแข็ง และจุดบอด">
-<meta name="twitter:image" content="https://sorathai.pages.dev/assets/og-default.png">
-<link rel="canonical" href="https://sorathai.pages.dev/chinese-astrology.html">
-</head>
+<meta name="twitter:image" content="https://sorathai.pages.dev/og-image.png">
+<script>
+// ซ่อน entry section ทันทีถ้ามี ?dob= ใน URL (ป้องกัน flash of entry form)
+if(new URLSearchParams(location.search).get('dob')){
+  document.documentElement.style.setProperty('--entry-display','none');
+}
+</script>
+    <link rel="canonical" href="https://sorathai.pages.dev/chinese-astrology.html" />
+      <script type="application/ld+json" data-sorathai-launch-schema="1">{"@context":"https://schema.org","@type":"WebPage","name":"โหราศาสตร์จีน","url":"https://sorathai.pages.dev/chinese-astrology.html","description":"อ่านนักษัตรปีเกิด ธาตุ และหยินหยางตามระบบที่คำนวณได้ เพื่อสำรวจรูปแบบสังคม การตัดสินใจ ความสัมพันธ์ การงาน จุดแข็ง และจุดบอด","inLanguage":"th","isPartOf":{"@type":"WebSite","name":"Sorathai","url":"https://sorathai.pages.dev/"}}</script>
+  </head>
 <body>
-<div class="page">
-<header class="hdr"><a id="back-link" class="back" href="index.html">‹</a><a id="logo-link" class="logo" href="index.html">Sorathai</a><span class="hdr-tag">Chinese Astrology</span></header>
-<section id="s-entry" class="s-entry">
+<div class="ad ad-b" style="max-width:480px;margin:0 auto"><!-- AdSense 320x50 --></div>
+<header class="hdr"><a class="back" aria-label="กลับหน้าหลัก" href="index.html" id="back-link">‹</a><a class="logo" href="index.html" id="logo-link">Sorathai</a><span class="hdr-tag">ราศีจีน</span></header>
+<main class="page" role="main">
+<div class="s-entry" id="s-entry">
   <div class="et">
-    <span class="ey">นักษัตรจีน</span>
-    <span id="e-ico" class="ep">🐉</span>
-    <h1 class="ettl">ดูดวงราศีจีน</h1>
-    <p class="esub">นักษัตร · ธาตุ · หยินหยาง</p>
+    <p class="ey" style="color:#c0392b">ราศีจีน</p>
+    <span class="ep" id="e-ico">🐉</span>
+    <h1 class="ettl">ดูดวง<br>โหราศาสตร์จีน</h1>
+    <p class="esub">12 นักษัตร · ธาตุ · หยินหยาง</p>
+    <p class="science-index-context" data-sorathai-search-context="1" style="max-width:38rem;margin:16px auto 0;color:var(--t2);font-size:13px;line-height:1.75">คำอ่านจีนเริ่มจากนักษัตรปีเกิด และใช้ธาตุกับหยินหยางเมื่อข้อมูลนั้นถูกคำนวณได้ จากนั้นจึงแปลเป็นมุมมองเรื่องการเข้าสังคม การตัดสินใจ ความสัมพันธ์ การงาน จุดแข็ง และจุดบอด โดยไม่ตีกรอบว่านักษัตรเป็นนิสัยตายตัว</p>
   </div>
   <div class="ef">
-    <p class="ef-lbl">วันเกิดของคุณ</p>
-    <div class="ef-hs"><span>วัน</span><span>เดือน</span><span class="yr">ปี พ.ศ.</span></div>
-    <div class="ef-row"><div class="dw"><select id="ef-d" class="drum"></select></div><div class="dw"><select id="ef-m" class="drum"></select></div><div class="dw yr"><select id="ef-y" class="drum"></select></div></div>
-    <p id="ef-hint" class="ef-hint"></p><p id="ef-err" class="ef-err"></p>
-    <button class="btn-go" onclick="goResult()">ดูผลวิเคราะห์</button>
-    <p class="ef-note">Sorathai ใช้วันเกิดเพื่อคำนวณผลบนอุปกรณ์นี้</p>
+    <p class="ef-lbl">ใส่วันเกิดของคุณ</p>
+    <div class="ef-hs"><label for="ef-d">วัน</label><label for="ef-m">เดือน</label><label class="yr" for="ef-y">ปี</label></div>
+    <div class="ef-row">
+      <div class="dw"><select class="drum" id="ef-d"></select></div>
+      <div class="dw"><select class="drum" id="ef-m"></select></div>
+      <div class="dw yr"><select class="drum" id="ef-y"></select></div>
+    </div>
+    <p class="ef-hint" id="ef-hint"></p>
+    <p class="ef-err" id="ef-err" role="alert" aria-live="polite"></p>
+    <button class="btn-go" onclick="goResult()">ดูดวงเลย →</button>
+    <p class="ef-note">ประมวลผลและบันทึกวันเกิดบนอุปกรณ์นี้ · ฟรี 100%</p>
   </div>
-</section>
-<section id="s-result" class="s-result">
-  <div class="rh"><p class="rh-ey">นักษัตรจีน</p><span id="rh-ico" class="rh-p">🐉</span><h1 id="rh-ttl" class="rh-ttl"></h1><p id="rh-sub" class="rh-sub"></p></div>
-  <div class="facts"><div class="fact"><div class="fl">ธาตุ</div><div id="fc1" class="fv"></div></div><div class="fact"><div class="fl">ขั้ว</div><div id="fc2" class="fv"></div></div><div class="fact"><div class="fl">ปี พ.ศ.</div><div id="fc3" class="fv"></div></div></div>
-  <div class="cw"><div id="share-card" class="sc"><div class="sc-top" style="background:#c0392b"></div><div class="sc-hd"><div id="sc-orb" class="sc-orb"></div><div><div id="sc-ttl" class="sc-day"></div><div id="sc-dob" class="sc-dob"></div></div></div><div class="sc-q"></div><div class="sc-div"></div><div class="sc-stats"><div class="ss"><div class="ssl">นักษัตร</div><div id="ss1" class="ssv"></div></div><div class="ss"><div class="ssl">ธาตุ</div><div id="ss2" class="ssv"></div></div><div class="ss"><div class="ssl">ขั้ว</div><div id="ss3" class="ssv"></div></div><div class="ss"><div class="ssl">ระบบ</div><div id="ss4" class="ssv"></div></div></div><div class="sc-nums"><div class="snl">เลขมงคล</div><div id="sc-nums" class="snr"></div></div><div class="sc-ft"><span class="sc-wm">Sorathai</span><button class="btn-shr" onclick="window.SorathaiReading.exportCard('chinese',window.SorathaiProfile.fromLocation(location.search),'share-card','export-status')">บันทึกภาพ</button></div></div></div>
-  <div id="rdgs" class="rdgs"></div><div id="lk-sec" class="lk"></div><div class="rel"><p class="rel-lbl">ศาสตร์อื่นที่เกี่ยวข้อง</p><div id="rel-g" class="rel-g"></div></div><p class="disc">ผลนี้เป็นการตีความเชิงสัญลักษณ์จากวันเกิด ไม่ใช่คำทำนายที่รับประกันเหตุการณ์ในอนาคต</p>
-</section>
-<div id="ovl" class="ovl" onclick="closeDrw()"></div><div id="drw" class="drw"><div class="drw-hdl"></div><div class="drw-ttl">เลือกศาสตร์</div><div id="drw-g" class="drw-g"></div></div>
-<div class="sov"><div class="spin"></div><p id="export-status"></p></div>
 </div>
+<div class="s-result" id="s-result">
+  <div class="rh">
+    <p class="rh-ey" style="color:#c0392b">ราศีจีน</p>
+    <span class="rh-p" id="rh-ico">🐉</span>
+    <h1 class="rh-ttl" id="rh-ttl">—</h1>
+    <p class="rh-sub" id="rh-sub">—</p>
+  </div>
+  <div class="facts"><div class="fact"><div class="fl">ธาตุ</div><div class="fv" id="fc1">—</div></div><div class="fact"><div class="fl">ขั้ว</div><div class="fv" id="fc2">—</div></div><div class="fact"><div class="fl">ปี</div><div class="fv" id="fc3">—</div></div></div>
+  <div class="ad-i"><!-- AdSense fluid --></div>
+  <div class="cw"><div class="sc" id="share-card">
+    <div class="sc-top" style="background:#c0392b"></div>
+    <div class="sc-hd">
+      <div class="sc-orb" style="border:0.5px solid rgba(192,57,43,.45)" id="sc-orb">🐉</div>
+      <div><div class="sc-day" id="sc-ttl">—</div><div class="sc-dob" id="sc-dob">—</div></div>
+    </div>
+    <div class="sc-q" style="border-left-color:#c0392b" id="sc-q">"..."</div>
+    <div class="sc-div"></div>
+    <div class="sc-stats"><div class="ss"><div class="ssl">นักษัตร</div><div class="ssv" id="ss1">—</div></div><div class="ss"><div class="ssl">ธาตุ</div><div class="ssv" id="ss2">—</div></div><div class="ss"><div class="ssl">ขั้ว</div><div class="ssv" id="ss3">—</div></div><div class="ss"><div class="ssl">เลขมงคล</div><div class="ssv" id="ss4">—</div></div></div>
+    <div class="sc-nums"><div class="snl">เลขนำโชคประจำตัว</div><div class="snr" id="sc-nums"></div></div>
+    <div class="sc-ft"><span class="sc-wm">Sorathai</span>
+      <button class="btn-shr" onclick="SorathaiReading.exportCard('chinese',SorathaiProfile.fromLocation(location.search),'share-card','export-status')" aria-label="บันทึก Deep Reading Card chinese เป็นภาพ">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>บันทึกการ์ด
+      </button>
+    </div>
+  </div></div>
+  <div class="rdgs" id="rdgs"></div>
+  <div class="lk" id="lk-sec"></div>
+  <div class="ad-r"><!-- AdSense 300x250 --></div>
+  <div class="rel"><p class="rel-lbl">ดูดวงศาสตร์อื่นต่อ</p><div class="rel-g" id="rel-g"></div></div>
+  <p class="disc">คำอ่านนี้เป็นมุมมองตามความเชื่อ เพื่อความบันเทิงและการสะท้อนตนเอง ไม่ใช่ข้อเท็จจริงทางวิทยาศาสตร์หรือคำแนะนำด้านสุขภาพ การเงิน กฎหมาย และความปลอดภัย</p>
+</div>
+</main>
+
+<footer class="site-footer"><nav aria-label="ข้อมูลเกี่ยวกับเว็บไซต์"><a href="about.html">เกี่ยวกับเรา</a><a href="privacy.html">ความเป็นส่วนตัว</a><a href="contact.html">ติดต่อ</a></nav><p>Sorathai · เพื่อความบันเทิงและการสะท้อนตนเอง</p></footer>
+<nav class="bnav" aria-label="เมนูหลัก">
+  <a class="nitem" href="index.html" id="nav-home"><span class="nico">🌟</span>ดูดวง</a>
+  <a class="nitem" href="dream.html" id="nav-dream"><span class="nico">💭</span>ทำนายฝัน</a>
+  <a class="nitem" href="numerology.html" id="nav-num"><span class="nico">🔢</span>เลขศาสตร์</a>
+  <button class="nitem" type="button" aria-label="เปิดรายการศาสตร์เพิ่มเติม" onclick="openDrw()"><span class="nico">☰</span>เพิ่มเติม</button>
+</nav>
+<div class="ovl" id="ovl" aria-hidden="true" onclick="closeDrw()"></div>
+<div class="drw" id="drw"><div class="drw-hdl"></div><div class="drw-ttl">ศาสตร์ดูดวงทั้งหมด</div><div class="drw-g" id="drw-g"></div></div>
+<div class="sov" id="sov" role="status" aria-live="polite"><div class="spin"></div><p id="export-status">พร้อมสร้างภาพการ์ด</p></div>
 <script src="sorathai-site.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
 <script src="sorathai-profile.js" defer></script>
