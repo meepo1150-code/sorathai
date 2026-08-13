@@ -5,9 +5,11 @@ This document separates checks that repository/browser automation can prove from
 ## Production baseline
 
 - Public hostname for initial validation: `https://sorathai.pages.dev/`
-- Baseline main SHA for this pass: `edda5958959d13e46363b38d06415f8de40ba366`
-- Cloudflare Pages production deployment for that SHA was confirmed successful by the owner on 2026-08-13.
-- Search Console accepted a fresh submission of `/sitemap.xml` on 2026-08-13. The existing sitemap row still showed the previous `Couldn't fetch` result immediately afterward, so ingestion remains pending Google reprocessing rather than being treated as passed.
+- Current automated-evidence main SHA: `d67ff56a3e13f8ed69e4396b3ee65c8e5acd5df3`
+- Cloudflare Pages production deployment of the earlier sitemap-response hardening SHA was confirmed successful by the owner on 2026-08-13.
+- Post-merge static validation run #161 passed on the current main SHA.
+- Production crawler smoke run #1 passed from a GitHub-hosted runner against the canonical production hostname. It proved that `/sitemap.xml` is externally fetchable as XML, `/robots.txt` is externally fetchable as text/plain and declares the canonical sitemap, all sitemap URLs remain on `https://sorathai.pages.dev/`, and all declared sitemap routes return HTTP 200.
+- Search Console accepted a fresh submission of `/sitemap.xml` on 2026-08-13. The existing sitemap row still showed the previous `Couldn't fetch` result immediately afterward, so Google-specific ingestion remains pending reprocessing rather than being treated as passed.
 
 ## Automated / repository QA
 
@@ -22,9 +24,11 @@ The existing CI remains the release gate for:
 - keyboard accessibility smoke coverage for the Home DOB flow, visible focus, keyboard activation of a science card, and native Combined Profile actions
 - whitespace checks
 
+The separate post-merge production crawler smoke is an operational guard, not a PR release gate. It retries after Cloudflare propagation and verifies the externally served crawler surface without conflating a temporary hosting delay with calculation/UI correctness.
+
 The M11 keyboard smoke test is intentionally a baseline guard, not a human accessibility certification. CI proves the critical native keyboard path remains operable; it does not prove every interactive element has an ideal focus order or assistive-technology experience.
 
-A green CI run is necessary but does **not** certify the manual items below.
+A green CI and production smoke are necessary but do **not** certify the manual items below.
 
 ## Human production walkthrough
 
@@ -72,8 +76,13 @@ Human certification still requires:
 - [x] Canonical public hostname remains `https://sorathai.pages.dev/` for the initial validation period.
 - [x] Cloudflare Pages production deployment of sitemap response hardening confirmed successful.
 - [x] Search Console accepted a fresh `/sitemap.xml` submission.
+- [x] Independent production crawler smoke confirms the current sitemap/robots/public-route surface is externally reachable and coherent.
 - [ ] Search Console sitemap processor reports `Success` and discovers pages after reprocessing.
 - [ ] Record page-indexing feedback for Home and representative public science routes after Google has had time to crawl.
+
+## Interpretation boundary
+
+The passing production crawler smoke materially narrows the old Search Console `Couldn't fetch` symptom: the current production response is reachable and coherent from an independent external runner. It does **not** prove Google's separate sitemap processor has ingested the file. Search Console remains the source of truth for Google-specific `Success`, discovered-page counts and indexing feedback. Do not modify or repeatedly resubmit the sitemap solely because the old row has not refreshed yet.
 
 ## Stop conditions
 
