@@ -1,0 +1,25 @@
+name: Production crawler smoke
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  production-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Wait for Cloudflare Pages propagation
+        run: sleep 45
+
+      - name: Check production crawler surface
+        run: bash scripts/production_smoke.sh
