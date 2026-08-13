@@ -40,6 +40,21 @@ The order is part of the visual contract. Later files intentionally override sel
 - Presentation data attributes such as `data-reading-science`, `data-reading-key`, `data-reading-variant`, `data-base-element`, and related Base identity attributes are visual hooks. They must not alter calculations or stored profile shape.
 - Never move a presentation hook into calculation code if the move changes calculation/profile behavior. Conversely, do not refactor a stable core module solely for aesthetic code organization when the regression risk exceeds the maintenance benefit.
 
+## Documented runtime exception: Base Destiny identity hook
+
+`installBaseIdentityPresentation()` currently lives in `sorathai-profile.js` even though it only writes visual `data-*` attributes onto the Base Destiny Card. This is intentional technical debt, not a calculation contract.
+
+Milestone 13 reviewed moving it into `sorathai-site.js` or a new presentation runtime. The move would change script/DOMContentLoaded/MutationObserver timing on Home while providing no user-visible benefit, and the current M12 Playwright test already proves the hook does not add fields to the stored profile. For now the safer maintenance choice is to leave the hook in place and treat it as a documented exception.
+
+Future extraction is acceptable only when it can preserve all of these at once:
+
+- the same `data-base-element`, `data-base-sign`, `data-base-archetype`, and deterministic `data-base-variant` values
+- no change to the `sorathai.profile.v1` stored shape
+- no change to DOB restoration or Base Card render timing
+- browser regression green on first render, restored profile, refresh, and mobile flows
+
+Do not reuse this exception as precedent for adding new presentation behavior to the profile model.
+
 ## Locked product boundaries
 
 Visual maintenance must not silently change:
