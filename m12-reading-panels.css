@@ -1,0 +1,195 @@
+/* Milestone 12 — framed deep-reading panels
+   Presentation-only: typography, surfaces and science-specific line art. */
+
+:root{
+  --m12-reading-ink:#2a2621;
+  --m12-reading-muted:#6d655b;
+}
+
+/* Every reading section becomes an editorial paper panel rather than a loose divider. */
+.rdgs{
+  display:grid!important;
+  gap:14px!important;
+  padding-top:26px!important;
+}
+.rdg{
+  --panel-accent:var(--reading-accent,#9a6d25);
+  position:relative!important;
+  isolation:isolate;
+  overflow:hidden!important;
+  padding:24px 26px 25px!important;
+  border:1px solid color-mix(in srgb,var(--panel-accent) 24%,rgba(101,78,45,.11))!important;
+  border-radius:18px!important;
+  background:
+    radial-gradient(circle at 8% 5%,rgba(255,255,255,.78),transparent 26%),
+    linear-gradient(145deg,#fffaf2,#fbf4e8)!important;
+  box-shadow:0 10px 30px rgba(58,43,23,.038)!important;
+}
+.rdg::before{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  right:-46px;
+  top:-54px;
+  width:164px;
+  height:164px;
+  opacity:.09;
+  pointer-events:none;
+  border:1px solid var(--panel-accent);
+  border-radius:50%;
+}
+.rdg::after{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  left:-36px;
+  bottom:-64px;
+  width:118px;
+  height:118px;
+  opacity:.055;
+  pointer-events:none;
+  border:1px solid var(--panel-accent);
+  transform:rotate(45deg);
+}
+.rdg-tp{
+  position:relative;
+  width:max-content;
+  max-width:100%;
+  margin-bottom:12px!important;
+  padding-right:28px;
+  color:var(--panel-accent)!important;
+  font-size:10px!important;
+  font-weight:700!important;
+  line-height:1.45!important;
+  letter-spacing:1.6px!important;
+}
+.rdg-tp::after{
+  content:"";
+  position:absolute;
+  right:0;
+  top:50%;
+  width:18px;
+  height:1px;
+  background:color-mix(in srgb,var(--panel-accent) 42%,transparent);
+}
+.rdg-b{
+  position:relative;
+  color:var(--m12-reading-ink)!important;
+  font-size:15.5px!important;
+  font-weight:400!important;
+  line-height:1.88!important;
+  letter-spacing:.002em!important;
+}
+.dpill{
+  padding:3px 8px!important;
+  background:color-mix(in srgb,var(--panel-accent) 5%,#fffaf2)!important;
+  border-color:color-mix(in srgb,var(--panel-accent) 28%,transparent)!important;
+}
+
+/* Focused topic keeps the same language, only a slightly stronger accent. */
+.reading-focus-emphasis{
+  margin:0!important;
+  padding:24px 26px 25px!important;
+  border-color:color-mix(in srgb,var(--panel-accent) 52%,rgba(101,78,45,.12))!important;
+  background:
+    radial-gradient(circle at 8% 5%,rgba(255,255,255,.82),transparent 26%),
+    linear-gradient(145deg,color-mix(in srgb,var(--panel-accent) 4%,#fffaf2),#fbf4e8)!important;
+  box-shadow:0 12px 34px rgba(58,43,23,.05)!important;
+}
+
+/* Science-specific motifs. Existing accent metadata identifies the active science. */
+body:has(.deep-reading-card[style*="#9a6d25"]) .rdg::before{
+  background:repeating-conic-gradient(from 0deg,var(--panel-accent) 0 1deg,transparent 1deg 30deg);
+}
+body:has(.deep-reading-card[style*="#4a6582"]) .rdg::before{
+  background:
+    repeating-conic-gradient(from 0deg,var(--panel-accent) 0 1deg,transparent 1deg 30deg),
+    radial-gradient(circle at center,transparent 0 31%,var(--panel-accent) 32% 33%,transparent 34% 54%,var(--panel-accent) 55% 56%,transparent 57%);
+}
+body:has(.deep-reading-card[style*="#9a4b42"]) .rdg::before{
+  border:0;
+  border-radius:0;
+  background:
+    linear-gradient(90deg,var(--panel-accent) 1px,transparent 1px) 0 0/22px 22px,
+    linear-gradient(var(--panel-accent) 1px,transparent 1px) 0 0/22px 22px;
+  transform:rotate(45deg);
+}
+body:has(.deep-reading-card[style*="#386451"]) .rdg::before{
+  border-radius:16px;
+  background:
+    linear-gradient(90deg,transparent 32%,var(--panel-accent) 33% 34%,transparent 35% 65%,var(--panel-accent) 66% 67%,transparent 68%),
+    linear-gradient(transparent 32%,var(--panel-accent) 33% 34%,transparent 35% 65%,var(--panel-accent) 66% 67%,transparent 68%);
+}
+body:has(.deep-reading-card[style*="#705883"]) .rdg::before{
+  background:repeating-radial-gradient(circle at center,var(--panel-accent) 0 1px,transparent 1px 13px);
+}
+body:has(.deep-reading-card[style*="#426d82"]) .rdg::before{
+  border:0;
+  border-radius:0;
+  background:
+    radial-gradient(ellipse at 18% 50%,transparent 0 34%,var(--panel-accent) 35% 36%,transparent 37% 48%),
+    radial-gradient(ellipse at 62% 50%,transparent 0 34%,var(--panel-accent) 35% 36%,transparent 37% 48%),
+    radial-gradient(circle,var(--panel-accent) 1.4px,transparent 2px) 0 0/24px 24px;
+}
+body:has(.deep-reading-card[style*="#9b603b"]) .rdg::before{
+  background:repeating-conic-gradient(from 0deg,var(--panel-accent) 0 1deg,transparent 1deg 15deg);
+  transform:rotate(7deg);
+}
+body:has(.deep-reading-card[style*="#52705a"]) .rdg::before{
+  border:0;
+  border-radius:0;
+  background:
+    linear-gradient(90deg,transparent 48%,var(--panel-accent) 49% 51%,transparent 52%),
+    linear-gradient(32deg,transparent 48%,var(--panel-accent) 49% 51%,transparent 52%),
+    linear-gradient(-32deg,transparent 48%,var(--panel-accent) 49% 51%,transparent 52%);
+}
+
+/* Hero/facts typography now matches the stronger editorial card hierarchy. */
+.rh-ey{font-size:10px!important;letter-spacing:2.15px!important}
+.rh-ttl{font-size:clamp(34px,7vw,42px)!important;font-weight:500!important;line-height:1.16!important}
+.rh-sub{font-size:11.5px!important;line-height:1.7!important;letter-spacing:1.25px!important}
+.fl{font-size:8.5px!important;letter-spacing:1.35px!important}
+.fv{font-size:14px!important;font-weight:600!important;line-height:1.45!important}
+
+/* Supporting info cards use the same paper framing. */
+.lk-g{gap:12px!important}
+.lk-b{
+  position:relative!important;
+  overflow:hidden!important;
+  padding:18px 19px!important;
+  border:1px solid var(--m12-line)!important;
+  background:linear-gradient(145deg,#fffaf2,#fbf4e8)!important;
+}
+.lk-b::after{
+  content:"";
+  position:absolute;
+  width:70px;
+  height:70px;
+  right:-26px;
+  bottom:-32px;
+  border:1px solid color-mix(in srgb,var(--reading-accent,#9a6d25) 28%,transparent);
+  border-radius:50%;
+  opacity:.5;
+  pointer-events:none;
+}
+.lk-bl{font-size:8.5px!important;letter-spacing:1.35px!important}
+.lk-bv{font-family:var(--sans)!important;font-size:15px!important;font-weight:600!important}
+
+@media(max-width:620px){
+  .rdgs{gap:11px!important;padding-top:20px!important}
+  .rdg,.reading-focus-emphasis{
+    padding:20px 19px 21px!important;
+    border-radius:15px!important;
+  }
+  .rdg::before{width:132px;height:132px;right:-44px;top:-46px}
+  .rdg::after{width:90px;height:90px;left:-34px;bottom:-52px}
+  .rdg-tp{font-size:9.5px!important;letter-spacing:1.45px!important}
+  .rdg-b{font-size:14.5px!important;line-height:1.82!important}
+  .rh-ttl{font-size:clamp(32px,9vw,39px)!important}
+  .fv{font-size:13.5px!important}
+}
+
+@media(max-width:390px){
+  .rdg,.reading-focus-emphasis{padding:18px 16px 19px!important;border-radius:14px!important}
+  .rdg-b{font-size:14px!important;line-height:1.8!important}
+}

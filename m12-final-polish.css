@@ -1,0 +1,100 @@
+/* Milestone 12 — final visual rhythm polish
+   Keeps the approved minimal-premium direction while tightening consistency. */
+
+:root{
+  --m12-title:clamp(30px,6vw,46px);
+  --m12-body:15px;
+  --m12-small:12px;
+}
+
+/* Shared type rhythm */
+body{font-size:var(--m12-body)}
+.explore h2,.result-heading h2{line-height:1.14!important;letter-spacing:-.025em!important}
+.explore>p,.result-heading p{font-size:15px!important;line-height:1.78!important}
+.science-card h3,.rc-name,.sc-day,.identity h3{letter-spacing:-.01em!important}
+.science-card p,.rdg-b,.trust-main p,.trust-main li{word-spacing:.01em}
+
+/* Make the approved science-card visual language feel more deliberate. */
+.science-card{
+  outline:1px solid rgba(255,255,255,.6);
+  outline-offset:-2px;
+}
+.science-card .science-icon{
+  transition:border-color .18s ease,background-color .18s ease,transform .18s ease;
+}
+.science-card .arrow{transition:transform .18s ease,opacity .18s ease}
+@media(hover:hover){
+  .science-card:hover .science-icon{transform:scale(1.015)}
+  .science-card:hover .arrow{transform:translateX(3px)!important}
+}
+
+/* Related-science cards inherit the same discipline-specific visual identity. */
+.rc[href*="thai-astrology"]::before,
+.rc[href*="western-astrology"]::before,
+.rc[href*="chinese-astrology"]::before,
+.rc[href*="numerology"]::before,
+.rc[href*="mayan"]::before,
+.rc[href*="biorhythm"]::before,
+.rc[href*="nakshatra"]::before,
+.rc[href*="celtic"]::before{
+  content:"";
+  position:absolute;
+  inset:auto -28px -42px auto;
+  width:96px;
+  height:96px;
+  opacity:.075;
+  pointer-events:none;
+  border:1px solid var(--science-tone,#8c6a37);
+  transform:rotate(32deg);
+}
+.rc[href*="western-astrology"]::before,
+.rc[href*="mayan"]::before,
+.rc[href*="nakshatra"]::before{border-radius:50%}
+.rc[href*="chinese-astrology"]::before,
+.rc[href*="numerology"]::before{border-radius:12px}
+.rc[href*="celtic"]::before{transform:rotate(45deg) scale(.82)}
+
+/* Deep Reading: calmer content width and clearer vertical cadence. */
+.rdgs{max-width:700px;margin-inline:auto}
+.rdg{padding-block:31px!important}
+.rdg-tp{margin-bottom:13px!important}
+.rdg-b{max-width:62ch!important}
+.lk,.rel{max-width:720px;margin-inline:auto}
+.lk-g{gap:10px!important}
+.lk-b{padding:16px 17px!important}
+.rel-g{gap:12px!important}
+
+/* Hero and facts align with the larger seal language from Home. */
+.rh{padding-top:54px!important}
+.rh-p{margin-bottom:26px!important}
+.rh-ttl{margin-bottom:10px!important}
+.facts{max-width:480px;margin-inline:auto}
+.fact{padding-block:17px!important}
+
+/* Keep controls understated but comfortably tappable. */
+.text-button,.btn-ghost,.trust-actions a{min-height:46px}
+.science-card,.rc{ -webkit-tap-highlight-color:transparent }
+
+@media(max-width:620px){
+  :root{--m12-body:14px}
+  .explore>p,.result-heading p{font-size:14px!important;line-height:1.74!important}
+  .science-card{min-height:118px!important}
+  .science-card h3{font-size:15.5px!important}
+  .science-card p{font-size:12.5px!important;line-height:1.62!important}
+  .rdg{padding-block:26px!important}
+  .rdg-b{font-size:14.5px!important;line-height:1.86!important}
+  .rh{padding-top:44px!important}
+  .facts{width:100%}
+}
+
+@media(max-width:390px){
+  .science-grid{gap:10px!important}
+  .science-card{min-height:112px!important;border-radius:14px!important}
+  .science-card h3{font-size:15px!important}
+  .science-card p{font-size:12px!important;line-height:1.6!important}
+  .rc-b{min-height:88px!important}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .science-card .science-icon,.science-card .arrow{transition:none!important}
+}

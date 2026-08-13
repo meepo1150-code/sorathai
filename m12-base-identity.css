@@ -1,0 +1,143 @@
+/* Milestone 12 — Base Destiny identity artwork
+   Presentation-only. Element + zodiac + stable profile variant drive the card surface. */
+
+#destiny-card[data-base-element]{
+  --base-accent:#8b6e45;
+  --base-accent-2:#b89a70;
+  --base-paper:#faf2e4;
+  --base-paper-2:#f6ead7;
+  --base-ink:#29231c;
+  isolation:isolate;
+  border-color:color-mix(in srgb,var(--base-accent) 24%,rgba(82,63,39,.12))!important;
+  background:
+    radial-gradient(circle at 18% 6%,rgba(255,255,255,.78),transparent 28%),
+    linear-gradient(155deg,var(--base-paper),var(--base-paper-2))!important;
+  box-shadow:0 26px 66px rgba(53,40,24,.09)!important;
+}
+#destiny-card[data-base-element] .card-top,
+#destiny-card[data-base-element] .card-main{position:relative;z-index:1;background:transparent!important}
+#destiny-card[data-base-element] .card-main{isolation:isolate;overflow:hidden}
+#destiny-card[data-base-element] .card-main::before,
+#destiny-card[data-base-element] .card-main::after{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  pointer-events:none;
+  opacity:.12;
+}
+#destiny-card[data-base-element] .card-top{border-color:color-mix(in srgb,var(--base-accent) 18%,rgba(82,63,39,.1))!important}
+#destiny-card[data-base-element] .card-brand{color:var(--base-ink)}
+#destiny-card[data-base-element] .card-date{color:color-mix(in srgb,var(--base-accent) 52%,#6e665c)!important}
+#destiny-card[data-base-element] .sign-glyph{
+  color:var(--base-accent)!important;
+  border-color:color-mix(in srgb,var(--base-accent) 34%,transparent)!important;
+  background:
+    radial-gradient(circle at center,rgba(255,253,248,.96) 0 49%,transparent 50%),
+    repeating-conic-gradient(from 0deg,color-mix(in srgb,var(--base-accent) 22%,transparent) 0 1deg,transparent 1deg 30deg),
+    color-mix(in srgb,var(--base-accent) 6%,#fffaf1)!important;
+  box-shadow:
+    inset 0 0 0 8px rgba(255,252,245,.68),
+    inset 0 0 0 9px color-mix(in srgb,var(--base-accent) 14%,transparent),
+    0 10px 28px rgba(55,42,25,.055)!important;
+}
+#destiny-card[data-base-element] .identity h3{color:var(--base-ink)!important}
+#destiny-card[data-base-element] .identity p{color:color-mix(in srgb,var(--base-accent) 68%,#5d554c)!important}
+#destiny-card[data-base-element] .summary{color:#443d34!important}
+#destiny-card[data-base-element] .card-facts{
+  border-color:color-mix(in srgb,var(--base-accent) 18%,rgba(82,63,39,.1))!important;
+  background:linear-gradient(90deg,color-mix(in srgb,var(--base-accent) 3%,transparent),rgba(255,255,255,.18),color-mix(in srgb,var(--base-accent) 3%,transparent))!important;
+}
+#destiny-card[data-base-element] .fact{border-color:color-mix(in srgb,var(--base-accent) 16%,rgba(82,63,39,.08))!important}
+#destiny-card[data-base-element] .fact span,
+#destiny-card[data-base-element] .power span{color:color-mix(in srgb,var(--base-accent) 44%,#777168)!important}
+#destiny-card[data-base-element] .power-fill{background:linear-gradient(90deg,var(--base-accent),var(--base-accent-2))!important}
+#destiny-card[data-base-element] .powers{border-color:color-mix(in srgb,var(--base-accent) 14%,rgba(82,63,39,.08))!important;background:rgba(255,252,246,.38)!important}
+#destiny-card[data-base-element] .base-consultation-row{border-color:color-mix(in srgb,var(--base-accent) 14%,rgba(82,63,39,.08))!important}
+
+/* Earth — terraces, mountains and grounded geometry. */
+#destiny-card[data-base-element="earth"]{--base-accent:#8d713e;--base-accent-2:#b7975d;--base-paper:#fbf1df;--base-paper-2:#f4e5cd}
+#destiny-card[data-base-element="earth"] .card-main::before{
+  left:-9%;right:-9%;bottom:-22px;height:210px;
+  background:
+    linear-gradient(150deg,transparent 0 44%,var(--base-accent) 44.4% 44.9%,transparent 45.3%) 0 70px/250px 120px repeat-x,
+    linear-gradient(30deg,transparent 0 45%,var(--base-accent) 45.4% 45.9%,transparent 46.3%) 110px 62px/270px 130px repeat-x,
+    repeating-linear-gradient(0deg,transparent 0 27px,color-mix(in srgb,var(--base-accent) 50%,transparent) 28px 29px,transparent 30px 48px);
+  opacity:.105;
+  mask-image:linear-gradient(to top,#000,transparent 92%);
+}
+#destiny-card[data-base-element="earth"] .card-main::after{
+  width:190px;height:190px;right:-70px;top:10px;border-radius:50%;
+  background:repeating-conic-gradient(from 0deg,var(--base-accent) 0 1deg,transparent 1deg 30deg);
+  opacity:.055;
+}
+
+/* Water — layered wave arcs. */
+#destiny-card[data-base-element="water"]{--base-accent:#4f7889;--base-accent-2:#7fa6b2;--base-paper:#eef6f5;--base-paper-2:#e6f0ef}
+#destiny-card[data-base-element="water"] .card-main::before{
+  inset:auto -8% -40px -8%;height:210px;
+  background:
+    radial-gradient(ellipse at 20% 80%,transparent 0 43%,var(--base-accent) 43.5% 44.2%,transparent 44.8% 57%,var(--base-accent) 57.5% 58.2%,transparent 58.8%),
+    radial-gradient(ellipse at 70% 82%,transparent 0 40%,var(--base-accent) 40.5% 41.2%,transparent 41.8% 55%,var(--base-accent) 55.5% 56.2%,transparent 56.8%);
+  opacity:.105;
+}
+#destiny-card[data-base-element="water"] .card-main::after{
+  width:150px;height:150px;right:-46px;top:24px;border-radius:50%;
+  background:repeating-radial-gradient(circle,var(--base-accent) 0 1px,transparent 1px 13px);
+  opacity:.055;
+}
+
+/* Fire — restrained solar rays and ember points. */
+#destiny-card[data-base-element="fire"]{--base-accent:#a75f39;--base-accent-2:#cb8a55;--base-paper:#fbefe4;--base-paper-2:#f7e4d5}
+#destiny-card[data-base-element="fire"] .card-main::before{
+  width:300px;height:300px;right:-125px;top:-82px;border-radius:50%;
+  background:repeating-conic-gradient(from 0deg,var(--base-accent) 0 1deg,transparent 1deg 18deg);
+  opacity:.075;
+}
+#destiny-card[data-base-element="fire"] .card-main::after{
+  inset:auto 0 12px 0;height:120px;
+  background:radial-gradient(circle,var(--base-accent) 0 1.4px,transparent 1.8px) 0 0/38px 38px;
+  opacity:.055;
+  mask-image:linear-gradient(to top,#000,transparent);
+}
+
+/* Air — open flowing arcs and fine trajectories. */
+#destiny-card[data-base-element="air"]{--base-accent:#66778a;--base-accent-2:#93a1ad;--base-paper:#f2f4f3;--base-paper-2:#eaeeee}
+#destiny-card[data-base-element="air"] .card-main::before{
+  inset:40px -18% auto -18%;height:190px;
+  background:
+    radial-gradient(ellipse at 18% 50%,transparent 0 44%,var(--base-accent) 44.5% 45.2%,transparent 45.8% 58%,var(--base-accent) 58.5% 59.1%,transparent 59.7%),
+    radial-gradient(ellipse at 74% 42%,transparent 0 42%,var(--base-accent) 42.5% 43.2%,transparent 43.8% 56%,var(--base-accent) 56.5% 57.1%,transparent 57.7%);
+  opacity:.08;
+}
+#destiny-card[data-base-element="air"] .card-main::after{
+  inset:auto 6% 16px auto;width:180px;height:110px;
+  background:linear-gradient(22deg,transparent 49%,var(--base-accent) 49.5% 50.5%,transparent 51%) 0 0/42px 42px;
+  opacity:.045;
+}
+
+/* Zodiac-specific secondary accents; element remains the main visual language. */
+#destiny-card[data-base-sign="capricorn"]{--base-accent-2:#a98a50}
+#destiny-card[data-base-sign="taurus"]{--base-accent-2:#79906e}
+#destiny-card[data-base-sign="virgo"]{--base-accent-2:#9a8461}
+#destiny-card[data-base-sign="aries"]{--base-accent-2:#bf7250}
+#destiny-card[data-base-sign="leo"]{--base-accent-2:#c38c46}
+#destiny-card[data-base-sign="sagittarius"]{--base-accent-2:#a76554}
+#destiny-card[data-base-sign="cancer"]{--base-accent-2:#7595aa}
+#destiny-card[data-base-sign="scorpio"]{--base-accent-2:#745f79}
+#destiny-card[data-base-sign="pisces"]{--base-accent-2:#6d9aa0}
+#destiny-card[data-base-sign="gemini"]{--base-accent-2:#8a91a6}
+#destiny-card[data-base-sign="libra"]{--base-accent-2:#9a86a0}
+#destiny-card[data-base-sign="aquarius"]{--base-accent-2:#668fa5}
+
+/* Stable personal variants subtly shift the ornament without changing meaning. */
+#destiny-card[data-base-variant="2"] .card-main::before{transform:scaleX(-1)}
+#destiny-card[data-base-variant="3"] .card-main::after{transform:rotate(14deg) scale(1.05)}
+#destiny-card[data-base-variant="4"] .card-main::before{background-position:18px 6px}
+#destiny-card[data-base-variant="5"] .card-main::after{transform:scaleX(-1);opacity:.07}
+#destiny-card[data-base-variant="6"] .card-main::before{transform:translateX(12px) scale(1.03)}
+
+@media(max-width:620px){
+  #destiny-card[data-base-element] .card-main::before{opacity:.075}
+  #destiny-card[data-base-element] .card-main::after{opacity:.045}
+}
+@media(prefers-reduced-motion:reduce){#destiny-card[data-base-element] .card-main::before,#destiny-card[data-base-element] .card-main::after{transform:none!important}}

@@ -164,5 +164,39 @@
     return next;
   }
 
+  /* Presentation-only metadata for Milestone 12. This never mutates stored profile data. */
+  function installBaseIdentityPresentation() {
+    if (typeof document === "undefined") return;
+    function slugSign(value) {
+      const pairs = [["มังกร","capricorn"],["กุมภ์","aquarius"],["มีน","pisces"],["เมษ","aries"],["พฤษภ","taurus"],["เมถุน","gemini"],["กรกฎ","cancer"],["สิงห์","leo"],["กันย์","virgo"],["ตุล","libra"],["พิจิก","scorpio"],["ธนู","sagittarius"]];
+      const found = pairs.find(function (pair) { return String(value || "").indexOf(pair[0]) >= 0; });
+      return found ? found[1] : "unknown";
+    }
+    function refresh() {
+      const card = document.getElementById("destiny-card"), elementNode = document.getElementById("fact-element"), signNode = document.getElementById("fact-western"), lifeNode = document.getElementById("fact-life");
+      if (!card || !elementNode || !signNode || !lifeNode) return;
+      const elementText = elementNode.textContent.replace(/^ธาตุ/, "").trim();
+      const elementMap = { "ดิน": "earth", "น้ำ": "water", "ไฟ": "fire", "ลม": "air" };
+      const element = elementMap[elementText];
+      if (!element) return;
+      const life = parseInt(lifeNode.textContent, 10) || 1;
+      card.dataset.baseElement = element;
+      card.dataset.baseSign = slugSign(signNode.textContent);
+      card.dataset.baseArchetype = "life-" + life;
+      card.dataset.baseVariant = String((hash([element, signNode.textContent, lifeNode.textContent].join("|")) % 6) + 1);
+    }
+    function bind() {
+      const card = document.getElementById("destiny-card");
+      if (!card || card.dataset.baseIdentityObserver === "true") return;
+      card.dataset.baseIdentityObserver = "true";
+      const observer = new MutationObserver(refresh);
+      observer.observe(card, { childList: true, subtree: true, characterData: true });
+      refresh();
+    }
+    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", bind, { once: true });
+    else bind();
+  }
+  installBaseIdentityPresentation();
+
   return { VERSION, STORAGE_KEY, FOCUS_VALUES, isValidFocus, isValidISO, toISO, toLegacy, create, migrate, validProfile, fromParts, save, restore, clear, fromLocation, readingUrl, homeUrl, markScienceExplored, lifePath, deriveBaseCard };
 });

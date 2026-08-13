@@ -1,0 +1,102 @@
+/* Milestone 12 — result-specific visual variation for non-Western systems.
+   Existing deterministic data-reading-variant is used so visuals stay stable per result. */
+
+/* Chinese: 12 variants — seal/cloud/branch geometry shifts while keeping one visual family. */
+body[data-reading-science="chinese"][data-reading-variant="1"]{--identity-accent:#8a4f47}
+body[data-reading-science="chinese"][data-reading-variant="2"]{--identity-accent:#9a604b}
+body[data-reading-science="chinese"][data-reading-variant="3"]{--identity-accent:#7d5a4d}
+body[data-reading-science="chinese"][data-reading-variant="4"]{--identity-accent:#8d5541}
+body[data-reading-science="chinese"][data-reading-variant="5"]{--identity-accent:#7b604d}
+body[data-reading-science="chinese"][data-reading-variant="6"]{--identity-accent:#945149}
+body[data-reading-science="chinese"][data-reading-variant="7"]{--identity-accent:#865a52}
+body[data-reading-science="chinese"][data-reading-variant="8"]{--identity-accent:#9a6652}
+body[data-reading-science="chinese"][data-reading-variant="9"]{--identity-accent:#7d5249}
+body[data-reading-science="chinese"][data-reading-variant="10"]{--identity-accent:#8c6356}
+body[data-reading-science="chinese"][data-reading-variant="11"]{--identity-accent:#9b5849}
+body[data-reading-science="chinese"][data-reading-variant="12"]{--identity-accent:#83524d}
+body[data-reading-science="chinese"][data-reading-variant="2"] .reading-emblem{border-radius:50% 22% 50% 22%!important}
+body[data-reading-science="chinese"][data-reading-variant="3"] .reading-emblem{transform:rotate(30deg)}
+body[data-reading-science="chinese"][data-reading-variant="4"] .reading-emblem{border-radius:50%!important}
+body[data-reading-science="chinese"][data-reading-variant="5"] .reading-emblem{transform:rotate(15deg) scale(.98)}
+body[data-reading-science="chinese"][data-reading-variant="6"] .reading-emblem{border-radius:12px 42px 12px 42px!important}
+body[data-reading-science="chinese"][data-reading-variant="7"] .reading-emblem{transform:rotate(60deg) scale(.96)}
+body[data-reading-science="chinese"][data-reading-variant="8"] .reading-emblem{border-radius:32% 68% 32% 68%!important}
+body[data-reading-science="chinese"][data-reading-variant="9"] .reading-emblem{transform:rotate(-30deg)}
+body[data-reading-science="chinese"][data-reading-variant="10"] .reading-emblem{border-radius:18px!important}
+body[data-reading-science="chinese"][data-reading-variant="11"] .reading-emblem{transform:rotate(-12deg) scale(1.02)}
+body[data-reading-science="chinese"][data-reading-variant="12"] .reading-emblem{border-radius:50% 50% 22% 22%!important}
+
+/* Numerology: geometry changes by deterministic result. */
+body[data-reading-science="numerology"][data-reading-variant="1"] .rh::after{background-size:72px 72px!important}
+body[data-reading-science="numerology"][data-reading-variant="2"] .rh::after{background-size:58px 58px!important;transform:rotate(8deg)}
+body[data-reading-science="numerology"][data-reading-variant="3"] .rh::after{background-size:84px 84px!important;transform:rotate(-6deg)}
+body[data-reading-science="numerology"][data-reading-variant="4"] .rh::after{background-size:64px 64px!important;transform:scale(1.08)}
+body[data-reading-science="numerology"][data-reading-variant="5"] .rh::after{background-size:78px 78px!important;transform:scaleX(-1)}
+body[data-reading-science="numerology"][data-reading-variant="6"] .rh::after{background-size:52px 52px!important;opacity:.09!important}
+body[data-reading-science="numerology"][data-reading-variant="7"] .reading-emblem{border-radius:50%!important}
+body[data-reading-science="numerology"][data-reading-variant="8"] .reading-emblem{border-radius:14px 42px!important}
+body[data-reading-science="numerology"][data-reading-variant="9"] .reading-emblem{transform:rotate(45deg)}
+body[data-reading-science="numerology"][data-reading-variant="10"] .reading-emblem{border-radius:32%!important}
+body[data-reading-science="numerology"][data-reading-variant="11"] .reading-emblem{transform:rotate(15deg)}
+body[data-reading-science="numerology"][data-reading-variant="12"] .reading-emblem{border-radius:50% 20% 50% 20%!important}
+
+/* Mayan: calendar-ring rhythm. */
+body[data-reading-science="mayan"][data-reading-variant="1"] .rh::after{transform:rotate(2deg)}
+body[data-reading-science="mayan"][data-reading-variant="2"] .rh::after{transform:rotate(9deg) scale(1.03)}
+body[data-reading-science="mayan"][data-reading-variant="3"] .rh::after{transform:rotate(-7deg) scale(.97)}
+body[data-reading-science="mayan"][data-reading-variant="4"] .rh::after{transform:scale(1.08)}
+body[data-reading-science="mayan"][data-reading-variant="5"] .rh::after{transform:scaleX(-1)}
+body[data-reading-science="mayan"][data-reading-variant="6"] .rh::after{transform:rotate(14deg)}
+body[data-reading-science="mayan"][data-reading-variant="7"] .reading-emblem{border-radius:50%!important}
+body[data-reading-science="mayan"][data-reading-variant="8"] .reading-emblem{border-radius:20%!important}
+body[data-reading-science="mayan"][data-reading-variant="9"] .reading-emblem{transform:rotate(12deg)}
+body[data-reading-science="mayan"][data-reading-variant="10"] .reading-emblem{transform:rotate(-12deg)}
+body[data-reading-science="mayan"][data-reading-variant="11"] .reading-emblem{border-radius:38% 62% 38% 62%!important}
+body[data-reading-science="mayan"][data-reading-variant="12"] .reading-emblem{border-radius:14px!important}
+
+/* Biorhythm: phase and waveform character. */
+body[data-reading-science="biorhythm"][data-reading-variant="1"] .rh::after{transform:scaleX(1.55)!important}
+body[data-reading-science="biorhythm"][data-reading-variant="2"] .rh::after{transform:scaleX(1.72) rotate(3deg)!important}
+body[data-reading-science="biorhythm"][data-reading-variant="3"] .rh::after{transform:scaleX(1.4) rotate(-4deg)!important}
+body[data-reading-science="biorhythm"][data-reading-variant="4"] .rh::after{transform:scaleX(1.85)!important}
+body[data-reading-science="biorhythm"][data-reading-variant="5"] .rh::after{transform:scaleX(-1.6)!important}
+body[data-reading-science="biorhythm"][data-reading-variant="6"] .rh::after{transform:scaleX(1.48) rotate(6deg)!important}
+body[data-reading-science="biorhythm"][data-reading-variant="7"]{--identity-accent:#3c7f82}
+body[data-reading-science="biorhythm"][data-reading-variant="8"]{--identity-accent:#3d747f}
+body[data-reading-science="biorhythm"][data-reading-variant="9"]{--identity-accent:#4f8583}
+body[data-reading-science="biorhythm"][data-reading-variant="10"]{--identity-accent:#39747b}
+body[data-reading-science="biorhythm"][data-reading-variant="11"]{--identity-accent:#4a7c86}
+body[data-reading-science="biorhythm"][data-reading-variant="12"]{--identity-accent:#467f76}
+
+/* Nakshatra: starfield density and lunar-mansion geometry vary per result. */
+body[data-reading-science="nakshatra"][data-reading-variant="1"] .rh::after{background-size:42px 42px,100% 100%!important}
+body[data-reading-science="nakshatra"][data-reading-variant="2"] .rh::after{background-size:48px 48px,100% 100%!important;transform:rotate(3deg)}
+body[data-reading-science="nakshatra"][data-reading-variant="3"] .rh::after{background-size:36px 36px,100% 100%!important;transform:rotate(-4deg)}
+body[data-reading-science="nakshatra"][data-reading-variant="4"] .rh::after{background-size:54px 54px,100% 100%!important}
+body[data-reading-science="nakshatra"][data-reading-variant="5"] .rh::after{transform:scaleX(-1)}
+body[data-reading-science="nakshatra"][data-reading-variant="6"] .rh::after{transform:scale(1.05)}
+body[data-reading-science="nakshatra"][data-reading-variant="7"] .reading-emblem{border-radius:50% 35% 50% 35%!important}
+body[data-reading-science="nakshatra"][data-reading-variant="8"] .reading-emblem{transform:rotate(11deg)}
+body[data-reading-science="nakshatra"][data-reading-variant="9"] .reading-emblem{transform:rotate(-11deg)}
+body[data-reading-science="nakshatra"][data-reading-variant="10"] .reading-emblem{border-radius:42% 58% 42% 58%!important}
+body[data-reading-science="nakshatra"][data-reading-variant="11"] .reading-emblem{box-shadow:0 18px 42px rgba(92,54,24,.05),inset 0 0 0 12px rgba(255,255,255,.3),0 0 0 7px color-mix(in srgb,var(--identity-accent) 5%,transparent)!important}
+body[data-reading-science="nakshatra"][data-reading-variant="12"] .reading-emblem{border-radius:28%!important}
+
+/* Celtic: botanical engraving character. */
+body[data-reading-science="celtic"][data-reading-variant="1"] .rh::after{transform:scaleX(.96)}
+body[data-reading-science="celtic"][data-reading-variant="2"] .rh::after{transform:scaleX(-1)}
+body[data-reading-science="celtic"][data-reading-variant="3"] .rh::after{transform:rotate(2deg) scale(1.03)}
+body[data-reading-science="celtic"][data-reading-variant="4"] .rh::after{transform:rotate(-3deg) scale(.98)}
+body[data-reading-science="celtic"][data-reading-variant="5"] .rh::after{background-position:10px 0!important}
+body[data-reading-science="celtic"][data-reading-variant="6"] .rh::after{background-position:-12px 4px!important}
+body[data-reading-science="celtic"][data-reading-variant="7"] .reading-emblem{border-radius:50% 50% 30% 70%!important}
+body[data-reading-science="celtic"][data-reading-variant="8"] .reading-emblem{border-radius:35% 65% 55% 45%!important}
+body[data-reading-science="celtic"][data-reading-variant="9"] .reading-emblem{transform:rotate(8deg)}
+body[data-reading-science="celtic"][data-reading-variant="10"] .reading-emblem{transform:rotate(-8deg)}
+body[data-reading-science="celtic"][data-reading-variant="11"] .reading-emblem{border-radius:28% 72% 28% 72%!important}
+body[data-reading-science="celtic"][data-reading-variant="12"] .reading-emblem{border-radius:50%!important}
+
+@media(prefers-reduced-motion:reduce){
+  body[data-reading-science] .reading-emblem,
+  body[data-reading-science] .rh::after{transform:none!important}
+}

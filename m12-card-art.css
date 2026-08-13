@@ -1,0 +1,240 @@
+/* Milestone 12 — science card art + typography balance
+   Visual-only layer inspired by the approved minimal-premium reference. */
+
+:root{
+  --m12-card-bg:#fffdf9;
+  --m12-card-border:rgba(74,57,35,.12);
+  --m12-ink:#211f1b;
+  --m12-muted:#675f55;
+}
+
+/* Home reading hierarchy */
+.explore{max-width:980px!important}
+.explore .eyebrow{font-size:10px!important;letter-spacing:.18em!important}
+.explore h2{font-size:clamp(34px,5vw,48px)!important;line-height:1.14!important;letter-spacing:-.025em!important}
+.explore>p{font-size:15px!important;line-height:1.82!important;max-width:58ch!important}
+.science-grid{gap:16px!important;margin-top:34px!important}
+
+/* Editorial science cards: large seal + faint discipline-specific line art. */
+.science-card{
+  --science-tone:#9a6d25;
+  --science-soft:rgba(154,109,37,.12);
+  position:relative!important;
+  isolation:isolate;
+  overflow:hidden!important;
+  min-height:138px!important;
+  grid-template-columns:86px minmax(0,1fr) 28px!important;
+  gap:20px!important;
+  padding:22px 24px!important;
+  border:1px solid color-mix(in srgb,var(--science-tone) 34%,rgba(74,57,35,.10))!important;
+  border-radius:18px!important;
+  background:
+    linear-gradient(112deg,color-mix(in srgb,var(--science-tone) 3%,#fffdf9),#fffdf9 55%,color-mix(in srgb,var(--science-tone) 2%,#fffdf9))!important;
+  box-shadow:0 8px 28px rgba(45,37,25,.035)!important;
+  transform:none!important;
+}
+.science-card>*{position:relative;z-index:2}
+.science-card::after{
+  content:"";
+  position:absolute;
+  z-index:1;
+  width:154px;
+  height:154px;
+  right:-38px;
+  top:-48px;
+  opacity:.17;
+  pointer-events:none;
+  border-radius:50%;
+  border:1px solid var(--science-tone);
+}
+.science-card::before{
+  content:"";
+  position:absolute;
+  z-index:1;
+  width:118px;
+  height:118px;
+  right:-22px;
+  bottom:-58px;
+  opacity:.09;
+  pointer-events:none;
+  border:1px solid var(--science-tone);
+  transform:rotate(45deg);
+}
+
+.science-card .science-icon{
+  width:78px!important;
+  height:78px!important;
+  flex-basis:78px!important;
+  border-radius:50%!important;
+  border:1px solid color-mix(in srgb,var(--science-tone) 34%,transparent)!important;
+  background:color-mix(in srgb,var(--science-tone) 4%,#fffaf2)!important;
+  box-shadow:
+    inset 0 0 0 7px #fffdf9,
+    inset 0 0 0 8px color-mix(in srgb,var(--science-tone) 18%,transparent)!important;
+  position:relative;
+}
+.science-card .science-icon::after{
+  content:"";
+  position:absolute;
+  inset:11px;
+  border:1px dotted color-mix(in srgb,var(--science-tone) 32%,transparent);
+  border-radius:50%;
+}
+.science-card .science-icon::before{font-size:31px!important;z-index:1}
+.science-card h3{
+  color:var(--m12-ink)!important;
+  font-size:17px!important;
+  font-weight:600!important;
+  line-height:1.35!important;
+  margin-bottom:6px!important;
+}
+.science-card p{
+  color:var(--m12-muted)!important;
+  font-size:13.5px!important;
+  line-height:1.72!important;
+  max-width:48ch!important;
+}
+.science-card .arrow{
+  color:var(--science-tone)!important;
+  font-size:20px!important;
+  opacity:.82!important;
+  align-self:center;
+}
+
+/* Discipline palettes */
+.science-card[data-science-id="thai"]{--science-tone:#a97829}
+.science-card[data-science-id="western"]{--science-tone:#7561a2}
+.science-card[data-science-id="chinese"]{--science-tone:#63795f}
+.science-card[data-science-id="numerology"]{--science-tone:#4d739d}
+.science-card[data-science-id="mayan"]{--science-tone:#7560a4}
+.science-card[data-science-id="biorhythm"]{--science-tone:#5e88aa}
+.science-card[data-science-id="nakshatra"]{--science-tone:#b27a31}
+.science-card[data-science-id="celtic"]{--science-tone:#5d7a57}
+
+/* Motifs — subtle enough to remain minimal, distinct enough to signal each science. */
+.science-card[data-science-id="thai"]::after{
+  background:repeating-conic-gradient(from 0deg,var(--science-tone) 0 1deg,transparent 1deg 30deg);
+  border:1px solid color-mix(in srgb,var(--science-tone) 52%,transparent);
+}
+.science-card[data-science-id="western"]::after{
+  background:
+    repeating-conic-gradient(from 0deg,var(--science-tone) 0 1deg,transparent 1deg 30deg),
+    radial-gradient(circle at center,transparent 0 31%,var(--science-tone) 32% 33%,transparent 34% 54%,var(--science-tone) 55% 56%,transparent 57%);
+}
+.science-card[data-science-id="chinese"]::after{
+  border-radius:0;
+  border:0;
+  background:
+    linear-gradient(90deg,var(--science-tone) 1px,transparent 1px) 0 0/20px 20px,
+    linear-gradient(var(--science-tone) 1px,transparent 1px) 0 0/20px 20px;
+  transform:rotate(45deg);
+}
+.science-card[data-science-id="numerology"]::after{
+  border-radius:16px;
+  background:
+    linear-gradient(90deg,transparent 32%,var(--science-tone) 33% 34%,transparent 35% 65%,var(--science-tone) 66% 67%,transparent 68%),
+    linear-gradient(transparent 32%,var(--science-tone) 33% 34%,transparent 35% 65%,var(--science-tone) 66% 67%,transparent 68%);
+}
+.science-card[data-science-id="mayan"]::after{
+  background:repeating-radial-gradient(circle at center,var(--science-tone) 0 1px,transparent 1px 12px);
+}
+.science-card[data-science-id="biorhythm"]::after{
+  border:0;
+  border-radius:0;
+  background:
+    radial-gradient(ellipse at 15% 50%,transparent 0 34%,var(--science-tone) 35% 36%,transparent 37% 48%),
+    radial-gradient(ellipse at 55% 50%,transparent 0 34%,var(--science-tone) 35% 36%,transparent 37% 48%),
+    radial-gradient(circle,var(--science-tone) 1.5px,transparent 2px) 0 0/22px 22px;
+}
+.science-card[data-science-id="nakshatra"]::after{
+  background:repeating-conic-gradient(from 0deg,var(--science-tone) 0 1deg,transparent 1deg 15deg);
+  transform:rotate(7deg);
+}
+.science-card[data-science-id="celtic"]::after{
+  border:0;
+  border-radius:0;
+  background:
+    linear-gradient(90deg,transparent 48%,var(--science-tone) 49% 51%,transparent 52%),
+    linear-gradient(32deg,transparent 48%,var(--science-tone) 49% 51%,transparent 52%),
+    linear-gradient(-32deg,transparent 48%,var(--science-tone) 49% 51%,transparent 52%);
+}
+
+@media(hover:hover){
+  .science-card:hover{
+    border-color:color-mix(in srgb,var(--science-tone) 55%,rgba(74,57,35,.12))!important;
+    box-shadow:0 14px 34px rgba(45,37,25,.06)!important;
+    transform:translateY(-1px)!important;
+  }
+  .science-card:hover .science-icon{
+    background:color-mix(in srgb,var(--science-tone) 7%,#fffaf2)!important;
+    border-color:color-mix(in srgb,var(--science-tone) 48%,transparent)!important;
+  }
+}
+
+/* Related sciences: same visual language, more compact. */
+.rc{
+  position:relative!important;
+  overflow:hidden!important;
+  border-color:color-mix(in srgb,var(--science-tone,#8c6a37) 25%,rgba(74,57,35,.10))!important;
+  background:linear-gradient(110deg,#fffdf9,color-mix(in srgb,var(--science-tone,#8c6a37) 2%,#fffdf9))!important;
+}
+.rc::after{
+  content:"";
+  position:absolute;
+  width:94px;
+  height:94px;
+  right:-34px;
+  top:-36px;
+  border:1px solid var(--science-tone,#8c6a37);
+  border-radius:50%;
+  opacity:.10;
+  pointer-events:none;
+}
+.rc-b{position:relative;z-index:1!important;min-height:98px!important}
+.rc .rc-ico{
+  width:58px!important;
+  height:58px!important;
+  flex-basis:58px!important;
+  border-radius:50%!important;
+  border-color:color-mix(in srgb,var(--science-tone,#8c6a37) 28%,transparent)!important;
+  background:color-mix(in srgb,var(--science-tone,#8c6a37) 4%,#fffaf2)!important;
+}
+.rc .rc-ico::before{font-size:25px!important}
+.rc-name{font-size:14.5px!important;line-height:1.38!important}
+.rc-org{font-size:8.5px!important;letter-spacing:1.45px!important}
+.rc-cta{font-size:10.5px!important}
+
+/* Deep-reading typography scale: quieter labels, stronger readable body. */
+.rh-ey{font-size:9.5px!important;letter-spacing:2.6px!important}
+.rh-ttl{font-size:clamp(31px,7vw,38px)!important;line-height:1.18!important;letter-spacing:-.015em!important}
+.rh-sub{font-size:11px!important;line-height:1.65!important;letter-spacing:1.55px!important}
+.fl,.ssl,.snl,.rdg-tp,.lk-lbl,.rel-lbl{font-size:9px!important;letter-spacing:1.75px!important}
+.fv,.ssv{font-size:13.5px!important;line-height:1.45!important}
+.rdg-b{font-family:var(--sans)!important;font-style:normal!important;font-size:15.5px!important;line-height:1.92!important;color:#3f3a34!important}
+.disc{font-size:11.5px!important;line-height:1.72!important}
+.site-footer{font-size:12px!important;line-height:1.75!important}
+
+@media(max-width:620px){
+  .science-grid{gap:12px!important}
+  .science-card{
+    min-height:124px!important;
+    grid-template-columns:68px minmax(0,1fr) 22px!important;
+    gap:15px!important;
+    padding:18px 17px!important;
+    border-radius:16px!important;
+  }
+  .science-card .science-icon{width:64px!important;height:64px!important;flex-basis:64px!important}
+  .science-card .science-icon::before{font-size:27px!important}
+  .science-card h3{font-size:16px!important;margin-bottom:5px!important}
+  .science-card p{font-size:12.5px!important;line-height:1.67!important}
+  .science-card::after{width:126px;height:126px;right:-44px;top:-45px}
+  .science-card::before{display:none}
+  .explore h2{font-size:clamp(30px,9vw,39px)!important}
+}
+
+@media(max-width:390px){
+  .science-card{grid-template-columns:58px minmax(0,1fr) 18px!important;gap:12px!important;padding:16px 14px!important}
+  .science-card .science-icon{width:56px!important;height:56px!important;flex-basis:56px!important}
+  .science-card .science-icon::before{font-size:24px!important}
+  .science-card p{font-size:12px!important}
+}

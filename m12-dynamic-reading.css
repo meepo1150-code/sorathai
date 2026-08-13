@@ -1,0 +1,198 @@
+/* Milestone 12 — dynamic result identity surfaces
+   Visual-only system. Uses existing rendered reading output to vary ornamentation. */
+
+body[data-reading-science]{
+  --identity-accent:var(--reading-accent,#9a6d25);
+  --identity-soft:#f5ead9;
+  --identity-paper:#fbf1df;
+  --identity-ink:#29241d;
+}
+body[data-reading-science="thai"]{--identity-accent:#a97829;--identity-soft:#f3dfb8;--identity-paper:#fbf1da}
+body[data-reading-science="western"]{--identity-accent:#6d5b99;--identity-soft:#e7e0f2;--identity-paper:#f6f1fb}
+body[data-reading-science="chinese"]{--identity-accent:#8f4d45;--identity-soft:#eddad6;--identity-paper:#fbf0ec}
+body[data-reading-science="numerology"]{--identity-accent:#3f6d5a;--identity-soft:#dcebe3;--identity-paper:#f1f8f3}
+body[data-reading-science="mayan"]{--identity-accent:#67569a;--identity-soft:#e5def0;--identity-paper:#f5f1fa}
+body[data-reading-science="biorhythm"]{--identity-accent:#317a83;--identity-soft:#d8ece9;--identity-paper:#eff8f5}
+body[data-reading-science="nakshatra"]{--identity-accent:#a86435;--identity-soft:#f0ddce;--identity-paper:#fbf1e9}
+body[data-reading-science="celtic"]{--identity-accent:#52705a;--identity-soft:#dce7dc;--identity-paper:#f1f6f0}
+
+/* Hero is a decorated reading plate rather than a blank white block. */
+body[data-reading-science] .rh{
+  position:relative!important;
+  isolation:isolate;
+  overflow:hidden!important;
+  margin:14px 14px 0!important;
+  padding-top:62px!important;
+  padding-bottom:54px!important;
+  border:1px solid color-mix(in srgb,var(--identity-accent) 25%,rgba(78,61,40,.12))!important;
+  border-radius:22px 22px 0 0!important;
+  background:
+    radial-gradient(circle at 50% 32%,rgba(255,255,255,.78),transparent 32%),
+    linear-gradient(155deg,color-mix(in srgb,var(--identity-accent) 4%,var(--identity-paper)),var(--identity-paper) 54%,color-mix(in srgb,var(--identity-accent) 7%,#fff9ef))!important;
+  box-shadow:0 18px 48px rgba(53,42,27,.055)!important;
+}
+body[data-reading-science] .rh::before{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  inset:12px;
+  border:1px solid color-mix(in srgb,var(--identity-accent) 24%,rgba(255,255,255,.7));
+  border-radius:15px 15px 4px 4px;
+  pointer-events:none;
+}
+body[data-reading-science] .rh::after{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  inset:0;
+  opacity:.14;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 8% 12%,var(--identity-accent) 0 1px,transparent 1.5px) 0 0/34px 34px,
+    radial-gradient(circle at 92% 86%,var(--identity-accent) 0 1px,transparent 1.5px) 0 0/42px 42px;
+  mask-image:linear-gradient(90deg,#000,transparent 36%,transparent 64%,#000);
+}
+
+/* Science motif layer. */
+body[data-reading-science="thai"] .rh::after{
+  background:
+    repeating-conic-gradient(from 0deg at 16% 52%,transparent 0 29deg,var(--identity-accent) 29deg 30deg) left center/210px 210px no-repeat,
+    repeating-conic-gradient(from 15deg at 84% 52%,transparent 0 29deg,var(--identity-accent) 29deg 30deg) right center/210px 210px no-repeat;
+}
+body[data-reading-science="western"] .rh::after{
+  background:
+    radial-gradient(circle at 18% 28%,transparent 0 28px,var(--identity-accent) 29px 30px,transparent 31px 51px,var(--identity-accent) 52px 53px,transparent 54px),
+    linear-gradient(32deg,transparent 49%,var(--identity-accent) 49.5% 50.5%,transparent 51%) right 9% top 24%/112px 112px no-repeat;
+}
+body[data-reading-science="chinese"] .rh::after{
+  background:
+    linear-gradient(45deg,var(--identity-accent) 1px,transparent 1px) 0 0/28px 28px,
+    linear-gradient(-45deg,var(--identity-accent) 1px,transparent 1px) 0 0/28px 28px;
+  opacity:.055;
+}
+body[data-reading-science="numerology"] .rh::after{
+  background:
+    linear-gradient(90deg,var(--identity-accent) 1px,transparent 1px) 0 0/42px 42px,
+    linear-gradient(var(--identity-accent) 1px,transparent 1px) 0 0/42px 42px;
+  opacity:.055;
+}
+body[data-reading-science="mayan"] .rh::after{
+  background:repeating-radial-gradient(circle at 16% 50%,var(--identity-accent) 0 1px,transparent 1px 12px);
+  opacity:.07;
+}
+body[data-reading-science="biorhythm"] .rh::after{
+  background:
+    radial-gradient(ellipse at 15% 52%,transparent 0 32%,var(--identity-accent) 32.5% 33.5%,transparent 34% 48%),
+    radial-gradient(ellipse at 84% 47%,transparent 0 32%,var(--identity-accent) 32.5% 33.5%,transparent 34% 48%);
+  opacity:.14;
+}
+body[data-reading-science="nakshatra"] .rh::after{
+  background:repeating-conic-gradient(from 0deg at 14% 50%,transparent 0 14deg,var(--identity-accent) 14deg 15deg);
+  opacity:.08;
+}
+body[data-reading-science="celtic"] .rh::after{
+  background:
+    linear-gradient(90deg,transparent 49%,var(--identity-accent) 49% 51%,transparent 51%) left 8% center/80px 160px no-repeat,
+    linear-gradient(35deg,transparent 49%,var(--identity-accent) 49% 51%,transparent 51%) left 8% center/120px 120px no-repeat,
+    linear-gradient(-35deg,transparent 49%,var(--identity-accent) 49% 51%,transparent 51%) right 8% center/120px 120px no-repeat;
+  opacity:.09;
+}
+
+/* Stable per-answer variation from existing rendered text. */
+body[data-reading-variant="1"] .rh::after{transform:rotate(.7deg) scale(1.02)}
+body[data-reading-variant="2"] .rh::after{transform:rotate(-1.1deg) scale(1.04);background-position:8px 5px}
+body[data-reading-variant="3"] .rh::after{transform:scaleX(-1);opacity:.11}
+body[data-reading-variant="4"] .rh::after{transform:rotate(1.6deg);background-position:-10px 9px}
+body[data-reading-variant="5"] .rh::after{transform:scale(1.07);opacity:.09}
+body[data-reading-variant="6"] .rh::after{transform:scaleX(-1) rotate(.8deg);opacity:.13}
+
+/* Explicit identities where the existing data already has strong semantics. */
+body[data-reading-key="thai-monday"]{--identity-soft:#f0e7c6;--identity-paper:#faf3df}
+body[data-reading-key="thai-tuesday"]{--identity-soft:#eed9d5;--identity-paper:#faefec;--identity-accent:#9a574b}
+body[data-reading-key="thai-wednesday"]{--identity-soft:#dce9d6;--identity-paper:#f2f7ef;--identity-accent:#5f7b59}
+body[data-reading-key="thai-thursday"]{--identity-soft:#eddcc3;--identity-paper:#faf1e2;--identity-accent:#9a6d35}
+body[data-reading-key="thai-friday"]{--identity-soft:#dce8ee;--identity-paper:#f0f6f8;--identity-accent:#5c7586}
+body[data-reading-key="thai-saturday"]{--identity-soft:#ddd8e6;--identity-paper:#f3f0f7;--identity-accent:#675d76}
+body[data-reading-key="thai-sunday"]{--identity-soft:#f0dcca;--identity-paper:#fbf0e5;--identity-accent:#a36137}
+
+/* Focus strip and facts are part of the same plate. */
+body[data-reading-science] .focus-context{
+  margin:0 14px!important;
+  max-width:none!important;
+  border-inline:1px solid color-mix(in srgb,var(--identity-accent) 22%,rgba(78,61,40,.1))!important;
+  border-bottom:1px solid color-mix(in srgb,var(--identity-accent) 18%,rgba(78,61,40,.09))!important;
+  background:linear-gradient(90deg,color-mix(in srgb,var(--identity-accent) 7%,var(--identity-paper)),var(--identity-paper),color-mix(in srgb,var(--identity-accent) 7%,var(--identity-paper)))!important;
+  color:#72685b!important;
+}
+body[data-reading-science] .facts{
+  position:relative;
+  margin:0 auto!important;
+  width:calc(100% - 56px)!important;
+  max-width:560px!important;
+  border:1px solid color-mix(in srgb,var(--identity-accent) 20%,rgba(78,61,40,.1))!important;
+  border-top:0!important;
+  border-radius:0 0 18px 18px!important;
+  overflow:hidden;
+  background:linear-gradient(160deg,color-mix(in srgb,var(--identity-accent) 5%,#fffaf2),var(--identity-paper))!important;
+  box-shadow:0 12px 30px rgba(53,42,27,.035)!important;
+}
+body[data-reading-science] .fact{
+  position:relative;
+  background:transparent!important;
+  border-color:color-mix(in srgb,var(--identity-accent) 15%,rgba(78,61,40,.08))!important;
+}
+body[data-reading-science] .fact::before{
+  content:"";
+  width:18px;
+  height:18px;
+  margin:0 auto 7px;
+  display:block;
+  border:1px solid color-mix(in srgb,var(--identity-accent) 42%,transparent);
+  border-radius:50%;
+  opacity:.62;
+  background:radial-gradient(circle,var(--identity-accent) 0 2px,transparent 2.5px);
+}
+body[data-reading-science] .fl{color:color-mix(in srgb,var(--identity-accent) 52%,#777064)!important}
+body[data-reading-science] .fv{color:var(--identity-ink)!important}
+
+/* Share card and supporting surfaces inherit the same answer identity. */
+body[data-reading-science] .deep-reading-card,
+body[data-reading-science] .inherited-layer,
+body[data-reading-science] .rdg,
+body[data-reading-science] .lk-b,
+body[data-reading-science] .rc{
+  --panel-accent:var(--identity-accent);
+}
+body[data-reading-science] .deep-reading-card{
+  border-color:color-mix(in srgb,var(--identity-accent) 24%,rgba(78,61,40,.1))!important;
+  background:
+    radial-gradient(circle at 10% 4%,rgba(255,255,255,.72),transparent 28%),
+    linear-gradient(150deg,var(--identity-paper),color-mix(in srgb,var(--identity-accent) 5%,#fff9ef))!important;
+}
+body[data-reading-science] .inherited-layer{
+  background:linear-gradient(145deg,color-mix(in srgb,var(--identity-accent) 6%,var(--identity-paper)),var(--identity-paper))!important;
+  border-bottom-color:color-mix(in srgb,var(--identity-accent) 18%,rgba(78,61,40,.1))!important;
+}
+body[data-reading-science] .base-facts{
+  border-color:color-mix(in srgb,var(--identity-accent) 16%,rgba(78,61,40,.1))!important;
+  background:color-mix(in srgb,var(--identity-accent) 12%,rgba(78,61,40,.08))!important;
+}
+body[data-reading-science] .base-facts div{background:color-mix(in srgb,var(--identity-accent) 3%,#fffaf2)!important}
+body[data-reading-science] .rdg,
+body[data-reading-science] .lk-b{
+  background:
+    radial-gradient(circle at 7% 6%,rgba(255,255,255,.72),transparent 24%),
+    linear-gradient(145deg,color-mix(in srgb,var(--identity-accent) 3%,var(--identity-paper)),var(--identity-paper))!important;
+}
+
+@media(max-width:620px){
+  body[data-reading-science] .rh{margin:8px 8px 0!important;padding-top:52px!important;padding-bottom:46px!important;border-radius:18px 18px 0 0!important}
+  body[data-reading-science] .rh::before{inset:8px;border-radius:12px 12px 3px 3px}
+  body[data-reading-science] .focus-context{margin-inline:8px!important}
+  body[data-reading-science] .facts{width:calc(100% - 32px)!important;border-radius:0 0 15px 15px!important}
+  body[data-reading-science] .fact::before{width:15px;height:15px;margin-bottom:5px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  body[data-reading-science] .rh::after{transform:none!important}
+}

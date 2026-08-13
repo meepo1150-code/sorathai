@@ -1,0 +1,106 @@
+/* Milestone 12 — no-emoji visual cleanup
+   Presentation-only replacement of legacy pictographic emoji with Sorathai text glyphs/seals. */
+
+/* Entry emblems: hide legacy emoji text and render restrained science glyphs. */
+.ep{
+  width:92px!important;
+  height:92px!important;
+  margin:0 auto 22px!important;
+  display:grid!important;
+  place-items:center!important;
+  font-size:0!important;
+  line-height:1!important;
+  border:1px solid rgba(120,88,45,.22)!important;
+  border-radius:50%!important;
+  background:radial-gradient(circle at 50% 45%,#fffdf8 0 50%,transparent 51%),linear-gradient(145deg,#fffaf1,#f7eddf)!important;
+  box-shadow:inset 0 0 0 8px rgba(255,253,248,.72),inset 0 0 0 9px rgba(142,101,49,.10),0 12px 30px rgba(59,42,20,.045)!important;
+  position:relative;
+}
+.ep::before{
+  content:"✦";
+  font:400 38px/1 Georgia,'Times New Roman',serif;
+  color:#8d6a36;
+}
+.ep::after{
+  content:"";
+  position:absolute;
+  inset:10px;
+  border:1px dotted rgba(141,106,54,.20);
+  border-radius:50%;
+}
+body:has(.ey[style*="#c8952c"]) .ep::before{content:"☉"}
+body:has(.ey[style*="#4a6fa5"]) .ep::before{content:"♌"}
+body:has(.ey[style*="#c0392b"]) .ep::before{content:"辰";font-family:"Noto Serif TC","Noto Serif SC",serif;font-size:34px}
+body:has(.ey[style*="#2d6a4f"]) .ep::before{content:"№"}
+body:has(.ey[style*="#7b4f9e"]) .ep::before{content:"◎"}
+body:has(.ey[style*="#2980b9"]) .ep::before{content:"∿";font-size:44px}
+body:has(.ey[style*="#d35400"]) .ep::before{content:"✧"}
+body:has(.ey[style*="#4a7c59"]) .ep::before{content:"↟"}
+
+/* Drawer/nav icons: source emoji remains inert but never renders. */
+.dico,.nico{
+  font-size:0!important;
+  font-family:Georgia,'Times New Roman',serif!important;
+  font-variant-emoji:text;
+}
+.dico::before,.nico::before{font-size:21px;line-height:1;color:currentColor}
+.ditem[href*="thai-astrology"] .dico::before,.nitem[href*="thai-astrology"] .nico::before{content:"☉"}
+.ditem[href*="western-astrology"] .dico::before,.nitem[href*="western-astrology"] .nico::before{content:"♌"}
+.ditem[href*="chinese-astrology"] .dico::before,.nitem[href*="chinese-astrology"] .nico::before{content:"辰";font-family:"Noto Serif TC","Noto Serif SC",serif}
+.ditem[href*="numerology"] .dico::before,.nitem[href*="numerology"] .nico::before{content:"№"}
+.ditem[href*="mayan"] .dico::before,.nitem[href*="mayan"] .nico::before{content:"◎"}
+.ditem[href*="biorhythm"] .dico::before,.nitem[href*="biorhythm"] .nico::before{content:"∿"}
+.ditem[href*="nakshatra"] .dico::before,.nitem[href*="nakshatra"] .nico::before{content:"✧"}
+.ditem[href*="celtic"] .dico::before,.nitem[href*="celtic"] .nico::before{content:"↟"}
+.ditem[href*="dream"] .dico::before,.nitem[href*="dream"] .nico::before{content:"☾"}
+.ditem .dico{
+  width:34px;height:34px;display:grid;place-items:center;
+  border:1px solid rgba(110,82,45,.14);border-radius:50%;background:rgba(255,252,246,.65);
+}
+
+/* Thai planetary result: use text astronomy glyphs, never emoji presentation. */
+body[data-reading-science="thai"] .sc-orb{
+  font-size:0!important;
+  font-family:Georgia,'Times New Roman',serif!important;
+  font-variant-emoji:text;
+}
+body[data-reading-science="thai"] .sc-orb::after{
+  position:static!important;
+  inset:auto!important;
+  width:auto!important;height:auto!important;
+  border:0!important;border-radius:0!important;
+  background:none!important;box-shadow:none!important;
+  font:400 29px/1 Georgia,'Times New Roman',serif;
+  color:#8d6a36;
+}
+body[data-reading-key="thai-sunday"] .sc-orb::after{content:"☉"}
+body[data-reading-key="thai-monday"] .sc-orb::after{content:"☾"}
+body[data-reading-key="thai-tuesday"] .sc-orb::after{content:"♂"}
+body[data-reading-key="thai-wednesday"] .sc-orb::after{content:"☿"}
+body[data-reading-key="thai-thursday"] .sc-orb::after{content:"♃"}
+body[data-reading-key="thai-friday"] .sc-orb::after{content:"♀"}
+body[data-reading-key="thai-saturday"] .sc-orb::after{content:"♄"}
+
+/* Dream surfaces still contained legacy pictograms; convert them to one restrained lunar language. */
+.hero-ico,.load-ico,.err-ico,.hist-ico,.sc-ico-wrap{
+  font-size:0!important;
+  font-family:Georgia,'Times New Roman',serif!important;
+  font-variant-emoji:text;
+}
+.hero-ico::before{content:"☾";font-size:48px;color:#8d6a36}
+.load-ico::before{content:"◌";font-size:42px;color:#8d6a36}
+.err-ico::before{content:"!";font:500 24px/1 var(--sans);color:#8a4b42}
+.hist-ico::before{content:"☾";font-size:19px;color:#8d6a36}
+.sc-ico-wrap::before{content:"☾";font-size:24px;color:#8d6a36}
+
+/* Dream category chips: preserve labels via data-v but remove pictographic prefixes. */
+.chip[data-v]{font-size:0!important;gap:5px;display:inline-flex;align-items:center}
+.chip[data-v]::before{content:"◇";font-size:10px;color:#9a6d25}
+.chip[data-v]::after{content:attr(data-v);font-size:12px;font-family:var(--sans);font-weight:600;color:inherit}
+
+@media(max-width:620px){
+  .ep{width:82px!important;height:82px!important}
+  .ep::before{font-size:34px}
+  .ditem .dico{width:32px;height:32px}
+  .dico::before,.nico::before{font-size:19px}
+}

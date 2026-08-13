@@ -230,7 +230,6 @@ function render(d,m,y,dob,p){
   const ch=getCh(y);
   const rS=window.HR.rng(window.HR.seed(dob+'-chin')),rD=window.HR.rng(window.HR.seed(dob+'-chin-'+new Date().toDateString())),pk=window.HR.pick;
   const ds=d+' '+TH_MONTHS[m-1]+' '+(y+543);
-  document.title='ดูดวงราศีจีน ปี'+ch.n+' — Sorathai';
   tx('rh-ttl','ปีนักษัตร'+ch.n);tx('rh-sub',ch.n+' · ธาตุ'+ch.el+' · '+ch.pol);
   $('rh-ico').textContent=ch.i;$('e-ico').textContent=ch.i;
   tx('fc1',ch.el);tx('fc2',ch.pol);tx('fc3',String(y+543));

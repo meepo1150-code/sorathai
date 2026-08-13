@@ -1,0 +1,203 @@
+/* Milestone 12 — crafted depth layer
+   Celestial engraving + embossed paper + restrained 2.5D depth.
+   Presentation-only; no reading/profile semantics are changed. */
+
+:root{
+  --craft-shadow:rgba(45,32,18,.12);
+  --craft-highlight:rgba(255,255,255,.72);
+  --craft-hair:rgba(80,60,37,.14);
+}
+
+/* Reading canvas: faint ambient artwork extends beyond the hero without becoming wallpaper. */
+body[data-reading-science]{
+  background:
+    radial-gradient(circle at 8% 18%,color-mix(in srgb,var(--identity-accent) 3%,transparent),transparent 24%),
+    radial-gradient(circle at 93% 62%,color-mix(in srgb,var(--identity-accent) 3%,transparent),transparent 27%),
+    var(--bg)!important;
+  overflow-x:clip;
+}
+body[data-reading-science] #s-result{position:relative;isolation:isolate;overflow:clip}
+body[data-reading-science] #s-result::before,
+body[data-reading-science] #s-result::after{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  pointer-events:none;
+  opacity:.045;
+  filter:saturate(.55);
+}
+body[data-reading-science] #s-result::before{
+  width:520px;height:520px;left:-300px;top:360px;border-radius:50%;
+  border:1px solid var(--identity-accent);
+  box-shadow:inset 0 0 0 34px transparent,inset 0 0 0 35px color-mix(in srgb,var(--identity-accent) 55%,transparent),inset 0 0 0 86px transparent,inset 0 0 0 87px color-mix(in srgb,var(--identity-accent) 36%,transparent);
+}
+body[data-reading-science] #s-result::after{
+  width:430px;height:430px;right:-270px;top:980px;
+  background:repeating-conic-gradient(from 0deg,var(--identity-accent) 0 .45deg,transparent .45deg 15deg);
+  mask-image:radial-gradient(circle,transparent 0 39%,#000 40% 57%,transparent 58%);
+}
+
+/* Hero plate: paper edge, debossed inner frame and sculpted seal. */
+body[data-reading-science] .rh{
+  border-color:color-mix(in srgb,var(--identity-accent) 34%,rgba(67,49,30,.14))!important;
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.78) inset,
+    0 -1px 0 color-mix(in srgb,var(--identity-accent) 12%,rgba(64,45,27,.08)) inset,
+    0 22px 55px rgba(44,31,17,.065),
+    0 2px 5px rgba(44,31,17,.025)!important;
+}
+body[data-reading-science] .rh::before{
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.55),
+    inset 0 1px 2px rgba(58,40,21,.05),
+    inset 0 -1px 0 rgba(255,255,255,.55);
+}
+body[data-reading-science] .reading-emblem{
+  text-shadow:0 1px 0 rgba(255,255,255,.9),0 -1px 0 color-mix(in srgb,var(--identity-accent) 16%,transparent)!important;
+  box-shadow:
+    0 17px 32px rgba(45,31,17,.09),
+    0 3px 8px rgba(45,31,17,.055),
+    inset 0 2px 2px rgba(255,255,255,.82),
+    inset 0 -3px 5px color-mix(in srgb,var(--identity-accent) 10%,rgba(78,55,31,.04)),
+    inset 0 0 0 11px rgba(255,255,255,.28)!important;
+}
+body[data-reading-science] .reading-emblem::before{
+  box-shadow:inset 0 1px 1px rgba(255,255,255,.7),0 1px 0 rgba(255,255,255,.35);
+}
+body[data-reading-science] .reading-emblem::after{
+  filter:drop-shadow(0 1px 0 rgba(255,255,255,.7));
+}
+
+/* Engraved panels: a crisp inner keyline and shallow lift instead of generic shadow cards. */
+body[data-reading-science] .rdg,
+body[data-reading-science] .lk-b,
+body[data-reading-science] .rc,
+body[data-reading-science] .deep-reading-card{
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.72) inset,
+    0 -1px 0 color-mix(in srgb,var(--identity-accent) 8%,rgba(80,58,33,.06)) inset,
+    0 12px 30px rgba(44,31,17,.038),
+    0 2px 6px rgba(44,31,17,.018)!important;
+}
+body[data-reading-science] .rdg::after{
+  border-color:color-mix(in srgb,var(--identity-accent) 30%,transparent)!important;
+  box-shadow:0 1px 0 rgba(255,255,255,.6),inset 0 1px 1px rgba(62,44,26,.03);
+}
+body[data-reading-science] .rdg-tp{
+  text-shadow:0 1px 0 rgba(255,255,255,.7);
+}
+
+/* Science-card seals now feel pressed into paper. */
+.science-card{
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.75) inset,
+    0 -1px 0 color-mix(in srgb,var(--science-tone) 9%,rgba(65,47,27,.05)) inset,
+    0 10px 26px rgba(45,34,20,.038)!important;
+}
+.science-card .science-icon,
+.rc .rc-ico{
+  box-shadow:
+    0 8px 16px rgba(45,32,18,.055),
+    inset 0 2px 2px rgba(255,255,255,.78),
+    inset 0 -2px 4px color-mix(in srgb,var(--science-tone) 10%,rgba(80,56,31,.04)),
+    inset 0 0 0 8px rgba(255,255,255,.24)!important;
+}
+.science-card .science-icon::before,
+.rc .rc-ico::before{
+  text-shadow:0 1px 0 rgba(255,255,255,.9),0 -1px 0 color-mix(in srgb,var(--science-tone) 16%,transparent);
+}
+
+/* Personal Sigil V2: the zodiac glyph sits inside a layered, embossed identity construction. */
+#destiny-card[data-base-element]{
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.86) inset,
+    0 -1px 0 color-mix(in srgb,var(--base-accent) 10%,rgba(75,53,29,.06)) inset,
+    0 30px 70px rgba(50,36,20,.105),
+    0 5px 14px rgba(50,36,20,.045)!important;
+  overflow:hidden;
+}
+#destiny-card[data-base-element] .sign-row{isolation:isolate}
+#destiny-card[data-base-element] .sign-row::before{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  width:178px;height:178px;left:-31px;top:-18px;border-radius:50%;
+  background:
+    repeating-conic-gradient(from 0deg,color-mix(in srgb,var(--base-accent) 24%,transparent) 0 .65deg,transparent .65deg 15deg),
+    radial-gradient(circle,transparent 0 40%,color-mix(in srgb,var(--base-accent-2) 20%,transparent) 40.5% 41%,transparent 41.5% 59%,color-mix(in srgb,var(--base-accent) 13%,transparent) 59.5% 60%,transparent 60.5%);
+  opacity:.78;
+  filter:drop-shadow(0 1px 0 rgba(255,255,255,.7));
+}
+#destiny-card[data-base-element] .sign-row::after{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  width:208px;height:208px;left:-46px;top:-33px;border-radius:50%;
+  background:radial-gradient(circle at 50% 8%,var(--base-accent) 0 1.4px,transparent 1.8px),radial-gradient(circle at 91% 50%,var(--base-accent-2) 0 1.2px,transparent 1.7px),radial-gradient(circle at 50% 92%,var(--base-accent) 0 1px,transparent 1.5px),radial-gradient(circle at 9% 50%,var(--base-accent-2) 0 1.1px,transparent 1.6px);
+  opacity:.45;
+}
+#destiny-card[data-base-element] .sign-glyph{
+  text-shadow:0 2px 0 rgba(255,255,255,.9),0 -1px 0 color-mix(in srgb,var(--base-accent) 22%,transparent)!important;
+  box-shadow:
+    0 16px 28px rgba(48,34,18,.095),
+    0 3px 7px rgba(48,34,18,.05),
+    inset 0 3px 3px rgba(255,255,255,.86),
+    inset 0 -4px 7px color-mix(in srgb,var(--base-accent) 12%,rgba(78,54,29,.04)),
+    inset 0 0 0 12px rgba(255,255,255,.26)!important;
+}
+#destiny-card[data-base-element] .sign-glyph::before{
+  border-style:solid!important;
+  box-shadow:0 1px 0 rgba(255,255,255,.72),inset 0 1px 1px rgba(67,47,27,.04);
+}
+#destiny-card[data-base-element] .sign-glyph::after{
+  border-style:dotted!important;
+  filter:drop-shadow(0 1px 0 rgba(255,255,255,.72));
+}
+
+/* Archetype geometry adds a third identity layer without changing the visible data. */
+#destiny-card[data-base-archetype="life-1"] .sign-row::before{transform:rotate(7deg)}
+#destiny-card[data-base-archetype="life-2"] .sign-row::before{transform:scaleX(.9)}
+#destiny-card[data-base-archetype="life-3"] .sign-row::before{transform:rotate(20deg) scale(.97)}
+#destiny-card[data-base-archetype="life-4"] .sign-row::before{border-radius:22%;background:linear-gradient(45deg,transparent 49.5%,color-mix(in srgb,var(--base-accent) 24%,transparent) 49.8% 50.2%,transparent 50.5%) 0 0/32px 32px,linear-gradient(-45deg,transparent 49.5%,color-mix(in srgb,var(--base-accent-2) 20%,transparent) 49.8% 50.2%,transparent 50.5%) 0 0/32px 32px}
+#destiny-card[data-base-archetype="life-5"] .sign-row::before{transform:rotate(-13deg) scale(1.02)}
+#destiny-card[data-base-archetype="life-6"] .sign-row::before{transform:scale(.93);border-radius:42% 58% 42% 58%}
+#destiny-card[data-base-archetype="life-7"] .sign-row::before{background:repeating-radial-gradient(circle,transparent 0 17px,color-mix(in srgb,var(--base-accent) 22%,transparent) 17.5px 18px,transparent 18.5px 30px)}
+#destiny-card[data-base-archetype="life-8"] .sign-row::before{transform:rotate(45deg);border-radius:24%}
+#destiny-card[data-base-archetype="life-9"] .sign-row::before{transform:rotate(-24deg);opacity:.72}
+#destiny-card[data-base-archetype="life-11"] .sign-row::before{background:repeating-conic-gradient(from 0deg,color-mix(in srgb,var(--base-accent) 26%,transparent) 0 .7deg,transparent .7deg 11.25deg)}
+#destiny-card[data-base-archetype="life-22"] .sign-row::before{border-radius:18%;background:linear-gradient(90deg,color-mix(in srgb,var(--base-accent) 18%,transparent) 1px,transparent 1px) 0 0/22px 22px,linear-gradient(color-mix(in srgb,var(--base-accent-2) 16%,transparent) 1px,transparent 1px) 0 0/22px 22px}
+
+/* Engraved content bands inside the personal card. */
+#destiny-card[data-base-element] .card-facts,
+#destiny-card[data-base-element] .powers{
+  box-shadow:inset 0 1px 2px rgba(65,46,26,.035),0 1px 0 rgba(255,255,255,.62)!important;
+}
+#destiny-card[data-base-element] .power-track{
+  box-shadow:inset 0 1px 2px rgba(54,39,22,.12),0 1px 0 rgba(255,255,255,.62);
+}
+#destiny-card[data-base-element] .power-fill{
+  box-shadow:0 1px 1px rgba(255,255,255,.42) inset,0 1px 2px color-mix(in srgb,var(--base-accent) 16%,transparent);
+}
+
+@media(hover:hover){
+  .science-card:hover{
+    box-shadow:0 1px 0 rgba(255,255,255,.8) inset,0 16px 34px rgba(45,34,20,.065)!important;
+  }
+}
+
+@media(max-width:620px){
+  body[data-reading-science] #s-result::before,body[data-reading-science] #s-result::after{opacity:.022;transform:scale(.72)}
+  #destiny-card[data-base-element] .sign-row::before{width:136px;height:136px;left:-25px;top:-19px}
+  #destiny-card[data-base-element] .sign-row::after{width:158px;height:158px;left:-36px;top:-30px}
+}
+
+@media(max-width:390px){
+  body[data-reading-science] #s-result::before,body[data-reading-science] #s-result::after{display:none}
+  #destiny-card[data-base-element] .sign-row::before{width:118px;height:118px;left:-24px;top:-20px;opacity:.6}
+  #destiny-card[data-base-element] .sign-row::after{width:138px;height:138px;left:-34px;top:-30px;opacity:.3}
+}
+
+@media(prefers-reduced-motion:reduce){
+  #destiny-card[data-base-element] .sign-row::before,
+  #destiny-card[data-base-element] .sign-row::after{transform:none!important}
+}
