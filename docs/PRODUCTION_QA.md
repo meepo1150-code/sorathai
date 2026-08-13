@@ -1,0 +1,73 @@
+# Sorathai production QA — M11
+
+This document separates checks that repository/browser automation can prove from launch checks that require an owner, account, physical device, or assistive-technology session.
+
+## Production baseline
+
+- Public hostname for initial validation: `https://sorathai.pages.dev/`
+- Baseline main SHA for this pass: `edda5958959d13e46363b38d06415f8de40ba366`
+- Cloudflare Pages production deployment for that SHA was confirmed successful by the owner on 2026-08-13.
+- Search Console accepted a fresh submission of `/sitemap.xml` on 2026-08-13. The existing sitemap row still showed the previous `Couldn't fetch` result immediately afterward, so ingestion remains pending Google reprocessing rather than being treated as passed.
+
+## Automated / repository QA
+
+The existing CI remains the release gate for:
+
+- static HTML, local-link, metadata and sitemap contracts
+- presentation CSS manifest integrity
+- shared profile and reading model tests
+- generated reading content review
+- Chromium Playwright browser regression
+- no-emoji presentation regression
+- whitespace checks
+
+A green CI run is necessary but does **not** certify the manual items below.
+
+## Human production walkthrough
+
+Run these against the canonical production hostname, not a branch preview.
+
+### Desktop
+
+- [ ] Home loads without obvious missing assets or broken layout.
+- [ ] Create/edit DOB profile and confirm expected Base Destiny rendering.
+- [ ] Open all eight science entry points and return without a navigation dead end.
+- [ ] Inspect at least one deep reading from every science family represented by the UI.
+- [ ] Combined Profile opens and remains readable.
+- [ ] Download Base, Deep and Combined PNGs; open the downloaded files and inspect clipping, missing glyphs, emoji fallback and decorative-layer artifacts.
+- [ ] Repeat the critical flow at 200% browser zoom.
+
+### Real phone
+
+- [ ] Home → profile → Base Destiny → deep reading works with touch only.
+- [ ] No horizontal page overflow at the normal device scale.
+- [ ] Sticky/fixed controls do not cover primary content or actions.
+- [ ] Long Thai headings and reading copy wrap without clipping.
+- [ ] At least one downloaded PNG opens correctly on the device.
+
+### Keyboard-only desktop
+
+- [ ] Reach all primary navigation/actions using Tab/Shift+Tab only.
+- [ ] Focus indication is visible against the final M12 surfaces.
+- [ ] Enter/Space activates controls where semantically expected.
+- [ ] No focus trap occurs in drawers/dialog-like UI.
+- [ ] Focus returns to a sensible location after closing transient UI.
+
+### Assistive technology
+
+- [ ] Perform a human screen-reader pass before making any screen-reader certification claim.
+- [ ] Confirm page title/major headings/landmarks are announced coherently.
+- [ ] Confirm decorative identity art is not announced as meaningless emoji/noise.
+- [ ] Confirm form labels and validation/error states are understandable without sight.
+
+## Search / crawl handoff
+
+- [x] Canonical public hostname remains `https://sorathai.pages.dev/` for the initial validation period.
+- [x] Cloudflare Pages production deployment of sitemap response hardening confirmed successful.
+- [x] Search Console accepted a fresh `/sitemap.xml` submission.
+- [ ] Search Console sitemap processor reports `Success` and discovers pages after reprocessing.
+- [ ] Record page-indexing feedback for Home and representative public science routes after Google has had time to crawl.
+
+## Stop conditions
+
+Do not merge a QA-driven code change merely to make a checklist look complete. Open a fix only when the production walkthrough reveals a reproducible defect. Do not change astrology calculations, DOB/profile behavior, canonical/indexability/Search Console verification, privacy, analytics transport or monetization as part of this QA pass.
