@@ -51,6 +51,7 @@ Sorathai คือเว็บไซต์ดูดวงแบบ mobile-first 
 - `sorathai-profile.js` — profile, DOB validation, URL และ persistence
 - `sorathai-reading.js`, `sorathai-content.js`, `sorathai-combined.js` — shared reading/synthesis layers
 - `sorathai-site.js`, `shared.css` — shared UX/design system
+- `m12-*.css` — visual identity layers ที่ถูกโหลดตามลำดับผ่าน `shared.css`; ดู [`docs/PRESENTATION_ARCHITECTURE.md`](docs/PRESENTATION_ARCHITECTURE.md)
 - `sorathai-events.js` — provider-neutral privacy-safe measurement contract; no network transport by default
 - `sitemap.xml`, `robots.txt` — crawl/index foundation
 
@@ -72,7 +73,7 @@ npm run test:e2e
 git diff --check
 ```
 
-GitHub Actions ติดตั้ง Chromium และรัน Playwright จริง จึงใช้เป็น browser regression gate ของ core journey
+GitHub Actions ติดตั้ง Chromium และรัน Playwright จริง จึงใช้เป็น browser regression gate ของ core journey นอกจากนี้ static validator ตรวจ presentation manifest ว่า import CSS มีไฟล์จริง ไม่ซ้ำ และ visual guard ที่ตั้งใจไว้ยังอยู่ใน cascade ที่ถูกต้อง
 
 ## Profile storage
 
@@ -100,11 +101,13 @@ Google Fonts ใช้ `display=swap` และมี system fallbacks `html2can
 
 ## Release status
 
-Milestone 8 browser hardening และ Milestone 9 visual/UX polish เสร็จแล้ว CI มี Chromium/Playwright coverage สำหรับ Home, 8 sciences, focus navigation, profile persistence, Combined Profile หลาย state, Dream, trust routes, storage/dependency fallbacks, reduced motion และ release viewport matrix
+Milestones 8–10 ปิดแล้ว: repository มี Chromium/Playwright browser gate, responsive/reduced-motion coverage, launch/discoverability contracts, production metadata consistency และ provider-neutral privacy-safe measurement foundation
 
-Automated browser regression **ไม่เท่ากับ** manual certification สิ่งที่ยังต้องตรวจด้วยมนุษย์ก่อนประกาศ production-quality accessibility/visual certification ได้แก่ real-device review, 200% zoom human inspection, downloaded PNG pixels, keyboard walkthrough และ screen reader
+Milestone 11 (Issue #28) เป็น **owner/manual operations handoff** สำหรับสิ่งที่ CI พิสูจน์แทนเจ้าของบัญชีหรือมนุษย์ไม่ได้ เช่น Search Console crawl/index feedback, real-device walkthrough, downloaded PNG pixel inspection, full keyboard walkthrough และ assistive-technology review งานเหล่านี้ห้ามถูกอ้างว่า certified เพียงเพราะ automated tests ผ่าน
 
-Milestone 10 (Issue #25) กำลังเตรียม launch/discoverability: canonical production identity, search/social metadata, share preview, intentional indexability, privacy-safe measurement contract และ launch checklist ดู [`docs/LAUNCH_CHECKLIST.md`](docs/LAUNCH_CHECKLIST.md)
+Milestone 12 (Issue #30 / PR #31) ปิดแล้วและ merge เข้า `main` ที่ `cbddaa442e65d294bce8abaade3b5e8804a0c2f6` พร้อม Sorathai Visual Identity System: crafted-paper surfaces, science-specific engraved motifs, Base Destiny personal identity, result-specific variants, typography/mobile balance และ visible no-emoji presentation guard
+
+Milestone 13 (Issue #32 / Draft PR #33) เน้น post-launch quality และ maintainability: document/audit visual cascade, เพิ่ม executable presentation-contract checks, ลดเฉพาะ debt ที่พิสูจน์ว่า dead และทำ repository state/documentation ให้ตรงกับระบบจริง โดยไม่เพิ่ม speculative product features
 
 ## Production identity
 
