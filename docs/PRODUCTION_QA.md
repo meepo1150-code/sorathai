@@ -19,7 +19,10 @@ The existing CI remains the release gate for:
 - generated reading content review
 - Chromium Playwright browser regression
 - no-emoji presentation regression
+- keyboard accessibility smoke coverage for the Home DOB flow, visible focus, keyboard activation of a science card, and native Combined Profile actions
 - whitespace checks
+
+The M11 keyboard smoke test is intentionally a baseline guard, not a human accessibility certification. CI proves the critical native keyboard path remains operable; it does not prove every interactive element has an ideal focus order or assistive-technology experience.
 
 A green CI run is necessary but does **not** certify the manual items below.
 
@@ -47,11 +50,15 @@ Run these against the canonical production hostname, not a branch preview.
 
 ### Keyboard-only desktop
 
-- [ ] Reach all primary navigation/actions using Tab/Shift+Tab only.
-- [ ] Focus indication is visible against the final M12 surfaces.
-- [ ] Enter/Space activates controls where semantically expected.
-- [ ] No focus trap occurs in drawers/dialog-like UI.
-- [ ] Focus returns to a sensible location after closing transient UI.
+Automated baseline already proves the Home DOB controls can be reached with Tab, visible focus styling is present, Enter can submit the DOB flow, a science card can be activated from the keyboard, and Combined Profile actions remain native keyboard controls.
+
+Human certification still requires:
+
+- [ ] Walk the full primary navigation/action sequence with Tab/Shift+Tab and judge the focus order, not just reachability.
+- [ ] Confirm focus indication remains visually clear across all final M12 surfaces and transient states.
+- [ ] Confirm Enter/Space behavior is sensible for all interactive control types.
+- [ ] Confirm no focus trap occurs in drawers/dialog-like UI.
+- [ ] Confirm focus returns to a sensible location after closing transient UI.
 
 ### Assistive technology
 
