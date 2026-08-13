@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import re
 import sys
 import xml.etree.ElementTree as ET
 from html.parser import HTMLParser
@@ -245,6 +246,54 @@ def validate_release_contracts() -> list[str]:
     return errors
 
 
+def validate_presentation_manifest() -> list[str]:
+    """Guard the documented post-M12 CSS cascade without freezing harmless selectors."""
+    errors: list[str] = []
+    manifest = ROOT / "shared.css"
+    if not manifest.exists():
+        return ["shared.css: presentation manifest is missing"]
+
+    source = manifest.read_text(encoding="utf-8")
+    imports = re.findall(r'@import\s+url\(["\']([^"\']+)["\']\)\s*;', source)
+    if not imports:
+        return ["shared.css: no CSS imports found"]
+
+    normalized: list[str] = []
+    for raw in imports:
+        parsed = urlparse(raw)
+        if parsed.scheme or parsed.netloc:
+            errors.append(f"shared.css: external stylesheet import is not allowed in the local presentation manifest: {raw}")
+            continue
+        relative = parsed.path.removeprefix("./")
+        normalized.append(relative)
+        target = (ROOT / relative).resolve()
+        try:
+            target.relative_to(ROOT)
+        except ValueError:
+            errors.append(f"shared.css: import escapes repository root: {raw}")
+            continue
+        if not target.exists():
+            errors.append(f"shared.css: imported stylesheet does not exist: {raw}")
+
+    duplicates = sorted({name for name in normalized if normalized.count(name) > 1})
+    for name in duplicates:
+        errors.append(f"shared.css: duplicate stylesheet import: {name}")
+
+    if normalized and normalized[0] != "shared-base.css":
+        errors.append("shared.css: shared-base.css must remain the first presentation layer")
+    if normalized and normalized[-1] != "m12-no-emoji.css":
+        errors.append("shared.css: m12-no-emoji.css must remain the final visible legacy-pictograph guard")
+
+    imported_m12 = {name for name in normalized if name.startswith("m12-") and name.endswith(".css")}
+    present_m12 = {path.name for path in ROOT.glob("m12-*.css")}
+    for name in sorted(present_m12 - imported_m12):
+        errors.append(f"shared.css: unreferenced M12 presentation layer: {name}")
+    for name in sorted(imported_m12 - present_m12):
+        errors.append(f"shared.css: references missing M12 presentation layer: {name}")
+
+    return errors
+
+
 def validate_sitemap() -> list[str]:
     errors: list[str] = []
     sitemap = ROOT / "sitemap.xml"
@@ -283,7 +332,7 @@ def validate_sitemap() -> list[str]:
 
 
 def main() -> int:
-    errors = validate_html() + validate_sitemap() + validate_release_contracts()
+    errors = validate_html() + validate_sitemap() + validate_release_contracts() + validate_presentation_manifest()
     if errors:
         print("Sorathai validation failed:\n")
         for error in errors:
