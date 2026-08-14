@@ -4,6 +4,10 @@ const Events = require('../sorathai-events.js');
 
 test('unknown events are rejected', () => {
   assert.equal(Events.sanitize('dob_submitted', { dob: '01011990' }), null);
+  assert.deepEqual(Events.validate('dob_submitted', {}), {
+    valid: false,
+    errors: [{ code: 'unknown_event', field: null }]
+  });
 });
 
 test('payload is allowlisted and sensitive/free-form fields are dropped', () => {
@@ -21,10 +25,43 @@ test('payload is allowlisted and sensitive/free-form fields are dropped', () => 
   assert.deepEqual(result, { name: 'science_opened', payload: { scienceId: 'western' } });
 });
 
-test('invalid enum values are removed rather than transmitted', () => {
+test('strict validator flags prohibited fields instead of silently accepting them', () => {
+  const result = Events.validate('science_opened', {
+    scienceId: 'western',
+    dob: '1990-01-01',
+    readingText: 'private reading',
+    email: 'person@example.com'
+  });
+  assert.equal(result.valid, false);
+  assert.deepEqual(result.errors, [
+    { code: 'prohibited_field', field: 'dob' },
+    { code: 'prohibited_field', field: 'readingText' },
+    { code: 'prohibited_field', field: 'email' }
+  ]);
+});
+
+test('strict validator flags unexpected properties on registered events', () => {
+  assert.deepEqual(Events.validate('science_opened', { scienceId: 'western', campaign: 'summer' }), {
+    valid: false,
+    errors: [{ code: 'unexpected_field', field: 'campaign' }]
+  });
+});
+
+test('invalid enum values are removed by sanitizer and rejected by strict validator', () => {
   assert.deepEqual(
     Events.sanitize('focus_selected', { scienceId: 'western', focus: 'secret-free-form-value' }),
     { name: 'focus_selected', payload: { scienceId: 'western' } }
+  );
+  assert.deepEqual(
+    Events.validate('focus_selected', { scienceId: 'western', focus: 'secret-free-form-value' }),
+    { valid: false, errors: [{ code: 'invalid_enum', field: 'focus' }] }
+  );
+});
+
+test('registered payload with allowed enum values passes strict validation', () => {
+  assert.deepEqual(
+    Events.validate('export_failed', { surface: 'deep', reason: 'render_failed' }),
+    { valid: true, errors: [] }
   );
 });
 
