@@ -27,9 +27,53 @@
     reason: ['library_unavailable', 'render_failed', 'download_failed', 'unknown']
   });
 
+  var PROHIBITED_FIELDS = Object.freeze([
+    'dob', 'birthDate', 'birthDay', 'birthMonth', 'birthYear', 'birthTimestamp', 'age',
+    'name', 'email', 'phone', 'userId', 'accountId', 'contactId',
+    'dreamText', 'readingText', 'reading', 'interpretation', 'freeText', 'query', 'url', 'referrer',
+    'profile', 'localStorage', 'storage', 'ip', 'ipAddress', 'location', 'latitude', 'longitude',
+    'fingerprint', 'advertisingId', 'sessionId', 'persistentId',
+    'zodiac', 'element', 'weekday', 'numerology', 'chineseZodiac', 'tarot', 'dreamResult', 'auspicious'
+  ]);
+
+  var PROHIBITED_FIELD_SET = Object.freeze(PROHIBITED_FIELDS.reduce(function (set, field) {
+    set[field] = true;
+    return set;
+  }, Object.create(null)));
+
+  function normalizedPayload(payload) {
+    return payload && typeof payload === 'object' && !Array.isArray(payload) ? payload : {};
+  }
+
+  function validate(name, payload) {
+    var errors = [];
+    if (!Object.prototype.hasOwnProperty.call(EVENT_FIELDS, name)) {
+      return { valid: false, errors: [{ code: 'unknown_event', field: null }] };
+    }
+
+    var source = normalizedPayload(payload);
+    var allowed = EVENT_FIELDS[name];
+
+    Object.keys(source).forEach(function (field) {
+      if (Object.prototype.hasOwnProperty.call(PROHIBITED_FIELD_SET, field)) {
+        errors.push({ code: 'prohibited_field', field: field });
+        return;
+      }
+      if (allowed.indexOf(field) === -1) {
+        errors.push({ code: 'unexpected_field', field: field });
+        return;
+      }
+      if (ENUMS[field] && ENUMS[field].indexOf(source[field]) === -1) {
+        errors.push({ code: 'invalid_enum', field: field });
+      }
+    });
+
+    return { valid: errors.length === 0, errors: errors };
+  }
+
   function sanitize(name, payload) {
     if (!Object.prototype.hasOwnProperty.call(EVENT_FIELDS, name)) return null;
-    var source = payload && typeof payload === 'object' && !Array.isArray(payload) ? payload : {};
+    var source = normalizedPayload(payload);
     var clean = {};
     EVENT_FIELDS[name].forEach(function (field) {
       var value = source[field];
@@ -47,13 +91,16 @@
   }
 
   function emit(name, payload) {
-    // Deliberately no-op in Milestone 10. No analytics provider or network transport
-    // is enabled until a later explicit privacy/provider decision is made.
+    // Deliberately no-op. No analytics provider or network transport is enabled
+    // until a later explicit privacy/provider decision is made.
     return sanitize(name, payload);
   }
 
   return Object.freeze({
     EVENT_FIELDS: EVENT_FIELDS,
+    ENUMS: ENUMS,
+    PROHIBITED_FIELDS: PROHIBITED_FIELDS,
+    validate: validate,
     sanitize: sanitize,
     exploredBucket: exploredBucket,
     emit: emit
