@@ -13,9 +13,23 @@
   function destination(href, profile, focus) {
     return root.SorathaiProfile.readingUrl(href, profile, focus);
   }
+  function ensureEvents(callback) {
+    if (root.SorathaiEvents) { if (callback) callback(root.SorathaiEvents); return; }
+    if (!root.document) return;
+    let script = root.document.querySelector('script[data-sorathai-events-loader]');
+    if (!script) {
+      script = root.document.createElement("script");
+      script.src = "sorathai-events.js";
+      script.async = true;
+      script.setAttribute("data-sorathai-events-loader", "true");
+      root.document.head.appendChild(script);
+    }
+    if (callback) script.addEventListener("load", function () { if (root.SorathaiEvents) callback(root.SorathaiEvents); }, { once: true });
+  }
   function emitEvent(name, payload) {
-    if (!root.SorathaiEvents || typeof root.SorathaiEvents.emit !== "function") return null;
-    return root.SorathaiEvents.emit(name, payload);
+    if (root.SorathaiEvents && typeof root.SorathaiEvents.emit === "function") return root.SorathaiEvents.emit(name, payload);
+    ensureEvents(function (events) { events.emit(name, payload); });
+    return null;
   }
   function focusCopy(id) {
     if (root.SorathaiContent && root.SorathaiContent.FOCUS && root.SorathaiContent.FOCUS[id]) return root.SorathaiContent.FOCUS[id];
@@ -104,5 +118,60 @@
     const target = document.querySelector(".rh");
     if (target) target.insertAdjacentElement("afterend", label);
   }
-  return { LABELS, validFocus, destination, emitEvent, enhance, readingContext };
+
+  function installCoreInstrumentation() {
+    if (!root.document || root.document.documentElement.dataset.sorathaiCoreEvents === "true") return;
+    root.document.documentElement.dataset.sorathaiCoreEvents = "true";
+    ensureEvents();
+
+    function bind() {
+      const form = root.document.getElementById("birth-form");
+      if (form) form.addEventListener("submit", function () {
+        root.setTimeout(function () {
+          const result = root.document.getElementById("profile-result");
+          if (result && result.classList.contains("visible")) emitEvent("base_profile_created", {});
+        }, 0);
+      });
+
+      const combined = root.document.getElementById("combined-profile");
+      if (combined) combined.addEventListener("click", function () {
+        const profile = root.SorathaiProfile && root.SorathaiProfile.restore ? root.SorathaiProfile.restore() : null;
+        const count = profile && Array.isArray(profile.exploredSciences) ? profile.exploredSciences.length : 0;
+        const bucket = root.SorathaiEvents && typeof root.SorathaiEvents.exploredBucket === "function"
+          ? root.SorathaiEvents.exploredBucket(count)
+          : count < 2 ? "0-1" : count < 4 ? "2-3" : count < 8 ? "4-7" : "8";
+        emitEvent("combined_opened", { exploredBucket: bucket });
+      });
+
+      const exportButton = root.document.getElementById("export-card");
+      const errorNode = root.document.getElementById("birth-error");
+      let baseExportPending = false;
+      if (exportButton) exportButton.addEventListener("click", function () {
+        emitEvent("export_attempted", { surface: "base" });
+        if (typeof root.html2canvas !== "function") {
+          emitEvent("export_failed", { surface: "base", reason: "library_unavailable" });
+          baseExportPending = false;
+        } else baseExportPending = true;
+      });
+      root.document.addEventListener("click", function (event) {
+        const link = event.target && event.target.closest ? event.target.closest('a[download="sorathai-base-destiny-card.png"]') : null;
+        if (!link || !baseExportPending) return;
+        baseExportPending = false;
+        emitEvent("export_succeeded", { surface: "base" });
+      }, true);
+      if (errorNode && typeof root.MutationObserver === "function") {
+        new root.MutationObserver(function () {
+          if (!baseExportPending || errorNode.textContent.indexOf("ไม่สามารถบันทึกภาพ") === -1) return;
+          baseExportPending = false;
+          emitEvent("export_failed", { surface: "base", reason: "render_failed" });
+        }).observe(errorNode, { childList: true, characterData: true, subtree: true });
+      }
+    }
+
+    if (root.document.readyState === "loading") root.document.addEventListener("DOMContentLoaded", bind, { once: true });
+    else bind();
+  }
+
+  installCoreInstrumentation();
+  return { LABELS, validFocus, destination, ensureEvents, emitEvent, enhance, readingContext, installCoreInstrumentation };
 });
