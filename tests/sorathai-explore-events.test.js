@@ -38,6 +38,15 @@ test('core funnel instrumentation uses only coarse registered payloads', () => {
   });
 });
 
+test('Base export completion is classified from the existing UI error state', () => {
+  assert.equal(Explore.baseExportFailureReason(''), null);
+  assert.equal(Explore.baseExportFailureReason('พร้อมแล้ว'), null);
+  assert.equal(
+    Explore.baseExportFailureReason('ไม่สามารถบันทึกภาพได้ในขณะนี้ กรุณาลองอีกครั้ง'),
+    'render_failed'
+  );
+});
+
 test('exploration instrumentation remains harmless when the event layer is unavailable', () => {
   const previous = globalThis.SorathaiEvents;
   delete globalThis.SorathaiEvents;
