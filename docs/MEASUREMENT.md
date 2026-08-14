@@ -1,10 +1,10 @@
-# Sorathai product measurement contract — M14 Phase 1
+# Sorathai product measurement contract — M14
 
 ## Status
 
-Measurement readiness only. Production analytics transport is **disabled**. This contract does not authorize sending telemetry to a provider.
+Measurement readiness and local-only instrumentation are enabled. Production analytics transport remains **disabled**. This contract does not authorize sending telemetry to a provider.
 
-Sorathai already had a privacy-safe no-op event layer from M10. M14 hardens that existing contract rather than replacing it, so current event names and call sites remain backward compatible while stricter review validation is added.
+Sorathai already had a privacy-safe no-op event layer from M10. M14 hardens that existing contract and wires selected core-funnel call sites to it without changing the no-network boundary.
 
 ## Principles
 
@@ -34,40 +34,28 @@ All properties are closed enums maintained in `sorathai-events.js`. They describ
 
 ### Current enum families
 
-`scienceId`:
-- `thai`
-- `western`
-- `chinese`
-- `numerology`
-- `mayan`
-- `biorhythm`
-- `nakshatra`
-- `celtic`
+`scienceId`: `thai`, `western`, `chinese`, `numerology`, `mayan`, `biorhythm`, `nakshatra`, `celtic`
 
-`focus`:
-- `identity`
-- `love`
-- `career`
-- `challenge`
-- `none`
+`focus`: `identity`, `love`, `career`, `challenge`, `none`
 
-`exploredBucket`:
-- `0-1`
-- `2-3`
-- `4-7`
-- `8`
+`exploredBucket`: `0-1`, `2-3`, `4-7`, `8`
 
-`surface`:
-- `base`
-- `deep`
-- `combined`
-- `dream`
+`surface`: `base`, `deep`, `combined`, `dream`
 
-`reason`:
-- `library_unavailable`
-- `render_failed`
-- `download_failed`
-- `unknown`
+`reason`: `library_unavailable`, `render_failed`, `download_failed`, `unknown`
+
+## Local-only instrumentation coverage
+
+M14 Phase 2 wires the shared no-op event layer into the core funnel:
+
+- valid new Base Profile creation → `base_profile_created`
+- opening a science chooser → `science_opened`
+- choosing or skipping a categorical focus → `focus_selected`
+- entering a shared deep-reading context → `deep_reading_viewed`
+- opening Combined Profile from the Home result → `combined_opened` with only a coarse explored-count bucket
+- Base PNG export attempt/success/failure → export lifecycle events with only `surface` and a coarse failure `reason`
+
+`sorathai-explore.js` dynamically ensures the local `sorathai-events.js` contract is available before emitting. The loader only fetches Sorathai's own static JavaScript asset; it does not transmit event payloads anywhere. `SorathaiEvents.emit()` itself remains a local no-op that returns sanitized data only.
 
 ## Explicitly prohibited data
 
@@ -96,7 +84,7 @@ Two behaviors intentionally coexist:
 
 ## Transport and storage boundary
 
-Phase 1 has no provider and no network transport. It must not add analytics cookies, analytics local-storage state, tracking pixels, beacons, third-party SDKs or a telemetry endpoint.
+M14 has no analytics provider and no event transport. It must not add analytics cookies, analytics local-storage state, tracking pixels, beacons, third-party analytics SDKs or a telemetry endpoint.
 
 If a later milestone proposes transport, that change requires a separate review covering at minimum:
 
@@ -119,10 +107,10 @@ The measurement implementation is allow-list based:
 - prohibited/sensitive keys fail strict validation
 - enum values outside their closed sets fail strict validation
 - sanitizer continues to remove unregistered/invalid payload data for runtime compatibility
-- production remains network-silent until a separate transport decision is explicitly merged
+- production remains event-transport-silent until a separate transport decision is explicitly merged
 
-The Node test suite covers both sanitizer behavior and strict validation, so these checks run inside the existing CI command `node --test tests/*.test.js` without introducing a new dependency or workflow.
+The Node test suite covers sanitizer behavior, strict validation and the payload shapes used by local instrumentation inside the existing CI command `node --test tests/*.test.js`.
 
 ## Interpretation limits
 
-Without an analytics transport/provider, no aggregate production dataset is currently being collected. Even if transport is enabled later with this contract, the event model is intentionally not capable of establishing persistent unique-user identity, demographics, individual cross-session journeys or ad attribution.
+No aggregate production analytics dataset is currently being collected. Local-only calls therefore provide wiring/test confidence, not traffic metrics. Even if transport is enabled later with this contract, the event model is intentionally not capable of establishing persistent unique-user identity, demographics, individual cross-session journeys or ad attribution.
