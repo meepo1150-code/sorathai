@@ -13,6 +13,10 @@
   function destination(href, profile, focus) {
     return root.SorathaiProfile.readingUrl(href, profile, focus);
   }
+  function emitEvent(name, payload) {
+    if (!root.SorathaiEvents || typeof root.SorathaiEvents.emit !== "function") return null;
+    return root.SorathaiEvents.emit(name, payload);
+  }
   function focusCopy(id) {
     if (root.SorathaiContent && root.SorathaiContent.FOCUS && root.SorathaiContent.FOCUS[id]) return root.SorathaiContent.FOCUS[id];
     const fallback = {
@@ -51,6 +55,7 @@
     function open(link) {
       trigger = link; href = link.href; scienceId = link.dataset.scienceId || ""; title = link.dataset.scienceName || link.textContent.trim();
       const scienceName = root.SorathaiContent && root.SorathaiContent.scienceName ? root.SorathaiContent.scienceName(scienceId) : title;
+      emitEvent("science_opened", { scienceId: scienceId });
       backdrop.querySelector(".explore-opening").textContent = scienceName + " จะอ่านวันเกิดเดียวกันจากอีกมุมหนึ่ง เลือกเรื่องที่คุณอยากเข้าใจมากที่สุด แล้วคำอ่านจะพาเรื่องนั้นขึ้นมาให้เห็นก่อน";
       backdrop.hidden = false; document.body.classList.add("explore-open");
       history.pushState({ sorathaiExplore: true }, ""); pushed = true;
@@ -58,6 +63,8 @@
     }
     function go(focus) {
       const profile = getProfile();
+      const eventFocus = validFocus(focus) ? focus : "none";
+      emitEvent("focus_selected", { scienceId: scienceId, focus: eventFocus });
       const updated = root.SorathaiProfile.markScienceExplored(profile, scienceId, focus);
       if (updated) root.SorathaiProfile.save(updated);
       location.assign(destination(href, updated || profile, focus));
@@ -90,11 +97,12 @@
     const params = new URLSearchParams(location.search), focus = params.get("focus");
     const profile = root.SorathaiProfile.fromLocation(location.search);
     if (profile) root.SorathaiProfile.save(root.SorathaiProfile.markScienceExplored(profile, scienceId, focus));
+    emitEvent("deep_reading_viewed", { scienceId: scienceId, focus: validFocus(focus) ? focus : "none" });
     if (!validFocus(focus)) return;
     const label = document.createElement("p"); label.className = "focus-context";
     label.textContent = "เรื่องที่คุณอยากดูเป็นพิเศษ · " + LABELS[focus];
     const target = document.querySelector(".rh");
     if (target) target.insertAdjacentElement("afterend", label);
   }
-  return { LABELS, validFocus, destination, enhance, readingContext };
+  return { LABELS, validFocus, destination, emitEvent, enhance, readingContext };
 });
