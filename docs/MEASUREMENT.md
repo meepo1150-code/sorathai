@@ -4,7 +4,7 @@
 
 Measurement readiness and local-only instrumentation are enabled. Production analytics transport remains **disabled**. This contract does not authorize sending telemetry to a provider.
 
-Sorathai already had a privacy-safe no-op event layer from M10. M14 hardens that existing contract and wires selected core-funnel call sites to it without changing the no-network boundary.
+Sorathai already had a privacy-safe no-op event layer from M10. M14 hardens that existing contract and wires selected core-funnel call sites to it without changing the no-network event boundary.
 
 ## Principles
 
@@ -55,7 +55,7 @@ M14 Phase 2 wires the shared no-op event layer into the core funnel:
 - opening Combined Profile from the Home result → `combined_opened` with only a coarse explored-count bucket
 - Base PNG export attempt/success/failure → export lifecycle events with only `surface` and a coarse failure `reason`
 
-`sorathai-explore.js` dynamically ensures the local `sorathai-events.js` contract is available before emitting. The loader only fetches Sorathai's own static JavaScript asset; it does not transmit event payloads anywhere. `SorathaiEvents.emit()` itself remains a local no-op that returns sanitized data only.
+`sorathai-explore.js` dynamically ensures the local `sorathai-events.js` contract is available before emitting. Loading that first-party static JavaScript asset is an ordinary application asset request, not analytics/event transport: no event payload is placed in its URL, headers or body. `SorathaiEvents.emit()` itself remains a local no-op that returns sanitized data only.
 
 ## Explicitly prohibited data
 
