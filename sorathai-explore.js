@@ -119,6 +119,10 @@
     if (target) target.insertAdjacentElement("afterend", label);
   }
 
+  function baseExportFailureReason(errorText) {
+    return String(errorText || "").indexOf("ไม่สามารถบันทึกภาพ") !== -1 ? "render_failed" : null;
+  }
+
   function installCoreInstrumentation() {
     if (!root.document || root.document.documentElement.dataset.sorathaiCoreEvents === "true") return;
     root.document.documentElement.dataset.sorathaiCoreEvents = "true";
@@ -144,6 +148,7 @@
       });
 
       const exportButton = root.document.getElementById("export-card");
+      const exportStatus = root.document.getElementById("export-status");
       const errorNode = root.document.getElementById("birth-error");
       let baseExportPending = false;
       if (exportButton) exportButton.addEventListener("click", function () {
@@ -153,18 +158,14 @@
           baseExportPending = false;
         } else baseExportPending = true;
       });
-      root.document.addEventListener("click", function (event) {
-        const link = event.target && event.target.closest ? event.target.closest('a[download="sorathai-base-destiny-card.png"]') : null;
-        if (!link || !baseExportPending) return;
-        baseExportPending = false;
-        emitEvent("export_succeeded", { surface: "base" });
-      }, true);
-      if (errorNode && typeof root.MutationObserver === "function") {
+      if (exportStatus && typeof root.MutationObserver === "function") {
         new root.MutationObserver(function () {
-          if (!baseExportPending || errorNode.textContent.indexOf("ไม่สามารถบันทึกภาพ") === -1) return;
+          if (!baseExportPending || exportStatus.classList.contains("visible")) return;
           baseExportPending = false;
-          emitEvent("export_failed", { surface: "base", reason: "render_failed" });
-        }).observe(errorNode, { childList: true, characterData: true, subtree: true });
+          const reason = baseExportFailureReason(errorNode && errorNode.textContent);
+          if (reason) emitEvent("export_failed", { surface: "base", reason: reason });
+          else emitEvent("export_succeeded", { surface: "base" });
+        }).observe(exportStatus, { attributes: true, attributeFilter: ["class"] });
       }
     }
 
@@ -173,5 +174,5 @@
   }
 
   installCoreInstrumentation();
-  return { LABELS, validFocus, destination, ensureEvents, emitEvent, enhance, readingContext, installCoreInstrumentation };
+  return { LABELS, validFocus, destination, ensureEvents, emitEvent, enhance, readingContext, baseExportFailureReason, installCoreInstrumentation };
 });
