@@ -35,6 +35,9 @@ jobs:
       - name: Validate HTML links, metadata, and sitemap
         run: python scripts/validate_site.py
 
+      - name: Validate external dependency boundary
+        run: python scripts/validate_external_dependencies.py
+
       - name: Check production smoke script syntax
         run: bash -n scripts/production_smoke.sh
 
