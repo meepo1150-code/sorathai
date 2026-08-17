@@ -137,6 +137,18 @@ Phase 1–2 ปิดแล้ว:
 
 การเปิด transport ในอนาคตต้องเป็น explicit product decision + separate reviewed PR พร้อม privacy/provider/payload/retention/IP/consent/opt-out/browser-regression review ห้ามเปิดจาก incidental refactor
 
+## Milestone 15 — CI observability & regression diagnostics 🚧
+
+Issue #43 ยกระดับ regression gate โดยไม่เพิ่ม product feature:
+
+- Playwright เก็บ screenshot เฉพาะตอน fail และ trace ของ failed tests
+- CI สร้าง HTML browser report แบบไม่เปิดอัตโนมัติ
+- GitHub Actions upload failure diagnostics แบบ short retention
+- concurrency guard ยกเลิก run เก่าที่ถูก commit ใหม่ใน PR/ref เดียวกันแทนที่
+- บันทึกข้อจำกัดว่าปัจจุบันยังไม่มี `package-lock.json`; จึงยังไม่อ้างว่า npm transitive dependency reproducible เต็มรูปแบบและยังไม่เปลี่ยนเป็น `npm ci` จนกว่าจะมี lockfile ที่สร้าง/validate จริง
+
+ดู `docs/CI_DIAGNOSTICS.md` สำหรับวิธีอ่านหลักฐานเมื่อ browser gate ล้มเหลว
+
 ## Deferred until post-launch evidence
 
 ยังไม่ควรทำเพียงเพราะทำได้:
