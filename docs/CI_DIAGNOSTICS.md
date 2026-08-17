@@ -33,6 +33,8 @@ The artifact may contain:
 - `playwright-report/` — HTML report and test summaries
 - `test-results/` — per-test failure output, screenshots and trace archives where Playwright produced them
 
+Successful browser runs intentionally do **not** upload these diagnostics. The HTML report may be generated transiently inside the runner, but artifact storage is reserved for failures so routine green runs do not accumulate unnecessary data.
+
 If the workflow failed before Playwright produced files, artifact upload intentionally uses `if-no-files-found: ignore`; absence of a browser artifact is then expected and the earlier failing step is the source of truth.
 
 ## Reading a browser failure
