@@ -85,8 +85,6 @@ Issue #25 / PR #27 ปิดแล้ว:
 - `sorathai-events.js` เป็น provider-neutral privacy-safe no-op contract โดย default
 - launch checklist และ static checks ป้องกัน production-origin drift
 
-การติด analytics provider จริงยังเป็น explicit future decision ไม่ใช่ส่วนหนึ่งของ M10
-
 ## Milestone 11 — Public launch operations / owner handoff 🚧 manual evidence
 
 Issue #28 แยกงานที่ต้องอาศัยสิทธิ์เจ้าของบัญชีหรือการตรวจมนุษย์ออกจาก repository automation เช่น Search Console submission/index feedback, real-device walkthrough, downloaded PNG inspection, keyboard walkthrough และ assistive-technology review
@@ -108,20 +106,36 @@ Issue #30 / PR #31 ปิดแล้วและ merge เข้า `main` ท�
 
 Calculation, DOB/profile, SEO/indexability/Search Console verification, privacy และ monetization contracts ยังคงถูกล็อกระหว่าง visual milestone
 
-## Milestone 13 — Post-launch quality, maintainability & operations handoff 🚧
+## Milestone 13 — Post-launch quality, maintainability & operations handoff ✅
 
-Issue #32 / Draft PR #33
+Issue #32 / PR #33 ปิดแล้ว งาน maintainability หลัง M12 ถูก merge และใช้งานเป็น repository contract แล้ว:
 
-เป้าหมายคือทำให้ระบบหลัง M12 ดูแลต่อได้โดยไม่เพิ่ม feature แบบ speculative:
-
-- document และ audit shared presentation cascade
-- ตรวจ dead/unreferenced visual layers และลบเฉพาะเมื่อมี regression evidence
-- เพิ่ม executable contract สำหรับ CSS manifest/no-emoji guard
-- ตรวจ runtime/presentation boundary โดยไม่เสี่ยง calculation/profile contracts
-- ทำ README/ROADMAP/issues ให้ตรงกับสถานะจริง
-- review M11 manual handoff โดยไม่ claim account/manual evidence เกินจริง
+- document/audit shared presentation cascade
+- executable CSS manifest และ no-emoji presentation contracts
+- dead/unreferenced visual layers ถูกตรวจและลดเฉพาะเมื่อมี regression evidence
+- runtime/presentation boundary ถูก harden โดยไม่เปลี่ยน calculation/profile contracts
+- README/ROADMAP/issues ถูก sync กับสถานะจริง
+- M11 manual handoff ยังคงแยกจาก automated evidence อย่างชัดเจน
 
 ดู `docs/PRESENTATION_ARCHITECTURE.md` สำหรับ maintenance contract ของ visual stack
+
+## Milestone 14 — Privacy-safe measurement readiness ✅ local-only
+
+Phase 1–2 ปิดแล้ว:
+
+- event taxonomy และ closed-enum payload contract
+- strict validator สำหรับ unknown/prohibited/unexpected/invalid fields
+- core funnel call sites ถูก wire แบบ local-only
+- `SorathaiEvents.emit()` ยังคงเป็น no-op และไม่ส่ง event ออกจาก browser
+- ไม่มี analytics cookie, analytics localStorage identity, tracking pixel, fingerprinting หรือ telemetry endpoint
+
+### Selected product decision
+
+สำหรับ initial validation เลือก **No Analytics Transport**
+
+ข้อดีคือ privacy boundary ชัด, ไม่มี third-party analytics dependency/cost และ production behavior audit ได้ง่าย ข้อแลกเปลี่ยนคือช่วงนี้ไม่มี production funnel counts, retention หรือ aggregate usage dataset
+
+การเปิด transport ในอนาคตต้องเป็น explicit product decision + separate reviewed PR พร้อม privacy/provider/payload/retention/IP/consent/opt-out/browser-regression review ห้ามเปิดจาก incidental refactor
 
 ## Deferred until post-launch evidence
 
@@ -133,5 +147,6 @@ Issue #32 / Draft PR #33
 - mobile application
 - เพิ่มศาสตร์ใหม่
 - ads/monetization optimization
+- analytics transport โดยไม่มีเหตุผลผลิตภัณฑ์ที่ชัดเจน
 
-ลำดับ feature หลัง launch ควรขึ้นกับข้อมูลจริงจาก traffic, completion, sciences-per-profile, Combined reach, return และ share/export behavior ไม่ใช่จำนวน feature ที่อยากเพิ่ม
+ในช่วง No Analytics Transport การตัดสินใจ feature ถัดไปควรอิง **direct user feedback, reproducible defects, Search Console/operational evidence และ product goals ที่ชัดเจน** แทนการสมมติ funnel/retention metrics ที่เราไม่ได้เก็บอยู่จริง หากอนาคตเปิด measurement transport อย่างตั้งใจ ค่อยใช้ baseline aggregate behavior เพื่อช่วยเลือก bottleneck ถัดไป
