@@ -35,6 +35,9 @@ jobs:
       - name: Validate HTML links, metadata, and sitemap
         run: python scripts/validate_site.py
 
+      - name: Check production smoke script syntax
+        run: bash -n scripts/production_smoke.sh
+
       - name: Test shared profile and reading models
         run: node --test tests/*.test.js
 
