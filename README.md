@@ -101,13 +101,15 @@ Google Fonts ใช้ `display=swap` และมี system fallbacks `html2can
 
 ## Release status
 
-Milestones 8–10 ปิดแล้ว: repository มี Chromium/Playwright browser gate, responsive/reduced-motion coverage, launch/discoverability contracts, production metadata consistency และ provider-neutral privacy-safe measurement foundation
+Milestones 2–10 และ 12–14 Phase 1–2 ปิดแล้วในเชิง repository implementation: core profile flow, deep readings, Combined Profile, trust/accessibility/performance hardening, Playwright release gates, discoverability contracts, Sorathai Visual Identity System, presentation-maintenance contracts และ privacy-safe local-only measurement instrumentation อยู่ใน `main`
 
 Milestone 11 (Issue #28) เป็น **owner/manual operations handoff** สำหรับสิ่งที่ CI พิสูจน์แทนเจ้าของบัญชีหรือมนุษย์ไม่ได้ เช่น Search Console crawl/index feedback, real-device walkthrough, downloaded PNG pixel inspection, full keyboard walkthrough และ assistive-technology review งานเหล่านี้ห้ามถูกอ้างว่า certified เพียงเพราะ automated tests ผ่าน
 
-Milestone 12 (Issue #30 / PR #31) ปิดแล้วและ merge เข้า `main` ที่ `cbddaa442e65d294bce8abaade3b5e8804a0c2f6` พร้อม Sorathai Visual Identity System: crafted-paper surfaces, science-specific engraved motifs, Base Destiny personal identity, result-specific variants, typography/mobile balance และ visible no-emoji presentation guard
+Milestone 13 ปิดแล้วหลังงาน post-launch quality/maintainability ถูก merge: presentation cascade มีเอกสารและ executable contracts, stale/dead visual layers ถูกตรวจอย่างมีหลักฐาน และ repository state ถูกทำให้ตรงกับ runtime จริง
 
-Milestone 13 (Issue #32 / Draft PR #33) เน้น post-launch quality และ maintainability: document/audit visual cascade, เพิ่ม executable presentation-contract checks, ลดเฉพาะ debt ที่พิสูจน์ว่า dead และทำ repository state/documentation ให้ตรงกับระบบจริง โดยไม่เพิ่ม speculative product features
+M14 Phase 1–2 ปิดแล้ว: event taxonomy, strict privacy validation และ local-only core-funnel instrumentation ถูกผูกเข้ากับระบบโดย `SorathaiEvents.emit()` ยังคงเป็น local no-op
+
+**Measurement decision สำหรับ initial validation:** No Analytics Transport. ไม่มี analytics provider, telemetry endpoint, tracking cookie/localStorage identity, pixel, fingerprinting หรือ production event transport การเปิด transport ในอนาคตต้องเป็น explicit product decision + reviewed PR แยกต่างหาก
 
 ## Production identity
 
