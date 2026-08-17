@@ -75,6 +75,8 @@ git diff --check
 
 GitHub Actions ติดตั้ง Chromium และรัน Playwright จริง จึงใช้เป็น browser regression gate ของ core journey นอกจากนี้ static validator ตรวจ presentation manifest ว่า import CSS มีไฟล์จริง ไม่ซ้ำ และ visual guard ที่ตั้งใจไว้ยังอยู่ใน cascade ที่ถูกต้อง
 
+เมื่อ browser regression ล้มเหลว CI จะเก็บ screenshot/trace/HTML report แบบ failure-only เพื่อให้ไล่สาเหตุได้จากหลักฐานโดยไม่ต้องเดา ดูวิธีอ่าน artifact และข้อจำกัดด้าน dependency reproducibility ที่ [`docs/CI_DIAGNOSTICS.md`](docs/CI_DIAGNOSTICS.md)
+
 ## Profile storage
 
 วันเกิดถูกแปลงเป็น ISO `YYYY-MM-DD` และประมวลผลใน browser โมเดลบันทึก `{ version: 2, dob, powers, exploredSciences, lastFocus }` ที่ key `sorathai.profile.v1` ใน `localStorage` พร้อม migration จาก profile รุ่นก่อน เมื่อ storage ใช้งานไม่ได้ core reading ยังทำงานต่อโดยไม่ persistence ได้ และ legacy `?dob=DDMMYYYY` ยังรองรับ
@@ -110,6 +112,8 @@ Milestone 13 ปิดแล้วหลังงาน post-launch quality/main
 M14 Phase 1–2 ปิดแล้ว: event taxonomy, strict privacy validation และ local-only core-funnel instrumentation ถูกผูกเข้ากับระบบโดย `SorathaiEvents.emit()` ยังคงเป็น local no-op
 
 **Measurement decision สำหรับ initial validation:** No Analytics Transport. ไม่มี analytics provider, telemetry endpoint, tracking cookie/localStorage identity, pixel, fingerprinting หรือ production event transport การเปิด transport ในอนาคตต้องเป็น explicit product decision + reviewed PR แยกต่างหาก
+
+M15 (Issue #43) เป็น CI observability/regression diagnostics hardening: failure-only Playwright evidence, stale-run concurrency control และเอกสาร reproducibility โดยไม่เปลี่ยน production runtime
 
 ## Production identity
 
