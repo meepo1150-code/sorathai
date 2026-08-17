@@ -38,6 +38,9 @@ jobs:
       - name: Validate external dependency boundary
         run: python scripts/validate_external_dependencies.py
 
+      - name: Validate response header source contract
+        run: python scripts/validate_headers.py
+
       - name: Check production smoke script syntax
         run: bash -n scripts/production_smoke.sh
 

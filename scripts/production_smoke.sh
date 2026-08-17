@@ -93,6 +93,16 @@ assert_file_contains "$TMP/home.html" "property=\"og:url\" content=\"$BASE/\"" '
 assert_file_contains "$TMP/home.html" "property=\"og:image\" content=\"$BASE/og-image.png\"" 'Home og:image'
 assert_file_contains "$TMP/home.html" 'data-sorathai-launch-schema="1"' 'Home launch schema marker'
 
+echo "Checking production response security headers"
+HOME_HEADERS="$TMP/home.html.headers"
+assert_contains "$(header_value X-Frame-Options "$HOME_HEADERS")" 'DENY' 'Home X-Frame-Options'
+PERMISSIONS_POLICY="$(header_value Permissions-Policy "$HOME_HEADERS")"
+assert_contains "$PERMISSIONS_POLICY" 'camera=()' 'Home Permissions-Policy camera'
+assert_contains "$PERMISSIONS_POLICY" 'microphone=()' 'Home Permissions-Policy microphone'
+assert_contains "$PERMISSIONS_POLICY" 'geolocation=()' 'Home Permissions-Policy geolocation'
+assert_contains "$(header_value X-Content-Type-Options "$HOME_HEADERS")" 'nosniff' 'Home X-Content-Type-Options'
+assert_contains "$(header_value Referrer-Policy "$HOME_HEADERS")" 'strict-origin-when-cross-origin' 'Home Referrer-Policy'
+
 echo "Checking representative public science semantic contract"
 assert_html_contract "/western-astrology.html" "$BASE/western-astrology.html" "$TMP/western.html"
 assert_file_contains "$TMP/western.html" "property=\"og:url\" content=\"$BASE/western-astrology.html\"" 'Western og:url'
@@ -115,4 +125,4 @@ if [[ ! -s "$TMP/og-image.png" ]]; then
   exit 1
 fi
 
-echo "Production crawler + semantic smoke passed for ${#URLS[@]} sitemap routes."
+echo "Production crawler + semantic + security-header smoke passed for ${#URLS[@]} sitemap routes."
