@@ -137,17 +137,31 @@ Phase 1–2 ปิดแล้ว:
 
 การเปิด transport ในอนาคตต้องเป็น explicit product decision + separate reviewed PR พร้อม privacy/provider/payload/retention/IP/consent/opt-out/browser-regression review ห้ามเปิดจาก incidental refactor
 
-## Milestone 15 — CI observability & regression diagnostics 🚧
+## Milestone 15 — CI observability & regression diagnostics ✅
 
-Issue #43 ยกระดับ regression gate โดยไม่เพิ่ม product feature:
+Issue #43 / PR #44 ปิดแล้วและ merge เข้า `main` ที่ `1b3e3199ed38f57bdbed324fa604942e0df3c2c6`:
 
 - Playwright เก็บ screenshot เฉพาะตอน fail และ trace ของ failed tests
 - CI สร้าง HTML browser report แบบไม่เปิดอัตโนมัติ
-- GitHub Actions upload failure diagnostics แบบ short retention
+- GitHub Actions upload failure diagnostics แบบ short retention เฉพาะเมื่อ fail
 - concurrency guard ยกเลิก run เก่าที่ถูก commit ใหม่ใน PR/ref เดียวกันแทนที่
 - บันทึกข้อจำกัดว่าปัจจุบันยังไม่มี `package-lock.json`; จึงยังไม่อ้างว่า npm transitive dependency reproducible เต็มรูปแบบและยังไม่เปลี่ยนเป็น `npm ci` จนกว่าจะมี lockfile ที่สร้าง/validate จริง
 
+PR run #179 ถูก supersede และ cancelled ตาม contract; run #180 ผ่านเต็มชุด และ post-merge static validation #181 + production crawler smoke #6 ผ่านบน main
+
 ดู `docs/CI_DIAGNOSTICS.md` สำหรับวิธีอ่านหลักฐานเมื่อ browser gate ล้มเหลว
+
+## Milestone 16 — Production semantic contract smoke 🚧
+
+Issue #45 / Draft PR #46 เพิ่ม post-merge evidence จากเดิมที่ตรวจเพียง HTTP/crawler reachability ให้ตรวจ deployed semantics ที่สำคัญด้วย:
+
+- Home canonical / Open Graph / launch schema
+- representative Western public route canonical / Open Graph / schema และไม่มี accidental `noindex`
+- `profile.html` และ `dream-result.html` ยังคง canonical + `noindex,follow` และไม่อยู่ใน sitemap
+- `og-image.png` ตอบ `image/png`
+- PR CI ตรวจ shell syntax ของ production smoke โดยไม่ยิง production network ก่อน merge
+
+M16 เป็น deployment sanity check ไม่ใช่หลักฐานว่า Google index สำเร็จ; Search Console ใน Issue #28 ยังเป็น source of truth สำหรับ Google-specific indexing
 
 ## Deferred until post-launch evidence
 
