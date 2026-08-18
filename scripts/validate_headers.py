@@ -8,6 +8,29 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 HEADERS = ROOT / "_headers"
+BASE = "https://sorathai.pages.dev"
+
+CANONICAL_ROUTES = (
+    "/",
+    "/thai-astrology.html",
+    "/western-astrology.html",
+    "/chinese-astrology.html",
+    "/numerology.html",
+    "/mayan.html",
+    "/biorhythm.html",
+    "/nakshatra.html",
+    "/celtic.html",
+    "/dream.html",
+    "/about.html",
+    "/privacy.html",
+    "/contact.html",
+)
+
+EXCLUDED_CANONICAL_ROUTES = (
+    "/profile.html",
+    "/dream-result.html",
+    "/404.html",
+)
 
 REQUIRED_SNIPPETS = (
     "/*\n  X-Frame-Options: DENY\n  Permissions-Policy: camera=(), microphone=(), geolocation=()",
@@ -19,6 +42,10 @@ FORBIDDEN_DUPLICATES = (
     "X-Content-Type-Options:",
     "Referrer-Policy:",
 )
+
+
+def canonical_target(route: str) -> str:
+    return f"{BASE}/" if route == "/" else f"{BASE}{route}"
 
 
 def main() -> int:
@@ -45,13 +72,44 @@ def main() -> int:
     if source.lower().count("permissions-policy:") != 1:
         errors.append("Permissions-Policy must appear exactly once in _headers")
 
+    expected_link_lines: set[str] = set()
+    for route in CANONICAL_ROUTES:
+        target = canonical_target(route)
+        block = f'{route}\n  Link: <{target}>; rel="canonical"'
+        expected_link_lines.add(f'Link: <{target}>; rel="canonical"')
+        if block not in source:
+            errors.append(f"missing canonical header mapping: {route} -> {target}")
+        if source.count(block) != 1:
+            errors.append(f"canonical header mapping must appear exactly once for {route}")
+
+    actual_link_lines = {
+        line.strip()
+        for line in source.splitlines()
+        if line.strip().lower().startswith("link:")
+    }
+    unexpected_links = sorted(actual_link_lines - expected_link_lines)
+    missing_links = sorted(expected_link_lines - actual_link_lines)
+    for line in unexpected_links:
+        errors.append(f"unexpected Link header rule: {line}")
+    for line in missing_links:
+        errors.append(f"missing Link header rule: {line}")
+
+    if len(actual_link_lines) != len(CANONICAL_ROUTES):
+        errors.append(
+            f"expected {len(CANONICAL_ROUTES)} unique canonical Link headers, found {len(actual_link_lines)}"
+        )
+
+    for route in EXCLUDED_CANONICAL_ROUTES:
+        if f"{route}\n  Link:" in source:
+            errors.append(f"excluded route must not receive a canonical Link rule: {route}")
+
     if errors:
         print("Header source validation failed:", file=sys.stderr)
         for error in errors:
             print(f"- {error}", file=sys.stderr)
         return 1
 
-    print("Header source validation passed.")
+    print("Header source validation passed, including canonical URL mappings.")
     return 0
 
 
