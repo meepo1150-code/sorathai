@@ -2,6 +2,45 @@
   X-Frame-Options: DENY
   Permissions-Policy: camera=(), microphone=(), geolocation=()
 
+/
+  Link: <https://sorathai.pages.dev/>; rel="canonical"
+
+/thai-astrology.html
+  Link: <https://sorathai.pages.dev/thai-astrology.html>; rel="canonical"
+
+/western-astrology.html
+  Link: <https://sorathai.pages.dev/western-astrology.html>; rel="canonical"
+
+/chinese-astrology.html
+  Link: <https://sorathai.pages.dev/chinese-astrology.html>; rel="canonical"
+
+/numerology.html
+  Link: <https://sorathai.pages.dev/numerology.html>; rel="canonical"
+
+/mayan.html
+  Link: <https://sorathai.pages.dev/mayan.html>; rel="canonical"
+
+/biorhythm.html
+  Link: <https://sorathai.pages.dev/biorhythm.html>; rel="canonical"
+
+/nakshatra.html
+  Link: <https://sorathai.pages.dev/nakshatra.html>; rel="canonical"
+
+/celtic.html
+  Link: <https://sorathai.pages.dev/celtic.html>; rel="canonical"
+
+/dream.html
+  Link: <https://sorathai.pages.dev/dream.html>; rel="canonical"
+
+/about.html
+  Link: <https://sorathai.pages.dev/about.html>; rel="canonical"
+
+/privacy.html
+  Link: <https://sorathai.pages.dev/privacy.html>; rel="canonical"
+
+/contact.html
+  Link: <https://sorathai.pages.dev/contact.html>; rel="canonical"
+
 /sitemap.xml
   Content-Type: application/xml; charset=utf-8
   Cache-Control: public, max-age=300

@@ -42,10 +42,25 @@ assert_file_not_contains() {
   fi
 }
 
-assert_html_contract() {
-  local path="$1" canonical="$2" output="$3"
+assert_header_file_contains_ci() {
+  local file="$1" expected="$2" label="$3"
+  if ! tr -d '\r' < "$file" | grep -Fiq -- "$expected"; then
+    echo "FAIL: $label missing expected header fragment '$expected'" >&2
+    exit 1
+  fi
+}
+
+assert_header_file_not_contains_ci() {
+  local file="$1" unexpected="$2" label="$3"
+  if tr -d '\r' < "$file" | grep -Fiq -- "$unexpected"; then
+    echo "FAIL: $label unexpectedly contains header fragment '$unexpected'" >&2
+    exit 1
+  fi
+}
+
+fetch_html_contract() {
+  local path="$1" output="$2"
   fetch_with_retry "$BASE$path" "$output" "$output.headers"
-  assert_file_contains "$output" "rel=\"canonical\" href=\"$canonical\"" "$path canonical"
 }
 
 echo "Checking sitemap response"
@@ -70,17 +85,24 @@ if (( ${#URLS[@]} < 10 )); then
   exit 1
 fi
 
+index=0
 for url in "${URLS[@]}"; do
   if [[ "$url" != "$BASE"/* && "$url" != "$BASE/" ]]; then
     echo "FAIL: sitemap origin drift: $url" >&2
     exit 1
   fi
-  code="$(curl --silent --show-error --location --retry 5 --retry-delay 5 --retry-all-errors --connect-timeout 10 --max-time 45 --output /dev/null --write-out '%{http_code}' "$url")"
+
+  headers="$TMP/sitemap-route-$index.headers"
+  body="$TMP/sitemap-route-$index.body"
+  code="$(curl --silent --show-error --location --retry 5 --retry-delay 5 --retry-all-errors --connect-timeout 10 --max-time 45 --dump-header "$headers" --output "$body" --write-out '%{http_code}' "$url")"
   if [[ "$code" != "200" ]]; then
     echo "FAIL: $url returned HTTP $code" >&2
     exit 1
   fi
-  echo "OK $code $url"
+
+  assert_header_file_contains_ci "$headers" "Link: <$url>; rel=\"canonical\"" "$url canonical Link header"
+  echo "OK $code $url canonical"
+  index=$((index + 1))
 done
 
 assert_file_contains "$TMP/sitemap.xml" "<loc>$BASE/western-astrology.html</loc>" 'representative science sitemap entry'
@@ -88,7 +110,7 @@ assert_file_not_contains "$TMP/sitemap.xml" "<loc>$BASE/profile.html</loc>" 'pro
 assert_file_not_contains "$TMP/sitemap.xml" "<loc>$BASE/dream-result.html</loc>" 'dream result noindex sitemap exclusion'
 
 echo "Checking deployed Home semantic contract"
-assert_html_contract "/" "$BASE/" "$TMP/home.html"
+fetch_html_contract "/" "$TMP/home.html"
 assert_file_contains "$TMP/home.html" "property=\"og:url\" content=\"$BASE/\"" 'Home og:url'
 assert_file_contains "$TMP/home.html" "property=\"og:image\" content=\"$BASE/og-image.png\"" 'Home og:image'
 assert_file_contains "$TMP/home.html" 'data-sorathai-launch-schema="1"' 'Home launch schema marker'
@@ -104,17 +126,19 @@ assert_contains "$(header_value X-Content-Type-Options "$HOME_HEADERS")" 'nosnif
 assert_contains "$(header_value Referrer-Policy "$HOME_HEADERS")" 'strict-origin-when-cross-origin' 'Home Referrer-Policy'
 
 echo "Checking representative public science semantic contract"
-assert_html_contract "/western-astrology.html" "$BASE/western-astrology.html" "$TMP/western.html"
+fetch_html_contract "/western-astrology.html" "$TMP/western.html"
 assert_file_contains "$TMP/western.html" "property=\"og:url\" content=\"$BASE/western-astrology.html\"" 'Western og:url'
 assert_file_contains "$TMP/western.html" "property=\"og:image\" content=\"$BASE/og-image.png\"" 'Western og:image'
 assert_file_contains "$TMP/western.html" 'data-sorathai-launch-schema="1"' 'Western launch schema marker'
 assert_file_not_contains "$TMP/western.html" 'name="robots" content="noindex' 'Western public indexability'
 
 echo "Checking noindex shell semantic contracts"
-assert_html_contract "/profile.html" "$BASE/profile.html" "$TMP/profile.html"
+fetch_html_contract "/profile.html" "$TMP/profile.html"
 assert_file_contains "$TMP/profile.html" 'name="robots" content="noindex,follow"' 'Combined Profile robots'
-assert_html_contract "/dream-result.html" "$BASE/dream-result.html" "$TMP/dream-result.html"
+assert_header_file_not_contains_ci "$TMP/profile.html.headers" 'rel="canonical"' 'Combined Profile canonical exclusion'
+fetch_html_contract "/dream-result.html" "$TMP/dream-result.html"
 assert_file_contains "$TMP/dream-result.html" 'name="robots" content="noindex,follow"' 'Dream result robots'
+assert_header_file_not_contains_ci "$TMP/dream-result.html.headers" 'rel="canonical"' 'Dream result canonical exclusion'
 
 echo "Checking social preview asset"
 fetch_with_retry "$BASE/og-image.png" "$TMP/og-image.png" "$TMP/og-image.headers"
@@ -125,4 +149,4 @@ if [[ ! -s "$TMP/og-image.png" ]]; then
   exit 1
 fi
 
-echo "Production crawler + semantic + security-header smoke passed for ${#URLS[@]} sitemap routes."
+echo "Production crawler + canonical + semantic + security-header smoke passed for ${#URLS[@]} sitemap routes."
