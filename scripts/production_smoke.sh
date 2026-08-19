@@ -2,6 +2,21 @@
 set -euo pipefail
 
 BASE="https://sorathai.pages.dev"
+HTML2CANVAS_URL="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"
+HTML2CANVAS_INTEGRITY="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA=="
+EXPORT_PATHS=(
+  "/"
+  "/profile.html"
+  "/dream-result.html"
+  "/thai-astrology.html"
+  "/western-astrology.html"
+  "/chinese-astrology.html"
+  "/numerology.html"
+  "/mayan.html"
+  "/biorhythm.html"
+  "/nakshatra.html"
+  "/celtic.html"
+)
 TMP="$(mktemp -d)"
 trap 'rm -rf "$TMP"' EXIT
 
@@ -40,6 +55,20 @@ assert_file_not_contains() {
     echo "FAIL: $label unexpectedly contains '$unexpected'" >&2
     exit 1
   fi
+}
+
+assert_html2canvas_contract() {
+  local file="$1" label="$2" count line
+  count="$(grep -Fc -- "$HTML2CANVAS_URL" "$file" || true)"
+  if [[ "$count" != "1" ]]; then
+    echo "FAIL: $label expected exactly one approved html2canvas script, found $count" >&2
+    exit 1
+  fi
+
+  line="$(grep -F -- "$HTML2CANVAS_URL" "$file")"
+  assert_contains "$line" "integrity=\"$HTML2CANVAS_INTEGRITY\"" "$label html2canvas SRI"
+  assert_contains "$line" 'crossorigin="anonymous"' "$label html2canvas crossorigin"
+  assert_contains "$line" ' defer' "$label html2canvas defer"
 }
 
 assert_header_file_contains_ci() {
@@ -140,6 +169,16 @@ fetch_html_contract "/dream-result.html" "$TMP/dream-result.html"
 assert_file_contains "$TMP/dream-result.html" 'name="robots" content="noindex,follow"' 'Dream result robots'
 assert_header_file_not_contains_ci "$TMP/dream-result.html.headers" 'rel="canonical"' 'Dream result canonical exclusion'
 
+echo "Checking deployed export dependency security metadata"
+dependency_index=0
+for path in "${EXPORT_PATHS[@]}"; do
+  output="$TMP/export-dependency-$dependency_index.html"
+  fetch_html_contract "$path" "$output"
+  assert_html2canvas_contract "$output" "$path"
+  echo "OK $path html2canvas SRI"
+  dependency_index=$((dependency_index + 1))
+done
+
 echo "Checking social preview asset"
 fetch_with_retry "$BASE/og-image.png" "$TMP/og-image.png" "$TMP/og-image.headers"
 OG_TYPE="$(header_value Content-Type "$TMP/og-image.headers")"
@@ -149,4 +188,4 @@ if [[ ! -s "$TMP/og-image.png" ]]; then
   exit 1
 fi
 
-echo "Production crawler + canonical + semantic + security-header smoke passed for ${#URLS[@]} sitemap routes."
+echo "Production crawler + canonical + dependency-metadata + semantic + security-header smoke passed for ${#URLS[@]} sitemap routes and ${#EXPORT_PATHS[@]} export routes."
