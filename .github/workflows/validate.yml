@@ -32,17 +32,6 @@ jobs:
         with:
           node-version: "22"
 
-      - name: Generate npm lockfile candidate
-        run: npm install --package-lock-only --ignore-scripts --no-audit --no-fund
-
-      - name: Upload npm lockfile candidate
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
-        with:
-          name: npm-lockfile-candidate-${{ github.run_id }}
-          path: package-lock.json
-          if-no-files-found: error
-          retention-days: 1
-
       - name: Validate HTML links, metadata, and sitemap
         run: python scripts/validate_site.py
 
@@ -65,7 +54,7 @@ jobs:
         run: node scripts/review_readings.js
 
       - name: Install browser test dependencies
-        run: npm install --no-audit --no-fund
+        run: npm ci --no-audit --no-fund
 
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
