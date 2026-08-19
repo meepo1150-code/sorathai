@@ -14,6 +14,10 @@ ROOT = Path(__file__).resolve().parents[1]
 HTML2CANVAS_URL = (
     "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"
 )
+HTML2CANVAS_INTEGRITY = (
+    "sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA=="
+)
+HTML2CANVAS_CROSSORIGIN = "anonymous"
 GOOGLE_FONT_STYLESHEET_HOST = "fonts.googleapis.com"
 GOOGLE_FONT_PRECONNECT_HOSTS = {"fonts.googleapis.com", "fonts.gstatic.com"}
 
@@ -83,8 +87,17 @@ def validate_html_page(page: Path) -> list[str]:
         src = script.get("src", "")
         if src != HTML2CANVAS_URL:
             errors.append(f"{page.name}: unapproved external script: {src}")
-        if src == HTML2CANVAS_URL and "defer" not in script:
-            errors.append(f"{page.name}: html2canvas must remain deferred")
+        if src == HTML2CANVAS_URL:
+            if "defer" not in script:
+                errors.append(f"{page.name}: html2canvas must remain deferred")
+            if script.get("integrity") != HTML2CANVAS_INTEGRITY:
+                errors.append(
+                    f"{page.name}: html2canvas must use the approved SRI hash"
+                )
+            if script.get("crossorigin", "").lower() != HTML2CANVAS_CROSSORIGIN:
+                errors.append(
+                    f"{page.name}: html2canvas must use crossorigin=\"anonymous\""
+                )
 
     if page.name in EXPORT_PAGES:
         if len(html2canvas_scripts) != 1:
@@ -154,7 +167,7 @@ def main() -> int:
         return 1
 
     print(
-        "External dependency validation passed: Google Fonts + deferred html2canvas 1.4.1 only."
+        "External dependency validation passed: Google Fonts + SRI-pinned deferred html2canvas 1.4.1 only."
     )
     return 0
 
