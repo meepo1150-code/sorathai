@@ -145,7 +145,7 @@ Issue #43 / PR #44 ปิดแล้วและ merge เข้า `main` ท�
 - CI สร้าง HTML browser report แบบไม่เปิดอัตโนมัติ
 - GitHub Actions upload failure diagnostics แบบ short retention เฉพาะเมื่อ fail
 - concurrency guard ยกเลิก run เก่าที่ถูก commit ใหม่ใน PR/ref เดียวกันแทนที่
-- บันทึกข้อจำกัดว่าปัจจุบันยังไม่มี `package-lock.json`; จึงยังไม่อ้างว่า npm transitive dependency reproducible เต็มรูปแบบและยังไม่เปลี่ยนเป็น `npm ci` จนกว่าจะมี lockfile ที่สร้าง/validate จริง
+- ตอน M15 repository ยังไม่มี `package-lock.json` จึงบันทึกข้อจำกัด npm transitive reproducibility ไว้โดยไม่สร้าง lockfile ปลอม; limitation นี้ถูกแก้ภายหลังใน M24 ด้วย npm-generated lockfile + `npm ci`
 
 PR run #179 ถูก supersede และ cancelled ตาม contract; run #180 ผ่านเต็มชุด และ post-merge static validation #181 + production crawler smoke #6 ผ่านบน main
 
@@ -173,7 +173,7 @@ Issue #47 / PR #48 merge แล้วที่ `6790922988301db17abbb60cdafaee2f
 - html2canvas โหลดได้เฉพาะ export-capable pages
 - external JavaScript/styles/resource links/media/embed/CSS URL อื่นถูก reject โดย default
 - `docs/DEPENDENCY_BOUNDARY.md` บันทึก review path สำหรับ intentional allowlist changes
-- ไม่สร้าง `package-lock.json` ปลอม และยังไม่อ้าง npm transitive reproducibility ที่ไม่มีหลักฐาน
+- M17 ไม่สร้าง `package-lock.json` ปลอม; npm reproducibility gap ที่ยังอยู่ ณ ตอนนั้นถูกแก้แยกภายหลังใน M24
 
 PR CI และ post-merge validation/production smoke ของ M17 ผ่านแล้วตาม Issue #47
 
@@ -235,9 +235,27 @@ Issue #57 / PR #58 merge แล้วที่ `358deaf66e6bc486f063fdc8d8b6ba23
 
 workflow รองรับทั้ง `push` บน `main` และ `workflow_dispatch` แต่ Issue #57 ยังคงเปิดจนกว่าจะมี direct observation ของ post-merge Production crawler smoke บน M22 merge SHA จริง
 
-## Milestone 23 — Repository roadmap and release-state synchronization 🚧
+## Milestone 23 — Repository roadmap and release-state synchronization ✅
 
-Issue #59 เป็น documentation-only maintenance pass เพื่อให้ README/ROADMAP กลับมาตรงกับ merged state หลัง M16–M22 โดยห้ามเปลี่ยน runtime และห้ามทำ unresolved post-merge evidence ให้ดู complete เกินหลักฐาน
+Issue #59 / PR #60 merge แล้วที่ `ae2c4d0bc66824e18650494afa761ef4f974a1c0`:
+
+- README/ROADMAP ถูก sync ให้ตรงกับ merged state ผ่าน M22
+- แก้ M17 scope ให้ตรงกับ External dependency boundary จริง
+- รักษา M11 manual evidence, No Analytics Transport, CSP deferral และ unresolved M19–M22 post-merge evidence ไว้อย่างตรงไปตรงมา
+- documentation-only; full Validate static website #197 ผ่านก่อน merge
+
+## Milestone 24 — Reproducible npm browser-test dependencies 🚧
+
+Issue #61 / PR #62:
+
+- ใช้ GitHub-hosted Node 22/npm สร้าง `package-lock.json` จาก `package.json` จริง แทนการ hand-author dependency graph
+- ตรวจ candidate artifact แล้วว่าเป็น lockfile v3 และมีเฉพาะ Playwright 1.55.0 dependency chain กับ optional macOS `fsevents`
+- commit exact npm-generated lockfile
+- validation workflow เปลี่ยน browser-test install จาก `npm install` เป็น `npm ci --no-audit --no-fund`
+- temporary lockfile generation/upload helpers ถูกลบออกจาก final workflow
+- production browser dependency boundary ไม่เปลี่ยน
+
+M24 จะปิดได้เมื่อ final PR head ผ่าน static/model/content/Playwright/whitespace gates ด้วย `npm ci` และ merge สำเร็จ
 
 ## Deferred until post-launch evidence
 

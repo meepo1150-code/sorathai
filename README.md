@@ -69,13 +69,14 @@ python -m http.server 8000
 python scripts/validate_site.py
 node --test tests/*.test.js
 node scripts/review_readings.js
+npm ci --no-audit --no-fund
 npm run test:e2e
 git diff --check
 ```
 
-GitHub Actions ติดตั้ง Chromium และรัน Playwright จริง จึงใช้เป็น browser regression gate ของ core journey นอกจากนี้ static validator ตรวจ presentation manifest ว่า import CSS มีไฟล์จริง ไม่ซ้ำ และ visual guard ที่ตั้งใจไว้ยังอยู่ใน cascade ที่ถูกต้อง
+GitHub Actions ติดตั้ง browser-test dependencies จาก npm-generated `package-lock.json` ด้วย `npm ci`, ติดตั้ง Chromium และรัน Playwright จริง จึงใช้เป็น browser regression gate ของ core journey นอกจากนี้ static validator ตรวจ presentation manifest ว่า import CSS มีไฟล์จริง ไม่ซ้ำ และ visual guard ที่ตั้งใจไว้ยังอยู่ใน cascade ที่ถูกต้อง
 
-เมื่อ browser regression ล้มเหลว CI จะเก็บ screenshot/trace/HTML report แบบ failure-only เพื่อให้ไล่สาเหตุได้จากหลักฐานโดยไม่ต้องเดา ดูวิธีอ่าน artifact และข้อจำกัดด้าน dependency reproducibility ที่ [`docs/CI_DIAGNOSTICS.md`](docs/CI_DIAGNOSTICS.md)
+เมื่อ browser regression ล้มเหลว CI จะเก็บ screenshot/trace/HTML report แบบ failure-only เพื่อให้ไล่สาเหตุได้จากหลักฐานโดยไม่ต้องเดา ดูวิธีอ่าน artifact และ dependency reproducibility contract ที่ [`docs/CI_DIAGNOSTICS.md`](docs/CI_DIAGNOSTICS.md)
 
 ## Profile storage
 
@@ -94,6 +95,8 @@ Public trust routes: [`about.html`](about.html), [`privacy.html`](privacy.html),
 Google Fonts ใช้ `display=swap` และมี system fallbacks `html2canvas` โหลดแบบ deferred เฉพาะหน้าที่มี export; core reading/navigation ไม่พึ่ง CDN และ export มี graceful fallback เมื่อ library ไม่พร้อม
 
 `html2canvas` 1.4.1 ถูกตรึงไว้ที่ URL ของ cdnjs เดิมพร้อม SHA-512 Subresource Integrity และ `crossorigin="anonymous"` บนทุก export-capable page โดย static validator ตรวจ exact dependency metadata และ production smoke รุ่นล่าสุดตรวจ metadata ชุดเดียวกันบน deployed HTML ทั้ง 11 route
+
+Browser-test npm dependencies แยกจาก production browser dependency boundary: `@playwright/test` ถูก pin ใน `package.json`, transitive graph ถูก lock ด้วย npm-generated `package-lock.json`, และ CI ใช้ `npm ci` เพื่อป้องกันการ resolve dependency ใหม่ในแต่ละ run
 
 ## Lightweight performance budget
 
@@ -115,13 +118,17 @@ M14 Phase 1–2 ปิดแล้ว: event taxonomy, strict privacy validation
 
 **Measurement decision สำหรับ initial validation:** No Analytics Transport. ไม่มี analytics provider, telemetry endpoint, tracking cookie/localStorage identity, pixel, fingerprinting หรือ production event transport การเปิด transport ในอนาคตต้องเป็น explicit product decision + reviewed PR แยกต่างหาก
 
-M15 เพิ่ม failure-only Playwright evidence, stale-run concurrency control และเอกสาร reproducibility โดยไม่เปลี่ยน production runtime
+M15 เพิ่ม failure-only Playwright evidence, stale-run concurrency control และเอกสาร reproducibility โดยไม่เปลี่ยน production runtime; limitation เรื่อง no-lockfile ที่ถูกบันทึกไว้ใน M15 ถูกแก้ใน M24 ด้วย npm-generated lockfile + `npm ci`
 
-M16–M18 เพิ่ม post-merge semantic verification, source/deployed metadata contracts และ response-security hardening โดยยังแยก Search Console/human evidence ไว้ใน M11
+M16–M18 เพิ่ม post-merge semantic verification, external dependency boundary และ response-security hardening โดยยังแยก Search Console/human evidence ไว้ใน M11
 
 M19–M22 implementation ถูก merge แล้วเช่นกัน: GitHub Actions remote dependencies ใช้ full commit SHA pins, indexable routes มี canonical HTTP `Link` contract, html2canvas 1.4.1 มี SRI/crossorigin บน 11 export pages และ production smoke ถูกขยายให้ตรวจ deployed dependency metadata โดยตรง
 
 อย่างไรก็ตาม Issue #51, #53, #55 และ #57 ยังคงเปิด เพราะ acceptance ที่เหลือคือการ **สังเกต post-merge Production crawler smoke โดยตรง** บน merge evidence ที่เกี่ยวข้อง ซึ่ง connector ใน session ปัจจุบันไม่สามารถ enumerate push-triggered runs ตาม SHA ได้ จึงไม่อ้าง milestone เหล่านี้ว่า complete เกินหลักฐานที่เห็นจริง
+
+M23 sync README/ROADMAP กลับมาให้ตรงกับ repository state หลัง M16–M22 โดยไม่เปลี่ยน production runtime
+
+M24 เพิ่ม npm-generated `package-lock.json` สำหรับ Playwright toolchain และย้าย validation workflow ไปใช้ `npm ci`; งานนี้เป็น CI/development reproducibility hardening ไม่ได้เพิ่ม production dependency
 
 CSP ยังคง deferred ตาม `docs/SECURITY_HEADERS.md`: หน้าเว็บปัจจุบันมี inline CSS/JS, Google Fonts และ external html2canvas จึงต้องมี compatibility design + browser regression แยกต่างหาก ไม่ควรใส่ permissive policy เพียงเพื่อให้มี header
 
