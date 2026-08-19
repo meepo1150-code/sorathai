@@ -244,9 +244,9 @@ Issue #59 / PR #60 merge แล้วที่ `ae2c4d0bc66824e18650494afa761ef4
 - รักษา M11 manual evidence, No Analytics Transport, CSP deferral และ unresolved M19–M22 post-merge evidence ไว้อย่างตรงไปตรงมา
 - documentation-only; full Validate static website #197 ผ่านก่อน merge
 
-## Milestone 24 — Reproducible npm browser-test dependencies 🚧
+## Milestone 24 — Reproducible npm browser-test dependencies ✅
 
-Issue #61 / PR #62:
+Issue #61 / PR #62 merge แล้วที่ `08fe245455639518bbca85e5a74860277e75075a`; follow-up documentation PR #63 merge ที่ `a9e5e24c71df70d29c855bc6e9e7a36b978e9616`:
 
 - ใช้ GitHub-hosted Node 22/npm สร้าง `package-lock.json` จาก `package.json` จริง แทนการ hand-author dependency graph
 - ตรวจ candidate artifact แล้วว่าเป็น lockfile v3 และมีเฉพาะ Playwright 1.55.0 dependency chain กับ optional macOS `fsevents`
@@ -254,8 +254,21 @@ Issue #61 / PR #62:
 - validation workflow เปลี่ยน browser-test install จาก `npm install` เป็น `npm ci --no-audit --no-fund`
 - temporary lockfile generation/upload helpers ถูกลบออกจาก final workflow
 - production browser dependency boundary ไม่เปลี่ยน
+- Validate static website #206 ผ่านครบก่อน PR #62 merge และ #208 ผ่านครบก่อน documentation follow-up merge
+- post-merge audit แก้ stale M19-era npm limitation ใน `docs/ACTION_PINNING.md` แล้ว ก่อนปิด Issue #61 เป็น completed
 
-M24 จะปิดได้เมื่อ final PR head ผ่าน static/model/content/Playwright/whitespace gates ด้วย `npm ci` และ merge สำเร็จ
+## Milestone 25 — Review-only dependency update automation 🚧
+
+Issue #64 เพิ่ม low-noise dependency update discovery สำหรับ controls ที่ M19/M24 ทำให้ reproducible แล้ว:
+
+- `.github/dependabot.yml` เฝ้าเฉพาะ `github-actions` และ `npm` ที่ repository root
+- ทั้งสอง ecosystem ใช้ monthly schedule และจำกัดจำนวน open update PR เพื่อลด noise
+- Dependabot PR เป็น proposal สำหรับ review เท่านั้น ไม่ใช่ approval/auto-merge
+- ไม่มี private registry, credential, production browser dependency หรือ workflow permission expansion
+- `docs/DEPENDENCY_UPDATES.md` กำหนด review contract สำหรับ full-SHA Action pins และ npm-generated lockfile
+- dependency PR ทุกตัวต้องผ่าน repository validation gate เดิมก่อน merge
+
+M25 จะปิดเมื่อ diff review ยืนยัน scope, full static/model/content/Playwright/whitespace CI ผ่าน และ PR merge สำเร็จ โดยไม่อ้างว่าการตั้ง config เท่ากับมี Dependabot update PR เกิดขึ้นจริงจนกว่าจะสังเกตได้หลัง merge
 
 ## Deferred until post-launch evidence
 
