@@ -93,6 +93,8 @@ Public trust routes: [`about.html`](about.html), [`privacy.html`](privacy.html),
 
 Google Fonts ใช้ `display=swap` และมี system fallbacks `html2canvas` โหลดแบบ deferred เฉพาะหน้าที่มี export; core reading/navigation ไม่พึ่ง CDN และ export มี graceful fallback เมื่อ library ไม่พร้อม
 
+`html2canvas` 1.4.1 ถูกตรึงไว้ที่ URL ของ cdnjs เดิมพร้อม SHA-512 Subresource Integrity และ `crossorigin="anonymous"` บนทุก export-capable page โดย static validator ตรวจ exact dependency metadata และ production smoke รุ่นล่าสุดตรวจ metadata ชุดเดียวกันบน deployed HTML ทั้ง 11 route
+
 ## Lightweight performance budget
 
 - ห้ามเพิ่ม blocking third-party JavaScript ใน critical path
@@ -103,7 +105,7 @@ Google Fonts ใช้ `display=swap` และมี system fallbacks `html2can
 
 ## Release status
 
-Milestones 2–10 และ 12–14 Phase 1–2 ปิดแล้วในเชิง repository implementation: core profile flow, deep readings, Combined Profile, trust/accessibility/performance hardening, Playwright release gates, discoverability contracts, Sorathai Visual Identity System, presentation-maintenance contracts และ privacy-safe local-only measurement instrumentation อยู่ใน `main`
+Milestones 2–10 และ 12–18 ปิดในเชิง repository implementation แล้ว: core profile flow, deep readings, Combined Profile, trust/accessibility/performance hardening, browser release gates, discoverability contracts, Sorathai Visual Identity System, presentation-maintenance contracts, privacy-safe local-only measurement readiness, CI diagnostics, production semantic smoke, source metadata validation และ static response security headers อยู่ใน `main`
 
 Milestone 11 (Issue #28) เป็น **owner/manual operations handoff** สำหรับสิ่งที่ CI พิสูจน์แทนเจ้าของบัญชีหรือมนุษย์ไม่ได้ เช่น Search Console crawl/index feedback, real-device walkthrough, downloaded PNG pixel inspection, full keyboard walkthrough และ assistive-technology review งานเหล่านี้ห้ามถูกอ้างว่า certified เพียงเพราะ automated tests ผ่าน
 
@@ -113,7 +115,15 @@ M14 Phase 1–2 ปิดแล้ว: event taxonomy, strict privacy validation
 
 **Measurement decision สำหรับ initial validation:** No Analytics Transport. ไม่มี analytics provider, telemetry endpoint, tracking cookie/localStorage identity, pixel, fingerprinting หรือ production event transport การเปิด transport ในอนาคตต้องเป็น explicit product decision + reviewed PR แยกต่างหาก
 
-M15 (Issue #43) เป็น CI observability/regression diagnostics hardening: failure-only Playwright evidence, stale-run concurrency control และเอกสาร reproducibility โดยไม่เปลี่ยน production runtime
+M15 เพิ่ม failure-only Playwright evidence, stale-run concurrency control และเอกสาร reproducibility โดยไม่เปลี่ยน production runtime
+
+M16–M18 เพิ่ม post-merge semantic verification, source/deployed metadata contracts และ response-security hardening โดยยังแยก Search Console/human evidence ไว้ใน M11
+
+M19–M22 implementation ถูก merge แล้วเช่นกัน: GitHub Actions remote dependencies ใช้ full commit SHA pins, indexable routes มี canonical HTTP `Link` contract, html2canvas 1.4.1 มี SRI/crossorigin บน 11 export pages และ production smoke ถูกขยายให้ตรวจ deployed dependency metadata โดยตรง
+
+อย่างไรก็ตาม Issue #51, #53, #55 และ #57 ยังคงเปิด เพราะ acceptance ที่เหลือคือการ **สังเกต post-merge Production crawler smoke โดยตรง** บน merge evidence ที่เกี่ยวข้อง ซึ่ง connector ใน session ปัจจุบันไม่สามารถ enumerate push-triggered runs ตาม SHA ได้ จึงไม่อ้าง milestone เหล่านี้ว่า complete เกินหลักฐานที่เห็นจริง
+
+CSP ยังคง deferred ตาม `docs/SECURITY_HEADERS.md`: หน้าเว็บปัจจุบันมี inline CSS/JS, Google Fonts และ external html2canvas จึงต้องมี compatibility design + browser regression แยกต่างหาก ไม่ควรใส่ permissive policy เพียงเพื่อให้มี header
 
 ## Production identity
 
