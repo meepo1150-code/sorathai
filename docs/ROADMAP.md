@@ -163,11 +163,19 @@ Issue #45 / PR #46 เพิ่ม post-merge evidence จากเดิมท�
 
 M16 เป็น deployment sanity check ไม่ใช่หลักฐานว่า Google index สำเร็จ; Search Console ใน Issue #28 ยังเป็น source of truth สำหรับ Google-specific indexing
 
-## Milestone 17 — Launch metadata/source validation hardening ✅ implementation
+## Milestone 17 — External dependency boundary ✅
 
-M17 เพิ่ม source contracts ที่ทำให้ launch metadata drift ถูกจับก่อน merge แทนการพึ่ง production smoke เพียงชั้นเดียว โดยคง canonical origin, social preview, schema, sitemap/indexability และ trust-route contracts ให้สอดคล้องกัน
+Issue #47 / PR #48 merge แล้วที่ `6790922988301db17abbb60cdafaee2fc0d24ac1`:
 
-ไม่มีการเปลี่ยน calculation/profile/visual/analytics behavior และ M11 ยังคงเป็น boundary สำหรับ owner/Search Console evidence
+- `scripts/validate_external_dependencies.py` เป็น executable allowlist สำหรับ third-party browser resources
+- Google Fonts stylesheet/preconnect ถูกจำกัดตาม allowlist
+- html2canvas ถูกจำกัดที่ exact cdnjs URL/version และต้อง `defer`
+- html2canvas โหลดได้เฉพาะ export-capable pages
+- external JavaScript/styles/resource links/media/embed/CSS URL อื่นถูก reject โดย default
+- `docs/DEPENDENCY_BOUNDARY.md` บันทึก review path สำหรับ intentional allowlist changes
+- ไม่สร้าง `package-lock.json` ปลอม และยังไม่อ้าง npm transitive reproducibility ที่ไม่มีหลักฐาน
+
+PR CI และ post-merge validation/production smoke ของ M17 ผ่านแล้วตาม Issue #47
 
 ## Milestone 18 — Static response security headers ✅
 
