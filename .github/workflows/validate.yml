@@ -32,6 +32,16 @@ jobs:
         with:
           node-version: "22"
 
+      - name: Generate npm lockfile candidate
+        run: npm install --package-lock-only --ignore-scripts --no-audit --no-fund
+
+      - name: Emit npm lockfile candidate
+        run: |
+          echo "LOCKFILE_CANDIDATE_BEGIN"
+          base64 -w0 package-lock.json
+          echo
+          echo "LOCKFILE_CANDIDATE_END"
+
       - name: Validate HTML links, metadata, and sitemap
         run: python scripts/validate_site.py
 
