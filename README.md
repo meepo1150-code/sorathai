@@ -130,6 +130,8 @@ M23 sync README/ROADMAP กลับมาให้ตรงกับ repository
 
 M24 เพิ่ม npm-generated `package-lock.json` สำหรับ Playwright toolchain และย้าย validation workflow ไปใช้ `npm ci`; งานนี้เป็น CI/development reproducibility hardening ไม่ได้เพิ่ม production dependency
 
+M25 เพิ่ม monthly Dependabot update discovery สำหรับ GitHub Actions และ npm แบบ review-only; ไม่มี auto-merge และ dependency PR ทุกตัวต้องผ่าน repository gates เดิมก่อน merge
+
 CSP ยังคง deferred ตาม `docs/SECURITY_HEADERS.md`: หน้าเว็บปัจจุบันมี inline CSS/JS, Google Fonts และ external html2canvas จึงต้องมี compatibility design + browser regression แยกต่างหาก ไม่ควรใส่ permissive policy เพียงเพื่อให้มี header
 
 ## Production identity
