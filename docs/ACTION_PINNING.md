@@ -29,6 +29,8 @@ Do not replace a SHA with a mutable major/minor tag merely to make upgrades easi
 6. run the complete Sorathai validation gate, including Playwright
 7. for actions used by production smoke, also require a successful post-merge production smoke run
 
+Dependabot now performs monthly update discovery for GitHub Actions, but its pull requests are proposals only. They must preserve the full-SHA contract and pass the same review/gates before merge. See `docs/DEPENDENCY_UPDATES.md` for the shared GitHub Actions/npm update policy.
+
 ## Permissions
 
 Action upgrades must not broaden workflow permissions incidentally. Sorathai workflows currently use `permissions: contents: read`; any permission expansion requires explicit scope and review.
