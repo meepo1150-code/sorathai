@@ -151,17 +151,85 @@ PR run #179 ถูก supersede และ cancelled ตาม contract; run #180
 
 ดู `docs/CI_DIAGNOSTICS.md` สำหรับวิธีอ่านหลักฐานเมื่อ browser gate ล้มเหลว
 
-## Milestone 16 — Production semantic contract smoke 🚧
+## Milestone 16 — Production semantic contract smoke ✅ implementation
 
-Issue #45 / Draft PR #46 เพิ่ม post-merge evidence จากเดิมที่ตรวจเพียง HTTP/crawler reachability ให้ตรวจ deployed semantics ที่สำคัญด้วย:
+Issue #45 / PR #46 เพิ่ม post-merge evidence จากเดิมที่ตรวจเพียง HTTP/crawler reachability ให้ตรวจ deployed semantics ที่สำคัญด้วย:
 
-- Home canonical / Open Graph / launch schema
-- representative Western public route canonical / Open Graph / schema และไม่มี accidental `noindex`
-- `profile.html` และ `dream-result.html` ยังคง canonical + `noindex,follow` และไม่อยู่ใน sitemap
+- Home Open Graph / launch schema
+- representative Western public route Open Graph / schema และไม่มี accidental `noindex`
+- `profile.html` และ `dream-result.html` ยังคง `noindex,follow` และอยู่นอก sitemap
 - `og-image.png` ตอบ `image/png`
 - PR CI ตรวจ shell syntax ของ production smoke โดยไม่ยิง production network ก่อน merge
 
 M16 เป็น deployment sanity check ไม่ใช่หลักฐานว่า Google index สำเร็จ; Search Console ใน Issue #28 ยังเป็น source of truth สำหรับ Google-specific indexing
+
+## Milestone 17 — Launch metadata/source validation hardening ✅ implementation
+
+M17 เพิ่ม source contracts ที่ทำให้ launch metadata drift ถูกจับก่อน merge แทนการพึ่ง production smoke เพียงชั้นเดียว โดยคง canonical origin, social preview, schema, sitemap/indexability และ trust-route contracts ให้สอดคล้องกัน
+
+ไม่มีการเปลี่ยน calculation/profile/visual/analytics behavior และ M11 ยังคงเป็น boundary สำหรับ owner/Search Console evidence
+
+## Milestone 18 — Static response security headers ✅
+
+Issue #49 / PR #50 ปิดแล้ว:
+
+- Sorathai-owned `X-Frame-Options: DENY`
+- Sorathai-owned `Permissions-Policy: camera=(), microphone=(), geolocation=()`
+- source validator สำหรับ `_headers`
+- production verification ของ custom headers รวมถึง Cloudflare defaults `X-Content-Type-Options: nosniff` และ `Referrer-Policy: strict-origin-when-cross-origin`
+- CSP ถูก defer อย่างตั้งใจ เพราะ inline CSS/JS, Google Fonts และ html2canvas ต้องมี compatibility design/regression pass แยกต่างหาก
+
+ดู `docs/SECURITY_HEADERS.md` สำหรับ ownership และ CSP rationale
+
+## Milestone 19 — GitHub Actions supply-chain pinning 🚧 implementation merged / post-merge evidence pending
+
+Issue #51 / PR #52 merge แล้วที่ `b56b2b5ac490efe5b0a6349f93c4f84d1a0bf686`:
+
+- remote GitHub Actions ทั้งหมดใช้ full commit SHA pins
+- `scripts/validate_action_pins.py` ป้องกัน mutable refs กลับเข้ามา
+- workflow permissions ไม่ถูก broaden
+- PR CI ผ่านพร้อม pinned actions
+
+สิ่งที่ยังไม่อ้างว่า complete ใน Issue #51 คือ direct observation ของ push-triggered Production crawler smoke บน post-merge evidence ที่เกี่ยวข้อง เนื่องจาก connector ใน session ปัจจุบันไม่ enumerate push runs ตาม SHA
+
+## Milestone 20 — Canonical URL response-header contract 🚧 implementation merged / post-merge evidence pending
+
+Issue #53 / PR #54 merge แล้วที่ `dd1f8887c1a0f35dd9604255157c4729b438fd02`:
+
+- sitemap-listed public routes มี matching HTTP `Link: <...>; rel="canonical"`
+- `profile.html`, `dream-result.html`, `404.html` ไม่รับ canonical response-header mapping ตาม indexability contract
+- source validator ป้องกัน missing/wrong/duplicate mappings
+- production smoke ถูกขยายให้ตรวจ canonical response headers ทุก sitemap URL
+- HTML canonical / OG / sitemap / robots contracts เดิมยังคงอยู่
+
+Issue #53 ยังเปิดจนกว่าจะมี direct post-merge production-smoke evidence ที่สังเกตได้จริง
+
+## Milestone 21 — Subresource Integrity for external export script 🚧 implementation merged / post-merge evidence pending
+
+Issue #55 / PR #56 merge แล้วที่ `d517ae7374d03cf45d1d287e481c1f142d1a757d`:
+
+- html2canvas 1.4.1 บน 11 export-capable pages ใช้ exact SHA-512 SRI เดียวกัน
+- เพิ่ม `crossorigin="anonymous"` โดยคง URL/version และ `defer` เดิม
+- external dependency validator ตรวจ exact URL/SRI/crossorigin/defer
+- Playwright export coverage ผ่านหลังเปิด SRI
+- ไม่มี external browser dependency เพิ่ม
+
+Issue #55 ยังเปิดเพราะ direct post-merge production verification ยังไม่ถูกสังเกตผ่าน connector ใน session นี้
+
+## Milestone 22 — Production external dependency metadata verification 🚧 implementation merged / post-merge evidence pending
+
+Issue #57 / PR #58 merge แล้วที่ `358deaf66e6bc486f063fdc8d8b6ba239da4ba47`:
+
+- `scripts/production_smoke.sh` ตรวจ deployed html2canvas contract ครบ 11 export routes
+- แต่ละ route ต้องมี exact approved URL เพียงหนึ่งครั้ง และต้องมี exact SRI, `crossorigin="anonymous"`, `defer`
+- crawler/canonical/semantic/noindex/security-header/social-preview checks เดิมไม่ถูกลด
+- PR Validate static website #195 ผ่านครบ รวม Playwright และ whitespace
+
+workflow รองรับทั้ง `push` บน `main` และ `workflow_dispatch` แต่ Issue #57 ยังคงเปิดจนกว่าจะมี direct observation ของ post-merge Production crawler smoke บน M22 merge SHA จริง
+
+## Milestone 23 — Repository roadmap and release-state synchronization 🚧
+
+Issue #59 เป็น documentation-only maintenance pass เพื่อให้ README/ROADMAP กลับมาตรงกับ merged state หลัง M16–M22 โดยห้ามเปลี่ยน runtime และห้ามทำ unresolved post-merge evidence ให้ดู complete เกินหลักฐาน
 
 ## Deferred until post-launch evidence
 
@@ -174,5 +242,6 @@ M16 เป็น deployment sanity check ไม่ใช่หลักฐาน
 - เพิ่มศาสตร์ใหม่
 - ads/monetization optimization
 - analytics transport โดยไม่มีเหตุผลผลิตภัณฑ์ที่ชัดเจน
+- Content-Security-Policy แบบ improvised โดยไม่มี compatibility design สำหรับ inline CSS/JS, Google Fonts และ external export dependency
 
 ในช่วง No Analytics Transport การตัดสินใจ feature ถัดไปควรอิง **direct user feedback, reproducible defects, Search Console/operational evidence และ product goals ที่ชัดเจน** แทนการสมมติ funnel/retention metrics ที่เราไม่ได้เก็บอยู่จริง หากอนาคตเปิด measurement transport อย่างตั้งใจ ค่อยใช้ baseline aggregate behavior เพื่อช่วยเลือก bottleneck ถัดไป
