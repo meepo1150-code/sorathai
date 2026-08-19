@@ -33,6 +33,8 @@ Do not replace a SHA with a mutable major/minor tag merely to make upgrades easi
 
 Action upgrades must not broaden workflow permissions incidentally. Sorathai workflows currently use `permissions: contents: read`; any permission expansion requires explicit scope and review.
 
-## Separate npm limitation
+## npm reproducibility
 
-This policy only makes GitHub Action resolution immutable. It does not solve the browser-test npm transitive dependency limitation: the repository still has no npm-generated `package-lock.json`, so CI continues to use `npm install` until a real lockfile can be generated and validated separately.
+GitHub Action immutability and npm dependency reproducibility are separate controls. Since M24, the browser-test toolchain has an npm-generated `package-lock.json`, and Validate CI installs the locked graph with `npm ci --no-audit --no-fund`.
+
+An intentional Playwright upgrade must update `package.json` and the npm-generated lockfile together, review the resolved dependency graph, and pass the complete Sorathai validation gate before merge. Do not hand-author or bypass lockfile metadata merely to make an upgrade pass.
