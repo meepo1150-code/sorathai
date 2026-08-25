@@ -34,13 +34,16 @@ EXCLUDED_CANONICAL_ROUTES = (
 
 REQUIRED_SNIPPETS = (
     "/*\n  X-Frame-Options: DENY\n  Permissions-Policy: camera=(), microphone=(), geolocation=()",
-    "/sitemap.xml\n  Content-Type: application/xml; charset=utf-8\n  Cache-Control: public, max-age=300",
-    "/robots.txt\n  Content-Type: text/plain; charset=utf-8\n  Cache-Control: public, max-age=300",
 )
 
 FORBIDDEN_DUPLICATES = (
     "X-Content-Type-Options:",
     "Referrer-Policy:",
+)
+
+CRAWLER_ASSET_OVERRIDES = (
+    "/sitemap.xml\n",
+    "/robots.txt\n",
 )
 
 
@@ -60,6 +63,13 @@ def main() -> int:
         if snippet not in source:
             first_line = snippet.splitlines()[0]
             errors.append(f"missing required header rule starting with {first_line!r}")
+
+    for block in CRAWLER_ASSET_OVERRIDES:
+        if block in source:
+            route = block.strip()
+            errors.append(
+                f"{route} must rely on Cloudflare Pages static-asset Content-Type/cache defaults; do not override it in _headers"
+            )
 
     for header in FORBIDDEN_DUPLICATES:
         if header.lower() in source.lower():
@@ -109,7 +119,7 @@ def main() -> int:
             print(f"- {error}", file=sys.stderr)
         return 1
 
-    print("Header source validation passed, including canonical URL mappings.")
+    print("Header source validation passed, including canonical mappings and crawler-asset defaults.")
     return 0
 
 
