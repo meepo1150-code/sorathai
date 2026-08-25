@@ -24,5 +24,8 @@ jobs:
         if: github.event_name == 'push'
         run: sleep 45
 
+      - name: Check exact sitemap compatibility
+        run: bash scripts/production_sitemap_smoke.sh
+
       - name: Check production crawler surface
         run: bash scripts/production_smoke.sh
