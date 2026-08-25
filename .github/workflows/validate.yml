@@ -45,7 +45,9 @@ jobs:
         run: python scripts/validate_action_pins.py
 
       - name: Check production smoke script syntax
-        run: bash -n scripts/production_smoke.sh
+        run: |
+          bash -n scripts/production_smoke.sh
+          bash -n scripts/production_sitemap_smoke.sh
 
       - name: Test shared profile and reading models
         run: node --test tests/*.test.js
